@@ -1,384 +1,1750 @@
 <!DOCTYPE html>
-<html lang="vi">
+<html lang="en">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover">
-    <title>Đổi Tiền & Thị Trường</title>
-    
-    <link rel="apple-touch-icon" href="https://i.ibb.co/v4m8v7yX/exchange-logo.png?v=4">
-    <link rel="icon" type="image/png" href="https://i.ibb.co/v4m8v7yX/exchange-logo.png?v=4">
-    
-    <meta name="apple-mobile-web-app-capable" content="yes">
-    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
-    <meta name="apple-mobile-web-app-title" content="Đổi Tiền">
-
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>FluxTea - Premium Currency Exchange</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.0/font/bootstrap-icons.css" rel="stylesheet">
     <style>
-        :root {
-            --primary: #007AFF;
-            --bg: #000000;
-            --card-bg: #1C1C1E;
-            --text: #FFFFFF;
-            --text-secondary: #8E8E93;
-            --input-bg: #2C2C2E;
-            --green: #30D158;
-            --red: #FF453A;
-            --nav-bg: rgba(28, 28, 30, 0.9);
-            --focus-glow: rgba(0, 122, 255, 0.4);
-        }
-
-        @media (prefers-color-scheme: light) {
-            :root {
-                --bg: #F2F2F7;
-                --card-bg: #FFFFFF;
-                --text: #000000;
-                --input-bg: #F2F2F7;
-                --green: #34C759;
-                --red: #FF3B30;
-                --nav-bg: rgba(255, 255, 255, 0.9);
-                --focus-glow: rgba(0, 122, 255, 0.2);
-            }
-        }
-
-        * { box-sizing: border-box; font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif; -webkit-tap-highlight-color: transparent; }
-        
-        body {
+        * {
             margin: 0;
-            background-color: var(--bg);
+            padding: 0;
+            box-sizing: border-box;
+            color-scheme: dark;
+        }
+
+        :root {
+            --primary: #00d9ff;
+            --primary-dark: #0099cc;
+            --secondary: #00ffa3;
+            --accent: #ff006e;
+            --dark: #0a0e27;
+            --darker: #050812;
+            --surface: #1a1f3a;
+            --glass: rgba(255, 255, 255, 0.08);
+            --glass-border: rgba(255, 255, 255, 0.15);
+            --text: #e8f0ff;
+            --text-muted: #8b95b4;
+            --success: #00d9a3;
+            --danger: #ff3366;
+            --warning: #ffa500;
+            --blur-strength: 20px;
+            --transition-speed: 0.4s;
+        }
+
+        html { scroll-behavior: smooth; }
+
+        body {
+            font-family: 'Segoe UI', 'Helvetica Neue', sans-serif;
+            background: linear-gradient(135deg, var(--darker) 0%, #0f1535 25%, #1a0f35 50%, var(--darker) 100%);
+            background-attachment: fixed;
             color: var(--text);
-            overscroll-behavior-y: none;
-            padding-bottom: calc(80px + env(safe-area-inset-bottom));
+            line-height: 1.6;
+            overflow-x: hidden;
+            position: relative;
         }
 
-        /* CHUYỂN CẢNH MOTION BLUR */
-        .view-container { display: none; padding: 20px; }
-        .view-container.active { 
-            display: block; 
-            animation: motionBlur 0.45s cubic-bezier(0.2, 0.8, 0.2, 1) forwards; 
-            will-change: transform, opacity, filter; 
-        }
-        @keyframes motionBlur { 
-            0% { opacity: 0; transform: translateY(30px) scale(0.96); filter: blur(12px); } 
-            100% { opacity: 1; transform: translateY(0) scale(1); filter: blur(0); } 
+        body::before {
+            content: '';
+            position: fixed;
+            top: 0; left: 0;
+            width: 100%; height: 100%;
+            background:
+                radial-gradient(circle at 20% 50%, rgba(0, 217, 255, 0.05) 0%, transparent 50%),
+                radial-gradient(circle at 80% 80%, rgba(255, 0, 110, 0.05) 0%, transparent 50%);
+            pointer-events: none;
+            z-index: 1;
         }
 
-        /* GIAO DIỆN CONVERTER */
-        .converter-card { background: var(--card-bg); border-radius: 24px; padding: 20px; box-shadow: 0 4px 20px rgba(0,0,0,0.3); }
-        
-        /* HIỆU ỨNG Ô NHẬP LIỆU (FOCUS) */
-        .input-group { 
-            background: var(--input-bg); 
-            border-radius: 16px; 
-            padding: 16px; 
-            margin-bottom: 4px; 
-            border: 1px solid transparent;
-            transition: all 0.3s cubic-bezier(0.2, 0.8, 0.2, 1);
+        /* ===================== MOTION BLUR SMOOTH ===================== */
+        @keyframes fadeInDown {
+            from { opacity: 0; transform: translateY(-20px); filter: blur(8px); }
+            to   { opacity: 1; transform: translateY(0);     filter: blur(0); }
         }
-        .input-group:focus-within {
+        @keyframes fadeInUp {
+            from { opacity: 0; transform: translateY(20px);  filter: blur(8px); }
+            to   { opacity: 1; transform: translateY(0);     filter: blur(0); }
+        }
+        @keyframes fadeInLeft {
+            from { opacity: 0; transform: translateX(-30px); filter: blur(6px); }
+            to   { opacity: 1; transform: translateX(0);     filter: blur(0); }
+        }
+        @keyframes slideInRight {
+            from { opacity: 0; transform: translateX(40px);  filter: blur(8px); }
+            to   { opacity: 1; transform: translateX(0);     filter: blur(0); }
+        }
+        @keyframes scaleIn {
+            from { opacity: 0; transform: scale(0.85);       filter: blur(6px); }
+            to   { opacity: 1; transform: scale(1);          filter: blur(0); }
+        }
+        @keyframes swapSpin {
+            0%   { transform: rotate(0deg)   scale(1);    filter: blur(0); }
+            40%  { transform: rotate(120deg) scale(1.2);  filter: blur(3px); }
+            80%  { transform: rotate(200deg) scale(0.95); filter: blur(1px); }
+            100% { transform: rotate(180deg) scale(1);    filter: blur(0); }
+        }
+        @keyframes notifSlide {
+            0%   { opacity: 0; transform: translateX(120%) scale(0.9); filter: blur(6px); }
+            15%  { opacity: 1; transform: translateX(0)    scale(1);   filter: blur(0); }
+            80%  { opacity: 1; transform: translateX(0)    scale(1);   filter: blur(0); }
+            100% { opacity: 0; transform: translateX(120%) scale(0.9); filter: blur(4px); }
+        }
+        @keyframes pageEnter {
+            from { opacity: 0; transform: translateY(16px); filter: blur(10px); }
+            to   { opacity: 1; transform: translateY(0);    filter: blur(0); }
+        }
+        @keyframes settingsOpen {
+            from { opacity: 0; transform: translateX(100%) scale(0.95); filter: blur(12px); }
+            to   { opacity: 1; transform: translateX(0)    scale(1);    filter: blur(0); }
+        }
+        @keyframes overlayIn {
+            from { opacity: 0; backdrop-filter: blur(0px); }
+            to   { opacity: 1; backdrop-filter: blur(8px); }
+        }
+        @keyframes pulse-glow {
+            0%, 100% { box-shadow: 0 0 8px rgba(0, 217, 255, 0.3); }
+            50%       { box-shadow: 0 0 20px rgba(0, 217, 255, 0.7), 0 0 40px rgba(0, 255, 163, 0.3); }
+        }
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(8px); filter: blur(4px); }
+            to   { opacity: 1; transform: translateY(0);   filter: blur(0); }
+        }
+
+        /* ===================== LAYOUT ===================== */
+        .app-wrapper {
+            position: relative;
+            z-index: 2;
+            display: flex;
+            height: 100vh;
+        }
+
+        /* SIDEBAR */
+        .sidebar {
+            width: 300px;
+            background: rgba(26, 31, 58, 0.6);
+            backdrop-filter: blur(var(--blur-strength));
+            border-right: 1px solid var(--glass-border);
+            padding: 24px 0;
+            display: flex;
+            flex-direction: column;
+            overflow-y: auto;
+            position: relative;
+            z-index: 100;
+            animation: fadeInLeft 0.6s ease both;
+        }
+
+        .sidebar::before {
+            content: '';
+            position: absolute;
+            top: 0; left: 0; right: 0;
+            height: 1px;
+            background: linear-gradient(90deg, transparent, var(--primary), transparent);
+            opacity: 0.5;
+        }
+
+        .logo-section {
+            padding: 0 24px 32px;
+            border-bottom: 1px solid rgba(255,255,255,0.05);
+            margin-bottom: 24px;
+        }
+
+        .logo {
+            font-size: 28px;
+            font-weight: 800;
+            background: linear-gradient(135deg, var(--primary), var(--secondary));
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            letter-spacing: -0.5px;
+        }
+
+        .logo-sub {
+            font-size: 11px;
+            color: var(--text-muted);
+            letter-spacing: 2px;
+            text-transform: uppercase;
+            margin-top: 4px;
+        }
+
+        .nav-section { padding: 0 16px; flex: 1; }
+        .nav-label {
+            font-size: 10px;
+            letter-spacing: 2px;
+            text-transform: uppercase;
+            color: var(--text-muted);
+            padding: 0 8px;
+            margin-bottom: 8px;
+        }
+
+        .nav-item {
+            display: flex;
+            align-items: center;
+            gap: 14px;
+            padding: 12px 16px;
+            border-radius: 12px;
+            cursor: pointer;
+            transition: all var(--transition-speed) cubic-bezier(0.34, 1.56, 0.64, 1);
+            margin-bottom: 4px;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .nav-item::before {
+            content: '';
+            position: absolute;
+            inset: 0;
+            background: linear-gradient(135deg, rgba(0,217,255,0.1), rgba(0,255,163,0.05));
+            opacity: 0;
+            transition: opacity 0.3s ease;
+            border-radius: 12px;
+        }
+
+        .nav-item:hover::before,
+        .nav-item.active::before { opacity: 1; }
+
+        .nav-item.active {
+            background: rgba(0, 217, 255, 0.1);
+            border: 1px solid rgba(0, 217, 255, 0.2);
+        }
+
+        .nav-item:hover { transform: translateX(4px); }
+
+        .nav-icon {
+            width: 38px; height: 38px;
+            border-radius: 10px;
+            display: flex; align-items: center; justify-content: center;
+            font-size: 18px;
+            background: rgba(255,255,255,0.05);
+            transition: all 0.3s ease;
+            flex-shrink: 0;
+        }
+
+        .nav-item.active .nav-icon,
+        .nav-item:hover .nav-icon {
+            background: rgba(0, 217, 255, 0.15);
+            color: var(--primary);
+        }
+
+        .nav-text { font-size: 14px; font-weight: 500; }
+        .nav-badge {
+            margin-left: auto;
+            background: var(--accent);
+            color: white;
+            font-size: 10px;
+            padding: 2px 7px;
+            border-radius: 20px;
+            font-weight: 700;
+        }
+
+        /* MAIN */
+        .main-content {
+            flex: 1;
+            display: flex;
+            flex-direction: column;
+            overflow: hidden;
+        }
+
+        .top-bar {
+            padding: 20px 32px;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            border-bottom: 1px solid var(--glass-border);
+            background: rgba(10, 14, 39, 0.4);
+            backdrop-filter: blur(var(--blur-strength));
+            position: sticky;
+            top: 0;
+            z-index: 50;
+            animation: fadeInDown 0.5s ease both;
+        }
+
+        .page-title { font-size: 22px; font-weight: 700; }
+        .top-actions { display: flex; gap: 12px; align-items: center; }
+
+        .icon-btn {
+            width: 40px; height: 40px;
+            border-radius: 10px;
+            border: 1px solid var(--glass-border);
+            background: var(--glass);
+            color: var(--text);
+            cursor: pointer;
+            display: flex; align-items: center; justify-content: center;
+            font-size: 18px;
+            transition: all 0.3s cubic-bezier(0.34, 1.56, 0.64, 1);
+        }
+
+        .icon-btn:hover {
+            background: rgba(0, 217, 255, 0.15);
+            border-color: var(--primary);
+            color: var(--primary);
+            transform: scale(1.1);
+            filter: drop-shadow(0 0 6px rgba(0,217,255,0.5));
+        }
+
+        .content-area {
+            flex: 1;
+            overflow-y: auto;
+            padding: 32px;
+            scroll-behavior: smooth;
+        }
+
+        .page { display: none; animation: pageEnter 0.45s ease both; }
+        .page.active { display: block; }
+
+        /* ===================== EXCHANGE PAGE ===================== */
+        .exchange-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 24px;
+        }
+
+        .card {
+            background: rgba(26, 31, 58, 0.6);
+            backdrop-filter: blur(var(--blur-strength));
+            border: 1px solid var(--glass-border);
+            border-radius: 20px;
+            padding: 28px;
+            transition: all 0.4s ease;
+            animation: scaleIn 0.5s ease both;
+        }
+
+        .card:hover {
+            border-color: rgba(0, 217, 255, 0.3);
+            box-shadow: 0 8px 32px rgba(0, 217, 255, 0.1);
             transform: translateY(-2px);
-            box-shadow: 0 8px 24px var(--focus-glow);
-            border: 1px solid var(--primary);
         }
-        
-        .input-row { display: flex; align-items: center; justify-content: space-between; }
-        input[type="number"], input[type="text"] { background: transparent; border: none; color: var(--text); font-size: 24px; font-weight: 700; width: 55%; outline: none; padding: 0; transition: color 0.2s; }
-        input[type="number"]:focus { color: var(--primary); }
 
-        .currency-pill { display: flex; align-items: center; gap: 8px; background: var(--card-bg); padding: 6px 12px; border-radius: 20px; position: relative; box-shadow: 0 2px 4px rgba(0,0,0,0.1); }
-        .currency-pill img { width: 20px; height: 20px; border-radius: 50%; }
-        select { position: absolute; right: 0; width: 100%; height: 100%; opacity: 0; }
-        
-        .swap-container { height: 0; display: flex; justify-content: center; align-items: center; z-index: 10; position: relative; }
-        
-        /* HIỆU ỨNG NÚT ĐẢO CHIỀU (XOAY LÒ XO) */
-        .swap-btn { 
-            background: var(--primary); 
-            color: white; 
-            border: 4px solid var(--card-bg); 
-            width: 44px; height: 44px; 
-            border-radius: 50%; 
-            display: flex; align-items: center; justify-content: center; 
-            cursor: pointer; 
-            box-shadow: 0 4px 10px rgba(0,0,0,0.2); 
-            /* cubic-bezier này tạo độ nảy (bounce) khi xoay xong */
-            transition: transform 0.6s cubic-bezier(0.34, 1.56, 0.64, 1), background-color 0.2s; 
+        .card-title {
+            font-size: 18px;
+            font-weight: 700;
+            margin-bottom: 24px;
+            display: flex;
+            align-items: center;
+            gap: 10px;
         }
-        .swap-btn:active { background-color: #0056b3; box-shadow: 0 2px 5px rgba(0,0,0,0.3); }
-        .swap-btn svg { width: 24px; height: 24px; }
-        
-        .result-box { margin-top: 24px; text-align: center; }
-        .result-main { font-size: 32px; font-weight: 800; color: var(--primary); transition: opacity 0.2s; display: inline-block; }
-        .rate-info { font-size: 13px; color: var(--text-secondary); margin-top: 8px; }
 
-        /* HIỆU ỨNG POP-UP KHI SỐ THAY ĐỔI */
-        @keyframes popValue {
-            0% { transform: scale(0.9); opacity: 0.7; color: #5AC8FA; }
-            50% { transform: scale(1.08); color: var(--primary); }
-            100% { transform: scale(1); opacity: 1; }
+        .exchange-row {
+            display: flex;
+            gap: 12px;
+            align-items: flex-end;
+            margin-bottom: 20px;
         }
-        .pop-anim { animation: popValue 0.35s cubic-bezier(0.2, 0.8, 0.2, 1); }
 
-        /* CÁC UI KHÁC GIỮ NGUYÊN ... */
-        .header-title { font-size: 28px; font-weight: 800; margin-bottom: 20px; margin-top: 20px; display: flex; align-items: center; gap: 10px; }
-        .market-list { display: flex; flex-direction: column; gap: 12px; }
-        .market-item { background: var(--card-bg); padding: 16px; border-radius: 16px; display: flex; justify-content: space-between; align-items: center; }
-        .coin-info { display: flex; align-items: center; gap: 12px; }
-        .coin-info img { width: 36px; height: 36px; border-radius: 50%; }
-        .coin-name { font-weight: 600; font-size: 16px; }
-        .coin-symbol { color: var(--text-secondary); font-size: 13px; text-transform: uppercase; }
-        .price-info { text-align: right; }
-        .price { font-weight: 700; font-size: 16px; }
-        .change { font-size: 14px; font-weight: 600; margin-top: 2px; }
-        .change.up { color: var(--green); }
-        .change.down { color: var(--red); }
+        .exchange-card {
+            flex: 1;
+            background: rgba(255,255,255,0.04);
+            border: 1px solid var(--glass-border);
+            border-radius: 14px;
+            padding: 16px;
+            transition: border-color 0.3s ease;
+        }
 
-        .profile-header { text-align: center; padding: 20px 0 30px 0; position: relative; }
-        .avatar { width: 85px; height: 85px; border-radius: 50%; background: linear-gradient(135deg, #007AFF, #5AC8FA); color: white; font-size: 30px; font-weight: bold; display: flex; align-items: center; justify-content: center; margin: 0 auto 12px auto; box-shadow: 0 8px 20px rgba(0,122,255,0.25); border: 3px solid var(--card-bg); }
-        .verified-badge { background: #34C759; color: white; font-size: 10px; padding: 4px 10px; border-radius: 10px; display: inline-block; margin-bottom: 8px; font-weight: 700; text-transform: uppercase; }
-        .profile-name { font-size: 24px; font-weight: 800; margin: 0; }
-        .profile-uid { color: var(--text-secondary); font-size: 12px; margin-top: 4px; }
-        
-        .settings-group { background: var(--card-bg); border-radius: 20px; overflow: hidden; margin-bottom: 20px; border: 0.5px solid rgba(128,128,128,0.1); }
-        .setting-item { display: flex; justify-content: space-between; align-items: center; padding: 16px; border-bottom: 0.5px solid rgba(128,128,128,0.1); transition: 0.2s; }
-        .setting-item:active { background: rgba(128,128,128,0.1); }
-        .setting-item:last-child { border-bottom: none; }
-        .setting-label { font-size: 15px; display: flex; align-items: center; gap: 14px; font-weight: 500; }
-        .setting-icon { width: 32px; height: 32px; border-radius: 8px; display: flex; align-items: center; justify-content: center; font-size: 18px; }
-        .setting-value { color: var(--text-secondary); font-size: 14px; font-weight: 400; display: flex; align-items: center; gap: 4px; }
+        .exchange-card:focus-within { border-color: rgba(0, 217, 255, 0.5); }
 
-        .tab-bar { position: fixed; bottom: 0; left: 0; width: 100%; background: var(--nav-bg); backdrop-filter: blur(20px); -webkit-backdrop-filter: blur(20px); display: flex; justify-content: space-around; padding: 10px 0 calc(10px + env(safe-area-inset-bottom)); border-top: 0.5px solid rgba(128,128,128,0.2); z-index: 100; }
-        .tab-item { display: flex; flex-direction: column; align-items: center; color: var(--text-secondary); font-size: 10px; gap: 4px; cursor: pointer; transition: 0.2s; width: 33%; }
-        .tab-item.active { color: var(--primary); }
-        .tab-item:active { transform: scale(0.9); }
-        .tab-item svg { width: 24px; height: 24px; }
+        .exchange-card-title {
+            font-size: 11px;
+            color: var(--text-muted);
+            letter-spacing: 1px;
+            text-transform: uppercase;
+            margin-bottom: 10px;
+        }
+
+        .exchange-card select,
+        .exchange-card input {
+            width: 100%;
+            background: transparent;
+            border: none;
+            color: var(--text);
+            font-size: 15px;
+            outline: none;
+            cursor: pointer;
+        }
+
+        .exchange-card input { font-size: 18px; font-weight: 600; }
+        .exchange-card input::placeholder { color: var(--text-muted); font-weight: 400; }
+        .exchange-card select option { background: var(--surface); }
+
+        /* ===================== SWAP BUTTON FIX ===================== */
+        .swap-container {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            flex-shrink: 0;
+            padding-bottom: 4px;
+        }
+
+        .swap-btn {
+            width: 46px; height: 46px;
+            border-radius: 50%;
+            background: linear-gradient(135deg, rgba(0,217,255,0.15), rgba(0,255,163,0.1));
+            border: 2px solid rgba(0, 217, 255, 0.35);
+            color: var(--primary);
+            cursor: pointer;
+            display: flex; align-items: center; justify-content: center;
+            font-size: 18px;
+            transition: all 0.3s cubic-bezier(0.34, 1.56, 0.64, 1);
+            position: relative;
+            overflow: hidden;
+        }
+
+        .swap-btn::before {
+            content: '';
+            position: absolute;
+            inset: 0;
+            background: radial-gradient(circle, rgba(0,217,255,0.3), transparent 70%);
+            opacity: 0;
+            transition: opacity 0.3s ease;
+            border-radius: 50%;
+        }
+
+        .swap-btn:hover {
+            background: rgba(0, 217, 255, 0.25);
+            border-color: var(--primary);
+            transform: scale(1.12);
+            box-shadow: 0 0 20px rgba(0, 217, 255, 0.4);
+        }
+
+        .swap-btn:hover::before { opacity: 1; }
+
+        .swap-btn.spinning .bi { animation: swapSpin 0.55s cubic-bezier(0.34, 1.56, 0.64, 1) both; }
+
+        .rate-display {
+            background: rgba(0, 217, 255, 0.05);
+            border: 1px solid rgba(0, 217, 255, 0.15);
+            border-radius: 10px;
+            padding: 12px 16px;
+            font-size: 13px;
+            text-align: center;
+            margin-bottom: 20px;
+        }
+
+        .rate-display strong { color: var(--primary); font-weight: 600; }
+
+        .convert-btn {
+            width: 100%;
+            padding: 14px;
+            background: linear-gradient(135deg, var(--primary) 0%, var(--secondary) 100%);
+            border: none;
+            border-radius: 12px;
+            color: var(--darker);
+            font-size: 15px;
+            font-weight: 700;
+            cursor: pointer;
+            transition: all 0.3s cubic-bezier(0.34, 1.56, 0.64, 1);
+            letter-spacing: 0.5px;
+        }
+
+        .convert-btn:hover {
+            transform: translateY(-2px) scale(1.02);
+            box-shadow: 0 8px 24px rgba(0, 217, 255, 0.4);
+            filter: brightness(1.1);
+        }
+
+        .convert-btn:active { transform: scale(0.97); filter: blur(1px); transition: all 0.1s; }
+
+        /* History */
+        .history-item {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 14px 16px;
+            background: rgba(255,255,255,0.03);
+            border: 1px solid var(--glass-border);
+            border-radius: 12px;
+            margin-bottom: 8px;
+            transition: all 0.3s ease;
+        }
+
+        .history-item:hover {
+            background: rgba(0, 217, 255, 0.05);
+            border-color: rgba(0, 217, 255, 0.2);
+            transform: translateX(4px);
+        }
+
+        .history-left p:first-child { font-weight: 600; font-size: 14px; }
+        .history-left p:last-child  { font-size: 12px; color: var(--text-muted); margin-top: 2px; }
+        .history-right { text-align: right; }
+        .history-right p:first-child { color: var(--success); font-weight: 600; }
+        .history-right p:last-child  { font-size: 12px; color: var(--success); }
+
+        /* ===================== MARKET PAGE ===================== */
+        .market-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+            gap: 20px;
+        }
+
+        .market-card {
+            background: rgba(26, 31, 58, 0.6);
+            backdrop-filter: blur(var(--blur-strength));
+            border: 1px solid var(--glass-border);
+            border-radius: 18px;
+            padding: 24px;
+            transition: all 0.4s cubic-bezier(0.34, 1.56, 0.64, 1);
+            animation: fadeInUp 0.5s ease both;
+        }
+
+        .market-card:hover {
+            transform: translateY(-6px) scale(1.01);
+            border-color: rgba(0, 217, 255, 0.3);
+            box-shadow: 0 12px 40px rgba(0, 217, 255, 0.15);
+        }
+
+        .market-pair { font-size: 16px; font-weight: 700; margin-bottom: 4px; }
+        .market-sub  { font-size: 12px; color: var(--text-muted); margin-bottom: 16px; }
+        .market-rate { font-size: 26px; font-weight: 800; color: var(--primary); margin-bottom: 8px; }
+
+        .market-change {
+            display: inline-flex; align-items: center; gap: 4px;
+            padding: 4px 10px; border-radius: 20px; font-size: 12px; font-weight: 700;
+        }
+
+        .market-change.up   { background: rgba(0, 217, 163, 0.15); color: var(--success); }
+        .market-change.down { background: rgba(255, 51, 102, 0.15); color: var(--danger); }
+
+        /* ===================== CHAT PAGE ===================== */
+        .chat-layout {
+            display: grid;
+            grid-template-columns: 280px 1fr;
+            gap: 24px;
+            height: calc(100vh - 160px);
+        }
+
+        .chat-list {
+            background: rgba(26,31,58,0.6);
+            backdrop-filter: blur(var(--blur-strength));
+            border: 1px solid var(--glass-border);
+            border-radius: 20px;
+            overflow-y: auto;
+            padding: 16px;
+        }
+
+        .chat-item {
+            display: flex; align-items: center; gap: 12px;
+            padding: 12px; border-radius: 12px; cursor: pointer;
+            transition: all 0.3s ease; margin-bottom: 8px;
+        }
+
+        .chat-item:hover, .chat-item.active {
+            background: rgba(0, 217, 255, 0.1);
+        }
+
+        .chat-avatar {
+            width: 44px; height: 44px; border-radius: 50%;
+            background: linear-gradient(135deg, var(--primary), var(--secondary));
+            display: flex; align-items: center; justify-content: center;
+            font-weight: 700; font-size: 16px; color: var(--darker);
+            flex-shrink: 0;
+        }
+
+        .chat-name { font-size: 14px; font-weight: 600; }
+        .chat-preview { font-size: 12px; color: var(--text-muted); }
+
+        .chat-main {
+            background: rgba(26,31,58,0.6);
+            backdrop-filter: blur(var(--blur-strength));
+            border: 1px solid var(--glass-border);
+            border-radius: 20px;
+            display: flex; flex-direction: column;
+            overflow: hidden;
+        }
+
+        .chat-header {
+            padding: 20px 24px;
+            border-bottom: 1px solid var(--glass-border);
+            display: flex; align-items: center; gap: 12px;
+            background: rgba(255,255,255,0.02);
+        }
+
+        .chat-messages {
+            flex: 1; overflow-y: auto; padding: 24px;
+            display: flex; flex-direction: column; gap: 16px;
+            scroll-behavior: smooth;
+        }
+
+        .message { display: flex; }
+        .message.own { justify-content: flex-end; }
+
+        .message-bubble {
+            max-width: 70%; padding: 12px 16px; border-radius: 16px;
+            font-size: 14px; line-height: 1.5;
+        }
+
+        .message-bubble.other {
+            background: rgba(255,255,255,0.07);
+            border: 1px solid var(--glass-border);
+            border-radius: 16px 16px 16px 4px;
+            animation: fadeInLeft 0.3s ease both;
+        }
+
+        .message-bubble.own {
+            background: linear-gradient(135deg, var(--primary-dark), #005f8a);
+            border-radius: 16px 16px 4px 16px;
+            animation: slideInRight 0.3s ease both;
+        }
+
+        .chat-input-area {
+            padding: 20px 24px;
+            border-top: 1px solid var(--glass-border);
+            display: flex; gap: 12px; align-items: center;
+            background: rgba(255,255,255,0.02);
+        }
+
+        .chat-input {
+            flex: 1; background: rgba(255,255,255,0.06);
+            border: 1px solid var(--glass-border);
+            border-radius: 12px; padding: 12px 16px;
+            color: var(--text); font-size: 14px; outline: none;
+            transition: border-color 0.3s ease;
+        }
+
+        .chat-input:focus { border-color: rgba(0, 217, 255, 0.5); }
+        .chat-input::placeholder { color: var(--text-muted); }
+
+        /* ===================== PROFILE PAGE ===================== */
+        .profile-grid {
+            display: grid;
+            grid-template-columns: 1fr 2fr;
+            gap: 24px;
+        }
+
+        .profile-card {
+            background: rgba(26,31,58,0.6);
+            backdrop-filter: blur(var(--blur-strength));
+            border: 1px solid var(--glass-border);
+            border-radius: 20px;
+            padding: 32px;
+            text-align: center;
+            animation: scaleIn 0.5s ease both;
+        }
+
+        .profile-avatar {
+            width: 90px; height: 90px;
+            border-radius: 50%;
+            background: linear-gradient(135deg, var(--primary), var(--secondary));
+            display: flex; align-items: center; justify-content: center;
+            font-size: 36px; font-weight: 800; color: var(--darker);
+            margin: 0 auto 20px;
+            animation: pulse-glow 2.5s infinite;
+        }
+
+        .profile-name  { font-size: 20px; font-weight: 700; margin-bottom: 4px; }
+        .profile-email { font-size: 13px; color: var(--text-muted); margin-bottom: 24px; }
+
+        .profile-stats { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; }
+
+        .stat-item {
+            background: rgba(255,255,255,0.04);
+            border-radius: 12px;
+            padding: 14px;
+            transition: all 0.3s ease;
+        }
+
+        .stat-item:hover { background: rgba(0,217,255,0.08); transform: scale(1.03); }
+        .stat-value { font-size: 20px; font-weight: 800; color: var(--primary); }
+        .stat-label { font-size: 11px; color: var(--text-muted); margin-top: 2px; }
+
+        .profile-details {
+            background: rgba(26,31,58,0.6);
+            backdrop-filter: blur(var(--blur-strength));
+            border: 1px solid var(--glass-border);
+            border-radius: 20px;
+            padding: 28px;
+            animation: slideInRight 0.5s ease both;
+        }
+
+        .detail-item {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 14px 0;
+            border-bottom: 1px solid rgba(255,255,255,0.05);
+        }
+
+        .detail-item:last-child { border-bottom: none; }
+        .detail-label { color: var(--text-muted); font-size: 14px; }
+        .detail-value { font-weight: 600; font-size: 14px; }
+
+        /* ===================== NOTIFICATION ===================== */
+        .notification {
+            position: fixed;
+            top: 28px; right: 28px;
+            z-index: 9999;
+            background: rgba(10, 14, 39, 0.92);
+            backdrop-filter: blur(24px) saturate(1.5);
+            border: 1px solid rgba(0,217,255,0.35);
+            border-radius: 16px;
+            padding: 16px 22px;
+            max-width: 360px;
+            min-width: 260px;
+            box-shadow: 0 8px 40px rgba(0,0,0,0.5), 0 0 0 1px rgba(0,217,255,0.1);
+            animation: notifSlide 3.8s cubic-bezier(0.22, 1, 0.36, 1) forwards;
+            pointer-events: none;
+        }
+
+        .notification-inner {
+            display: flex; align-items: flex-start; gap: 12px;
+        }
+
+        .notification-icon {
+            font-size: 22px; flex-shrink: 0;
+            filter: drop-shadow(0 0 6px rgba(0,217,255,0.6));
+        }
+
+        .notification-body { flex: 1; }
+
+        .notification-title {
+            font-size: 13px; font-weight: 700;
+            color: var(--primary); margin-bottom: 3px;
+            letter-spacing: 0.3px;
+        }
+
+        .notification-msg {
+            font-size: 13px;
+            color: var(--text-muted);
+            line-height: 1.4;
+        }
+
+        .notification-progress {
+            height: 2px;
+            background: linear-gradient(90deg, var(--primary), var(--secondary));
+            border-radius: 2px;
+            margin-top: 10px;
+            animation: notifProgress 3.5s linear forwards;
+        }
+
+        @keyframes notifProgress {
+            from { width: 100%; opacity: 1; }
+            to   { width: 0%;   opacity: 0.4; }
+        }
+
+        .notification.success { border-color: rgba(0, 217, 163, 0.4); }
+        .notification.success .notification-title { color: var(--success); }
+        .notification.success .notification-progress { background: linear-gradient(90deg, var(--success), var(--secondary)); }
+
+        .notification.error { border-color: rgba(255, 51, 102, 0.4); }
+        .notification.error .notification-title { color: var(--danger); }
+        .notification.error .notification-progress { background: linear-gradient(90deg, var(--danger), var(--warning)); }
+
+        .notification.warning { border-color: rgba(255, 165, 0, 0.4); }
+        .notification.warning .notification-title { color: var(--warning); }
+        .notification.warning .notification-progress { background: linear-gradient(90deg, var(--warning), #ffd700); }
+
+        /* ===================== SETTINGS PANEL ===================== */
+        .settings-overlay {
+            position: fixed; inset: 0; z-index: 500;
+            background: rgba(5, 8, 18, 0.65);
+            backdrop-filter: blur(8px);
+            opacity: 0; pointer-events: none;
+            transition: opacity 0.4s ease;
+        }
+
+        .settings-overlay.open {
+            opacity: 1; pointer-events: all;
+            animation: overlayIn 0.4s ease both;
+        }
+
+        .settings-panel {
+            position: fixed;
+            top: 0; right: 0;
+            width: 420px; height: 100vh;
+            background: rgba(12, 16, 38, 0.96);
+            backdrop-filter: blur(30px) saturate(1.8);
+            border-left: 1px solid var(--glass-border);
+            z-index: 501;
+            transform: translateX(100%);
+            transition: transform 0.45s cubic-bezier(0.34, 1.56, 0.64, 1);
+            display: flex; flex-direction: column;
+            overflow: hidden;
+        }
+
+        .settings-panel.open {
+            transform: translateX(0);
+            animation: settingsOpen 0.45s cubic-bezier(0.34, 1.56, 0.64, 1) both;
+        }
+
+        .settings-header {
+            padding: 28px 28px 20px;
+            border-bottom: 1px solid var(--glass-border);
+            display: flex; align-items: center; justify-content: space-between;
+            background: rgba(0,217,255,0.04);
+        }
+
+        .settings-header h2 { font-size: 20px; font-weight: 700; }
+        .settings-header h2 span { color: var(--primary); }
+
+        .settings-close {
+            width: 36px; height: 36px; border-radius: 10px;
+            border: 1px solid var(--glass-border); background: var(--glass);
+            color: var(--text); cursor: pointer;
+            display: flex; align-items: center; justify-content: center;
+            font-size: 18px;
+            transition: all 0.3s cubic-bezier(0.34, 1.56, 0.64, 1);
+        }
+
+        .settings-close:hover {
+            background: rgba(255,51,102,0.15); border-color: var(--danger);
+            color: var(--danger); transform: rotate(90deg) scale(1.1);
+        }
+
+        .settings-body { flex: 1; overflow-y: auto; padding: 24px 28px; }
+
+        .settings-section {
+            margin-bottom: 32px;
+            animation: fadeInUp 0.4s ease both;
+        }
+
+        .settings-section-title {
+            font-size: 11px; letter-spacing: 2px;
+            text-transform: uppercase; color: var(--text-muted);
+            margin-bottom: 16px; padding-bottom: 8px;
+            border-bottom: 1px solid rgba(255,255,255,0.05);
+        }
+
+        .settings-item {
+            display: flex; align-items: center; justify-content: space-between;
+            padding: 14px 16px; border-radius: 14px;
+            background: rgba(255,255,255,0.03);
+            border: 1px solid rgba(255,255,255,0.06);
+            margin-bottom: 10px;
+            transition: all 0.3s ease;
+        }
+
+        .settings-item:hover {
+            background: rgba(0,217,255,0.05);
+            border-color: rgba(0,217,255,0.2);
+        }
+
+        .settings-item-left { display: flex; align-items: center; gap: 14px; }
+
+        .settings-item-icon {
+            width: 40px; height: 40px; border-radius: 10px;
+            background: rgba(0,217,255,0.1);
+            display: flex; align-items: center; justify-content: center;
+            font-size: 18px; color: var(--primary);
+        }
+
+        .settings-item-info { }
+        .settings-item-name  { font-size: 14px; font-weight: 600; }
+        .settings-item-desc  { font-size: 12px; color: var(--text-muted); margin-top: 2px; }
+
+        /* Toggle Switch */
+        .toggle {
+            position: relative; width: 48px; height: 26px;
+            flex-shrink: 0;
+        }
+
+        .toggle input { opacity: 0; width: 0; height: 0; }
+
+        .toggle-slider {
+            position: absolute; inset: 0;
+            background: rgba(255,255,255,0.1);
+            border-radius: 13px; cursor: pointer;
+            border: 1px solid rgba(255,255,255,0.15);
+            transition: all 0.35s cubic-bezier(0.34, 1.56, 0.64, 1);
+        }
+
+        .toggle-slider::before {
+            content: '';
+            position: absolute;
+            width: 20px; height: 20px;
+            left: 2px; top: 2px;
+            background: var(--text-muted);
+            border-radius: 50%;
+            transition: all 0.35s cubic-bezier(0.34, 1.56, 0.64, 1);
+        }
+
+        .toggle input:checked + .toggle-slider {
+            background: rgba(0,217,255,0.25);
+            border-color: rgba(0,217,255,0.5);
+            box-shadow: 0 0 12px rgba(0,217,255,0.3);
+        }
+
+        .toggle input:checked + .toggle-slider::before {
+            transform: translateX(22px);
+            background: var(--primary);
+            box-shadow: 0 0 8px rgba(0,217,255,0.6);
+        }
+
+        /* Select in settings */
+        .settings-select {
+            background: rgba(255,255,255,0.06);
+            border: 1px solid var(--glass-border);
+            border-radius: 8px; padding: 6px 10px;
+            color: var(--text); font-size: 13px;
+            cursor: pointer; outline: none;
+            transition: border-color 0.3s ease;
+        }
+
+        .settings-select:focus { border-color: rgba(0,217,255,0.5); }
+        .settings-select option { background: var(--surface); }
+
+        /* Color dots */
+        .theme-dots { display: flex; gap: 8px; }
+
+        .theme-dot {
+            width: 24px; height: 24px; border-radius: 50%;
+            cursor: pointer; transition: all 0.3s cubic-bezier(0.34, 1.56, 0.64, 1);
+            border: 2px solid transparent;
+        }
+
+        .theme-dot:hover, .theme-dot.active {
+            transform: scale(1.3);
+            border-color: white;
+        }
+
+        .settings-footer {
+            padding: 20px 28px;
+            border-top: 1px solid var(--glass-border);
+            background: rgba(0,217,255,0.02);
+        }
+
+        .settings-save-btn {
+            width: 100%; padding: 14px;
+            background: linear-gradient(135deg, var(--primary), var(--secondary));
+            border: none; border-radius: 12px;
+            color: var(--darker); font-size: 15px; font-weight: 700;
+            cursor: pointer;
+            transition: all 0.3s cubic-bezier(0.34, 1.56, 0.64, 1);
+        }
+
+        .settings-save-btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 8px 24px rgba(0,217,255,0.4);
+            filter: brightness(1.08);
+        }
+
+        /* ===================== RESPONSIVE ===================== */
+        @media (max-width: 768px) {
+            .sidebar {
+                position: fixed; left: -300px;
+                top: 0; height: 100vh;
+                transition: left 0.4s cubic-bezier(0.34, 1.56, 0.64, 1);
+            }
+
+            .sidebar.active { left: 0; }
+            .exchange-grid, .profile-grid { grid-template-columns: 1fr; }
+            .chat-layout { grid-template-columns: 1fr; }
+            .settings-panel { width: 100%; }
+            .content-area { padding: 20px 16px; }
+        }
+
+        /* Scrollbar */
+        ::-webkit-scrollbar { width: 5px; }
+        ::-webkit-scrollbar-track { background: transparent; }
+        ::-webkit-scrollbar-thumb { background: rgba(0,217,255,0.2); border-radius: 4px; }
+        ::-webkit-scrollbar-thumb:hover { background: rgba(0,217,255,0.4); }
     </style>
 </head>
 <body>
 
-<div id="view-home" class="view-container active">
-    <div class="header-title">Đổi Tiền</div>
-    <div class="converter-card">
-        <div class="input-group">
-            <label>Số tiền</label>
-            <div class="input-row">
-                <input type="number" id="amount" value="1" placeholder="0">
-                <div class="currency-pill">
-                    <img id="from-flag" src="https://flagcdn.com/w40/vn.png">
-                    <span id="from-text">VND</span>
-                    <select id="from-currency" onchange="updateUI('from')">
-                        <option value="VND">VND</option>
-                        <option value="USD">USDT</option>
-                        <option value="BRL">BRL</option>
-                        <option value="EUR">EUR</option>
-                    </select>
+<!-- ===================== SETTINGS OVERLAY + PANEL ===================== -->
+<div class="settings-overlay" id="settingsOverlay" onclick="closeSettings()"></div>
+<div class="settings-panel" id="settingsPanel">
+    <div class="settings-header">
+        <h2>⚙️ Cài <span>Đặt</span></h2>
+        <button class="settings-close" onclick="closeSettings()"><i class="bi bi-x-lg"></i></button>
+    </div>
+
+    <div class="settings-body">
+
+        <!-- Giao diện -->
+        <div class="settings-section" style="animation-delay:0.05s">
+            <div class="settings-section-title">🎨 Giao Diện</div>
+
+            <div class="settings-item">
+                <div class="settings-item-left">
+                    <div class="settings-item-icon"><i class="bi bi-moon-stars"></i></div>
+                    <div class="settings-item-info">
+                        <div class="settings-item-name">Chế độ tối</div>
+                        <div class="settings-item-desc">Bật/tắt dark mode</div>
+                    </div>
+                </div>
+                <label class="toggle">
+                    <input type="checkbox" id="darkMode" checked onchange="applySetting('darkMode')">
+                    <span class="toggle-slider"></span>
+                </label>
+            </div>
+
+            <div class="settings-item">
+                <div class="settings-item-left">
+                    <div class="settings-item-icon"><i class="bi bi-wind"></i></div>
+                    <div class="settings-item-info">
+                        <div class="settings-item-name">Motion Blur</div>
+                        <div class="settings-item-desc">Hiệu ứng mờ khi chuyển trang</div>
+                    </div>
+                </div>
+                <label class="toggle">
+                    <input type="checkbox" id="motionBlur" checked onchange="applySetting('motionBlur')">
+                    <span class="toggle-slider"></span>
+                </label>
+            </div>
+
+            <div class="settings-item">
+                <div class="settings-item-left">
+                    <div class="settings-item-icon"><i class="bi bi-lightning"></i></div>
+                    <div class="settings-item-info">
+                        <div class="settings-item-name">Hoạt ảnh mượt</div>
+                        <div class="settings-item-desc">Smooth transition toàn cục</div>
+                    </div>
+                </div>
+                <label class="toggle">
+                    <input type="checkbox" id="smoothAnim" checked onchange="applySetting('smoothAnim')">
+                    <span class="toggle-slider"></span>
+                </label>
+            </div>
+
+            <div class="settings-item">
+                <div class="settings-item-left">
+                    <div class="settings-item-icon"><i class="bi bi-palette"></i></div>
+                    <div class="settings-item-info">
+                        <div class="settings-item-name">Màu chủ đạo</div>
+                        <div class="settings-item-desc">Chọn màu accent</div>
+                    </div>
+                </div>
+                <div class="theme-dots">
+                    <div class="theme-dot active" style="background:#00d9ff"  onclick="setAccentColor('#00d9ff','#00ffa3',this)"></div>
+                    <div class="theme-dot" style="background:#a855f7"  onclick="setAccentColor('#a855f7','#ec4899',this)"></div>
+                    <div class="theme-dot" style="background:#f97316"  onclick="setAccentColor('#f97316','#fbbf24',this)"></div>
+                    <div class="theme-dot" style="background:#22c55e"  onclick="setAccentColor('#22c55e','#86efac',this)"></div>
                 </div>
             </div>
         </div>
-        <div class="swap-container">
-            <div class="swap-btn" id="btn-swap" onclick="swapCurrencies()">
-                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M7 16V4M7 4L3 8M7 4L11 8"></path><path d="M17 8v12M17 20l4-4M17 20l-4-4"></path></svg>
+
+        <!-- Thông báo -->
+        <div class="settings-section" style="animation-delay:0.1s">
+            <div class="settings-section-title">🔔 Thông Báo</div>
+
+            <div class="settings-item">
+                <div class="settings-item-left">
+                    <div class="settings-item-icon"><i class="bi bi-bell"></i></div>
+                    <div class="settings-item-info">
+                        <div class="settings-item-name">Thông báo giao dịch</div>
+                        <div class="settings-item-desc">Khi chuyển đổi tiền thành công</div>
+                    </div>
+                </div>
+                <label class="toggle">
+                    <input type="checkbox" id="notifTx" checked onchange="applySetting('notifTx')">
+                    <span class="toggle-slider"></span>
+                </label>
+            </div>
+
+            <div class="settings-item">
+                <div class="settings-item-left">
+                    <div class="settings-item-icon"><i class="bi bi-graph-up-arrow"></i></div>
+                    <div class="settings-item-info">
+                        <div class="settings-item-name">Cảnh báo tỷ giá</div>
+                        <div class="settings-item-desc">Khi tỷ giá biến động mạnh</div>
+                    </div>
+                </div>
+                <label class="toggle">
+                    <input type="checkbox" id="notifRate" checked onchange="applySetting('notifRate')">
+                    <span class="toggle-slider"></span>
+                </label>
+            </div>
+
+            <div class="settings-item">
+                <div class="settings-item-left">
+                    <div class="settings-item-icon"><i class="bi bi-chat-dots"></i></div>
+                    <div class="settings-item-info">
+                        <div class="settings-item-name">Thông báo chat</div>
+                        <div class="settings-item-desc">Tin nhắn từ hỗ trợ viên</div>
+                    </div>
+                </div>
+                <label class="toggle">
+                    <input type="checkbox" id="notifChat" onchange="applySetting('notifChat')">
+                    <span class="toggle-slider"></span>
+                </label>
+            </div>
+
+            <div class="settings-item">
+                <div class="settings-item-left">
+                    <div class="settings-item-icon"><i class="bi bi-volume-up"></i></div>
+                    <div class="settings-item-info">
+                        <div class="settings-item-name">Âm thanh thông báo</div>
+                        <div class="settings-item-desc">Phát âm khi có alert</div>
+                    </div>
+                </div>
+                <label class="toggle">
+                    <input type="checkbox" id="notifSound" onchange="applySetting('notifSound')">
+                    <span class="toggle-slider"></span>
+                </label>
             </div>
         </div>
-        <div class="input-group" style="margin-top: 4px;">
-            <label>Chuyển thành</label>
-            <div class="input-row">
-                <input type="text" id="result-amount" disabled placeholder="0" readonly>
-                <div class="currency-pill">
-                    <img id="to-flag" src="https://cryptologos.cc/logos/tether-usdt-logo.png?v=026">
-                    <span id="to-text">USDT</span>
-                    <select id="to-currency" onchange="updateUI('to')">
-                        <option value="USD" selected>USDT</option>
-                        <option value="VND">VND</option>
-                        <option value="BRL">BRL</option>
-                        <option value="EUR">EUR</option>
-                    </select>
+
+        <!-- Tỷ giá -->
+        <div class="settings-section" style="animation-delay:0.15s">
+            <div class="settings-section-title">💱 Tỷ Giá</div>
+
+            <div class="settings-item">
+                <div class="settings-item-left">
+                    <div class="settings-item-icon"><i class="bi bi-arrow-repeat"></i></div>
+                    <div class="settings-item-info">
+                        <div class="settings-item-name">Tự động cập nhật</div>
+                        <div class="settings-item-desc">Làm mới tỷ giá tự động</div>
+                    </div>
+                </div>
+                <label class="toggle">
+                    <input type="checkbox" id="autoRefresh" checked onchange="applySetting('autoRefresh')">
+                    <span class="toggle-slider"></span>
+                </label>
+            </div>
+
+            <div class="settings-item">
+                <div class="settings-item-left">
+                    <div class="settings-item-icon"><i class="bi bi-clock"></i></div>
+                    <div class="settings-item-info">
+                        <div class="settings-item-name">Chu kỳ cập nhật</div>
+                        <div class="settings-item-desc">Tần suất làm mới dữ liệu</div>
+                    </div>
+                </div>
+                <select class="settings-select" id="refreshRate">
+                    <option value="30">30 giây</option>
+                    <option value="60" selected>1 phút</option>
+                    <option value="300">5 phút</option>
+                    <option value="600">10 phút</option>
+                </select>
+            </div>
+
+            <div class="settings-item">
+                <div class="settings-item-left">
+                    <div class="settings-item-icon"><i class="bi bi-currency-exchange"></i></div>
+                    <div class="settings-item-info">
+                        <div class="settings-item-name">Tiền mặc định</div>
+                        <div class="settings-item-desc">Loại tiền hiển thị đầu tiên</div>
+                    </div>
+                </div>
+                <select class="settings-select" id="defaultCurrency">
+                    <option value="USD">USD</option>
+                    <option value="VND" selected>VND</option>
+                    <option value="EUR">EUR</option>
+                </select>
+            </div>
+        </div>
+
+        <!-- Bảo mật -->
+        <div class="settings-section" style="animation-delay:0.2s">
+            <div class="settings-section-title">🔒 Bảo Mật</div>
+
+            <div class="settings-item">
+                <div class="settings-item-left">
+                    <div class="settings-item-icon"><i class="bi bi-fingerprint"></i></div>
+                    <div class="settings-item-info">
+                        <div class="settings-item-name">Xác thực sinh trắc học</div>
+                        <div class="settings-item-desc">Face ID / Vân tay</div>
+                    </div>
+                </div>
+                <label class="toggle">
+                    <input type="checkbox" id="biometric" onchange="applySetting('biometric')">
+                    <span class="toggle-slider"></span>
+                </label>
+            </div>
+
+            <div class="settings-item">
+                <div class="settings-item-left">
+                    <div class="settings-item-icon"><i class="bi bi-shield-lock"></i></div>
+                    <div class="settings-item-info">
+                        <div class="settings-item-name">Khóa ứng dụng</div>
+                        <div class="settings-item-desc">Yêu cầu mã PIN khi mở</div>
+                    </div>
+                </div>
+                <label class="toggle">
+                    <input type="checkbox" id="appLock" onchange="applySetting('appLock')">
+                    <span class="toggle-slider"></span>
+                </label>
+            </div>
+        </div>
+
+        <!-- Phiên bản -->
+        <div class="settings-section" style="animation-delay:0.25s">
+            <div class="settings-section-title">ℹ️ Thông Tin</div>
+            <div class="settings-item">
+                <div class="settings-item-left">
+                    <div class="settings-item-icon"><i class="bi bi-info-circle"></i></div>
+                    <div class="settings-item-info">
+                        <div class="settings-item-name">Phiên bản</div>
+                        <div class="settings-item-desc">FluxTea v2.1.0</div>
+                    </div>
+                </div>
+                <span style="color:var(--text-muted);font-size:12px;">Latest ✓</span>
+            </div>
+        </div>
+
+    </div>
+
+    <div class="settings-footer">
+        <button class="settings-save-btn" onclick="saveSettings()">
+            <i class="bi bi-check2-circle"></i> Lưu Cài Đặt
+        </button>
+    </div>
+</div>
+
+<div class="app-wrapper">
+    <!-- SIDEBAR -->
+    <aside class="sidebar" id="sidebar">
+        <div class="logo-section">
+            <div class="logo">FluxTea</div>
+            <div class="logo-sub">Premium Exchange</div>
+        </div>
+
+        <nav class="nav-section">
+            <div class="nav-label">Menu Chính</div>
+            <div class="nav-item active" onclick="switchPage('exchange', this)">
+                <div class="nav-icon"><i class="bi bi-currency-exchange"></i></div>
+                <span class="nav-text">Đổi Tiền</span>
+            </div>
+            <div class="nav-item" onclick="switchPage('market', this)">
+                <div class="nav-icon"><i class="bi bi-graph-up"></i></div>
+                <span class="nav-text">Thị Trường</span>
+            </div>
+            <div class="nav-item" onclick="switchPage('chat', this)">
+                <div class="nav-icon"><i class="bi bi-chat-dots"></i></div>
+                <span class="nav-text">Hỗ Trợ</span>
+                <span class="nav-badge">2</span>
+            </div>
+            <div class="nav-item" onclick="switchPage('profile', this)">
+                <div class="nav-icon"><i class="bi bi-person"></i></div>
+                <span class="nav-text">Hồ Sơ</span>
+            </div>
+        </nav>
+    </aside>
+
+    <!-- MAIN -->
+    <div class="main-content">
+        <!-- TOP BAR -->
+        <header class="top-bar">
+            <div style="display:flex;align-items:center;gap:16px">
+                <button class="icon-btn" onclick="toggleSidebar()" id="menuBtn">
+                    <i class="bi bi-list"></i>
+                </button>
+                <h1 class="page-title" id="pageTitle">Đổi Tiền</h1>
+            </div>
+            <div class="top-actions">
+                <button class="icon-btn" onclick="refreshRates()" title="Làm mới tỷ giá">
+                    <i class="bi bi-arrow-clockwise"></i>
+                </button>
+                <button class="icon-btn" onclick="openSettings()" title="Cài đặt">
+                    <i class="bi bi-gear"></i>
+                </button>
+                <button class="icon-btn" onclick="showNotification('info','📣 Thông Báo Hệ Thống','Tỷ giá USD/VND vừa được cập nhật!')" title="Thông báo">
+                    <i class="bi bi-bell"></i>
+                </button>
+            </div>
+        </header>
+
+        <div class="content-area">
+            <!-- EXCHANGE PAGE -->
+            <div class="page active" id="exchange">
+                <div class="exchange-grid">
+                    <!-- Converter -->
+                    <div class="card" style="animation-delay:0.1s">
+                        <div class="card-title">
+                            <i class="bi bi-currency-exchange" style="color:var(--primary)"></i>
+                            Chuyển Đổi Tiền Tệ
+                            <span style="font-size:11px;color:var(--text-muted);font-weight:400;margin-left:auto">Tỷ giá thực tế</span>
+                        </div>
+
+                        <!-- FROM -->
+                        <div class="exchange-row">
+                            <div class="exchange-card">
+                                <div class="exchange-card-title">Tiền Gửi</div>
+                                <select id="fromCurrency" onchange="updateRate()">
+                                    <option value="USD">🇺🇸 USD - Đô La Mỹ</option>
+                                    <option value="VND">🇻🇳 VND - Đồng Việt Nam</option>
+                                    <option value="EUR">🇪🇺 EUR - Euro</option>
+                                    <option value="BRL">🇧🇷 BRL - Real Brazil</option>
+                                    <option value="USDT">💎 USDT - Tether</option>
+                                </select>
+                            </div>
+                            <div class="exchange-card" style="flex:1.4">
+                                <div class="exchange-card-title">Số Lượng</div>
+                                <input type="number" id="fromAmount" placeholder="0.00" oninput="updateRate()" min="0">
+                            </div>
+                        </div>
+
+                        <!-- SWAP BUTTON (FIXED) -->
+                        <div class="swap-container">
+                            <button class="swap-btn" id="swapBtn" onclick="swapCurrencies()" title="Hoán đổi tiền tệ">
+                                <i class="bi bi-arrow-left-right"></i>
+                            </button>
+                        </div>
+
+                        <!-- TO -->
+                        <div class="exchange-row" style="margin-top:12px">
+                            <div class="exchange-card">
+                                <div class="exchange-card-title">Tiền Nhận</div>
+                                <select id="toCurrency" onchange="updateRate()">
+                                    <option value="USD">🇺🇸 USD - Đô La Mỹ</option>
+                                    <option value="VND" selected>🇻🇳 VND - Đồng Việt Nam</option>
+                                    <option value="EUR">🇪🇺 EUR - Euro</option>
+                                    <option value="BRL">🇧🇷 BRL - Real Brazil</option>
+                                    <option value="USDT">💎 USDT - Tether</option>
+                                </select>
+                            </div>
+                            <div class="exchange-card" style="flex:1.4">
+                                <div class="exchange-card-title">Số Lượng</div>
+                                <input type="number" id="toAmount" placeholder="0.00" readonly style="cursor:default;opacity:0.8">
+                            </div>
+                        </div>
+
+                        <!-- Rate display -->
+                        <div class="rate-display">
+                            <span id="rateText">Nhập số tiền để xem tỷ giá...</span><br>
+                            <small id="rateTime" style="color:var(--text-muted);font-size:11px"></small>
+                        </div>
+
+                        <button class="convert-btn" onclick="convertCurrency()">
+                            <i class="bi bi-check2-circle"></i> Xác Nhận Chuyển Đổi
+                        </button>
+                    </div>
+
+                    <!-- History -->
+                    <div class="card" style="animation-delay:0.2s">
+                        <div class="card-title">
+                            <i class="bi bi-clock-history" style="color:var(--secondary)"></i>
+                            Lịch Sử Giao Dịch
+                        </div>
+                        <div id="historyList">
+                            <div class="history-item">
+                                <div class="history-left">
+                                    <p>100 USD → VND</p>
+                                    <p>2026-02-19 14:30</p>
+                                </div>
+                                <div class="history-right">
+                                    <p>2,613,962 VND</p>
+                                    <p>✓ Thành công</p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
                 </div>
             </div>
-        </div>
-        <div class="result-box">
-            <div class="result-main" id="display-result">...</div>
-            <div class="rate-info" id="rate-info">Đang tải...</div>
-        </div>
-    </div>
-</div>
 
-<div id="view-market" class="view-container">
-    <div class="header-title">Thị trường 24h</div>
-    <div class="market-list" id="market-data-container">
-        <div style="text-align:center; color: #888; padding: 40px;">Đang tải dữ liệu thực...</div>
-    </div>
-</div>
+            <!-- MARKET PAGE -->
+            <div class="page" id="market">
+                <div style="margin-bottom:24px">
+                    <h2 style="font-size:20px;font-weight:700;margin-bottom:4px">📈 Thị Trường Tiền Tệ</h2>
+                    <p style="color:var(--text-muted);font-size:14px">Tỷ giá thực tế cập nhật 24/7</p>
+                </div>
+                <div class="market-grid">
+                    <div class="market-card" style="animation-delay:0.05s">
+                        <div class="market-pair">USD/VND</div>
+                        <div class="market-sub">1 USD = ? VND</div>
+                        <div class="market-rate">26,139.62</div>
+                        <span class="market-change up"><i class="bi bi-arrow-up-short"></i> +0.08%</span>
+                    </div>
+                    <div class="market-card" style="animation-delay:0.1s">
+                        <div class="market-pair">EUR/VND</div>
+                        <div class="market-sub">1 EUR = ? VND</div>
+                        <div class="market-rate">28,412.50</div>
+                        <span class="market-change up"><i class="bi bi-arrow-up-short"></i> +0.15%</span>
+                    </div>
+                    <div class="market-card" style="animation-delay:0.15s">
+                        <div class="market-pair">BRL/VND</div>
+                        <div class="market-sub">1 BRL = ? VND</div>
+                        <div class="market-rate">5,082.35</div>
+                        <span class="market-change down"><i class="bi bi-arrow-down-short"></i> -0.23%</span>
+                    </div>
+                    <div class="market-card" style="animation-delay:0.2s">
+                        <div class="market-pair">USDT/VND</div>
+                        <div class="market-sub">1 USDT = ? VND</div>
+                        <div class="market-rate">26,139.62</div>
+                        <span class="market-change up"><i class="bi bi-arrow-up-short"></i> +0.12%</span>
+                    </div>
+                    <div class="market-card" style="animation-delay:0.25s">
+                        <div class="market-pair">USD/EUR</div>
+                        <div class="market-sub">1 USD = ? EUR</div>
+                        <div class="market-rate">0.92</div>
+                        <span class="market-change up"><i class="bi bi-arrow-up-short"></i> +0.06%</span>
+                    </div>
+                    <div class="market-card" style="animation-delay:0.3s">
+                        <div class="market-pair">USD/BRL</div>
+                        <div class="market-sub">1 USD = ? BRL</div>
+                        <div class="market-rate">5.14</div>
+                        <span class="market-change down"><i class="bi bi-arrow-down-short"></i> -0.18%</span>
+                    </div>
+                </div>
+            </div>
 
-<div id="view-profile" class="view-container">
-    <div class="header-title">Hồ sơ</div>
-    <div class="profile-header">
-        <div class="verified-badge">✓ Đã xác minh</div>
-        <div class="avatar">PT</div>
-        <h2 class="profile-name">Phúc Thịnh</h2>
-        <p class="profile-uid">ID người dùng: 002009-122</p>
-    </div>
-    <div class="settings-group">
-        <div class="setting-item">
-            <div class="setting-label"><div class="setting-icon" style="background: rgba(48, 209, 88, 0.1); color: #30D158;">🛡️</div>Bảo mật tài khoản</div>
-            <div class="setting-value">Cấp độ 3 ❯</div>
-        </div>
-        <div class="setting-item">
-            <div class="setting-label"><div class="setting-icon" style="background: rgba(0, 122, 255, 0.1); color: #007AFF;">💳</div>Phương thức thanh toán</div>
-            <div class="setting-value">Vietcombank ❯</div>
-        </div>
-        <div class="setting-item">
-            <div class="setting-label"><div class="setting-icon" style="background: rgba(255, 159, 10, 0.1); color: #FF9F0A;">📊</div>Hạn mức giao dịch</div>
-            <div class="setting-value">Không giới hạn ❯</div>
-        </div>
-    </div>
-    <div class="settings-group">
-        <div class="setting-item">
-            <div class="setting-label"><div class="setting-icon" style="background: rgba(175, 82, 222, 0.1); color: #AF52DE;">⚙️</div>Cài đặt ứng dụng</div>
-            <div class="setting-value">v2.6 (Input Animations) ❯</div>
-        </div>
-        <div class="setting-item">
-            <div class="setting-label"><div class="setting-icon" style="background: rgba(255, 69, 58, 0.1); color: #FF453A;">✉️</div>Trung tâm hỗ trợ</div>
-            <div class="setting-value">Trực tuyến ❯</div>
-        </div>
-    </div>
-</div>
+            <!-- CHAT PAGE -->
+            <div class="page" id="chat">
+                <div class="chat-layout">
+                    <div class="chat-list">
+                        <div style="font-size:13px;color:var(--text-muted);margin-bottom:12px;padding:4px 8px">Kênh hỗ trợ</div>
+                        <div class="chat-item active" onclick="selectChat(this)">
+                            <div class="chat-avatar">S</div>
+                            <div>
+                                <div class="chat-name">Support Team</div>
+                                <div class="chat-preview">Chúng tôi sẽ giúp bạn...</div>
+                            </div>
+                        </div>
+                        <div class="chat-item" onclick="selectChat(this)">
+                            <div class="chat-avatar" style="background:linear-gradient(135deg,var(--accent),var(--warning))">H</div>
+                            <div>
+                                <div class="chat-name">Hỗ Trợ Thanh Toán</div>
+                                <div class="chat-preview">Bạn cần giúp gì?</div>
+                            </div>
+                        </div>
+                        <div class="chat-item" onclick="selectChat(this)">
+                            <div class="chat-avatar" style="background:linear-gradient(135deg,var(--secondary),#00aaff)">C</div>
+                            <div>
+                                <div class="chat-name">Cộng Đồng</div>
+                                <div class="chat-preview">Tham gia trao đổi...</div>
+                            </div>
+                        </div>
+                    </div>
 
-<div class="tab-bar">
-    <div class="tab-item active" onclick="switchTab('home', this)">
-        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"></path><polyline points="9 22 9 12 15 12 15 22"></polyline></svg>
-        <span>Đổi tiền</span>
-    </div>
-    <div class="tab-item" onclick="switchTab('market', this)">
-        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="18" y1="20" x2="18" y2="10"></line><line x1="12" y1="20" x2="12" y2="4"></line><line x1="6" y1="20" x2="6" y2="14"></line></svg>
-        <span>Thị trường</span>
-    </div>
-    <div class="tab-item" onclick="switchTab('profile', this)">
-        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"></path><circle cx="12" cy="7" r="4"></circle></svg>
-        <span>Hồ sơ</span>
-    </div>
-</div>
+                    <div class="chat-main">
+                        <div class="chat-header">
+                            <div class="chat-avatar" style="width:38px;height:38px;font-size:14px">S</div>
+                            <div>
+                                <div style="font-weight:700">Support Team</div>
+                                <div style="font-size:12px;color:var(--success)">● Trực tuyến</div>
+                            </div>
+                        </div>
+                        <div class="chat-messages" id="chatMessages">
+                            <div class="message">
+                                <div class="message-bubble other">👋 Xin chào! Tôi là trợ lý của FluxTea. Tôi có thể giúp gì cho bạn?</div>
+                            </div>
+                        </div>
+                        <div class="chat-input-area">
+                            <input class="chat-input" id="chatInput" placeholder="Nhập tin nhắn..." onkeydown="if(event.key==='Enter') sendMessage()">
+                            <button class="icon-btn" onclick="sendMessage()" style="background:linear-gradient(135deg,var(--primary),var(--secondary));border:none;color:var(--darker)">
+                                <i class="bi bi-send"></i>
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- PROFILE PAGE -->
+            <div class="page" id="profile">
+                <div class="profile-grid">
+                    <div class="profile-card">
+                        <div class="profile-avatar">A</div>
+                        <div class="profile-name">Nguyễn Minh A</div>
+                        <div class="profile-email">nguyenminh@example.com</div>
+                        <div class="profile-stats">
+                            <div class="stat-item">
+                                <div class="stat-value">1,243</div>
+                                <div class="stat-label">Giao Dịch</div>
+                            </div>
+                            <div class="stat-item">
+                                <div class="stat-value">$50K+</div>
+                                <div class="stat-label">Tổng Chuyển</div>
+                            </div>
+                            <div class="stat-item">
+                                <div class="stat-value">2 năm</div>
+                                <div class="stat-label">Thành Viên</div>
+                            </div>
+                            <div class="stat-item">
+                                <div class="stat-value">Gold ⭐</div>
+                                <div class="stat-label">Xếp Hạng</div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="profile-details">
+                        <div class="card-title"><i class="bi bi-person-badge" style="color:var(--primary)"></i> Thông Tin Tài Khoản</div>
+                        <div class="detail-item">
+                            <span class="detail-label">Họ và tên</span>
+                            <span class="detail-value">Nguyễn Minh A</span>
+                        </div>
+                        <div class="detail-item">
+                            <span class="detail-label">Email</span>
+                            <span class="detail-value">nguyenminh@example.com</span>
+                        </div>
+                        <div class="detail-item">
+                            <span class="detail-label">Số điện thoại</span>
+                            <span class="detail-value">+84 9xx xxx xxx</span>
+                        </div>
+                        <div class="detail-item">
+                            <span class="detail-label">Quốc gia</span>
+                            <span class="detail-value">🇻🇳 Việt Nam</span>
+                        </div>
+                        <div class="detail-item">
+                            <span class="detail-label">Trạng thái KYC</span>
+                            <span class="detail-value" style="color:var(--success)">✓ Đã xác minh</span>
+                        </div>
+                        <div class="detail-item">
+                            <span class="detail-label">Ngày tham gia</span>
+                            <span class="detail-value">15/02/2024</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+        </div><!-- end content-area -->
+    </div><!-- end main-content -->
+</div><!-- end app-wrapper -->
 
 <script>
-    function switchTab(tabId, element) {
-        document.querySelectorAll('.view-container').forEach(el => el.classList.remove('active'));
-        document.querySelectorAll('.tab-item').forEach(el => el.classList.remove('active'));
-        setTimeout(() => { document.getElementById('view-' + tabId).classList.add('active'); }, 10);
-        element.classList.add('active');
-        if (tabId === 'market' && !marketLoaded) fetchMarketData();
-    }
-
-    let marketLoaded = false;
-    async function fetchMarketData() {
-        const container = document.getElementById('market-data-container');
-        try {
-            const resCrypto = await fetch('https://api.coingecko.com/api/v3/coins/markets?vs_currency=vnd&ids=bitcoin,ethereum,tether,binancecoin,solana&order=market_cap_desc');
-            const cryptoData = await resCrypto.json();
-            const resFiat = await fetch('https://api.exchangerate-api.com/v4/latest/USD');
-            const fiatData = await resFiat.json();
-
-            let html = '';
-            const fiatList = [
-                { id: 'usd', name: 'Đô la Mỹ', symbol: 'USD', img: 'https://flagcdn.com/w40/us.png', price: fiatData.rates['VND'], change: 0.15 },
-                { id: 'eur', name: 'Euro', symbol: 'EUR', img: 'https://flagcdn.com/w40/eu.png', price: fiatData.rates['VND'] / fiatData.rates['EUR'], change: -0.12 },
-                { id: 'brl', name: 'Brazil Real', symbol: 'BRL', img: 'https://flagcdn.com/w40/br.png', price: fiatData.rates['VND'] / fiatData.rates['BRL'], change: 0.45 }
-            ];
-            
-            fiatList.forEach(c => {
-                const color = c.change >= 0 ? 'up' : 'down';
-                const sign = c.change >= 0 ? '+' : '';
-                html += `<div class="market-item"><div class="coin-info"><img src="${c.img}"><div><div class="coin-name">${c.symbol}</div><div class="coin-symbol">${c.name}</div></div></div><div class="price-info"><div class="price">${c.price.toLocaleString('vi-VN', {maximumFractionDigits:0})} ₫</div><div class="change ${color}">${sign}${c.change}%</div></div></div>`;
-            });
-
-            cryptoData.forEach(c => {
-                const chg = c.price_change_percentage_24h;
-                const color = chg >= 0 ? 'up' : 'down';
-                const sign = chg >= 0 ? '+' : '';
-                html += `<div class="market-item"><div class="coin-info"><img src="${c.image}"><div><div class="coin-name">${c.symbol.toUpperCase()}</div><div class="coin-symbol">${c.name}</div></div></div><div class="price-info"><div class="price">${c.current_price.toLocaleString('vi-VN')} ₫</div><div class="change ${color}">${sign}${chg.toFixed(2)}%</div></div></div>`;
-            });
-            container.innerHTML = html;
-            marketLoaded = true;
-        } catch (e) { container.innerHTML = '<div style="text-align:center;margin-top:20px;">Lỗi tải dữ liệu</div>'; }
-    }
-
-    const meta = {
-        'VND': { flag: 'https://flagcdn.com/w40/vn.png', text: 'VND' },
-        'USD': { flag: 'https://cryptologos.cc/logos/tether-usdt-logo.png?v=026', text: 'USDT' },
-        'BRL': { flag: 'https://flagcdn.com/w40/br.png', text: 'BRL' },
-        'EUR': { flag: 'https://flagcdn.com/w40/eu.png', text: 'EUR' }
+    /* ===================== RATES ===================== */
+    const rates = {
+        'USD':  { 'VND': 26139.62, 'EUR': 0.92,    'BRL': 5.14,    'USDT': 1 },
+        'EUR':  { 'VND': 28412.50, 'USD': 1.09,    'BRL': 5.59,    'USDT': 1.09 },
+        'BRL':  { 'VND': 5082.35,  'USD': 0.1945,  'EUR': 0.179,   'USDT': 0.1945 },
+        'USDT': { 'VND': 26139.62, 'USD': 1,       'EUR': 0.92,    'BRL': 5.14 },
+        'VND':  { 'USD': 0.0000383,'EUR': 0.0000352,'BRL': 0.000197,'USDT': 0.0000383 }
     };
 
-    function updateUI(type) {
-        const code = document.getElementById(type + '-currency').value;
-        if(meta[code]) {
-            document.getElementById(type + '-flag').src = meta[code].flag;
-            document.getElementById(type + '-text').innerText = meta[code].text;
-        }
-        calculate();
-    }
+    /* ===================== NAVIGATION ===================== */
+    function switchPage(page, el) {
+        document.querySelectorAll('.page').forEach(p => {
+            p.classList.remove('active');
+        });
+        const pageEl = document.getElementById(page);
+        pageEl.classList.add('active');
+        // Reset animation
+        pageEl.style.animation = 'none';
+        pageEl.offsetHeight; // reflow
+        pageEl.style.animation = '';
 
-    async function calculate() {
-        const amount = parseFloat(document.getElementById('amount').value);
-        const from = document.getElementById('from-currency').value;
-        const to = document.getElementById('to-currency').value;
-        const dRes = document.getElementById('display-result');
+        document.querySelectorAll('.nav-item').forEach(item => item.classList.remove('active'));
+        const navItem = el ? el.closest('.nav-item') : document.querySelector(`.nav-item[onclick*="${page}"]`);
+        if (navItem) navItem.classList.add('active');
 
-        if (isNaN(amount)) { dRes.innerText = "0"; document.getElementById('result-amount').value = ""; return; }
-        dRes.style.opacity = '0.5';
+        const titles = { exchange:'Đổi Tiền', market:'Thị Trường', chat:'Hỗ Trợ', profile:'Hồ Sơ' };
+        document.getElementById('pageTitle').textContent = titles[page];
 
-        try {
-            let rate = 1;
-            if(from !== to) {
-                const req = await fetch('https://api.exchangerate-api.com/v4/latest/USD');
-                const data = await req.json();
-                rate = (1 / data.rates[from]) * data.rates[to];
-            }
-            updateDisplay(amount, amount * rate, rate, from, to);
-        } catch(e) { document.getElementById('rate-info').innerText = "Lỗi mạng"; }
-    }
-
-    function updateDisplay(amt, total, rate, from, to) {
-        const resInput = document.getElementById('result-amount');
-        const dRes = document.getElementById('display-result');
-        const rInfo = document.getElementById('rate-info');
-        
-        let prec = total < 1 ? 6 : (total < 1000 ? 4 : 2);
-        if(total > 0 && total < 0.0001) prec = 8;
-
-        const fmtTot = total.toLocaleString('vi-VN', { maximumFractionDigits: prec, minimumFractionDigits: 0 });
-        resInput.value = fmtTot;
-        dRes.innerText = `${fmtTot} ${meta[to].text}`;
-        
-        // Trigger Pop Animation
-        dRes.classList.remove('pop-anim');
-        void dRes.offsetWidth; // reset CSS animation
-        dRes.classList.add('pop-anim');
-        dRes.style.opacity = '1';
-
-        if (rate < 1 && rate > 0) {
-            rInfo.innerText = `1 ${meta[to].text} ≈ ${(1/rate).toLocaleString('vi-VN', {maximumFractionDigits:2})} ${meta[from].text}`;
-        } else {
-            rInfo.innerText = `1 ${meta[from].text} ≈ ${rate.toLocaleString('vi-VN', {maximumFractionDigits:4})} ${meta[to].text}`;
+        if (window.innerWidth <= 768) {
+            document.getElementById('sidebar').classList.remove('active');
         }
     }
 
-    // Biến lưu trữ góc xoay của mũi tên
-    let rotationDegree = 0;
+    function toggleSidebar() {
+        document.getElementById('sidebar').classList.toggle('active');
+    }
 
+    /* ===================== EXCHANGE ===================== */
+    function updateRate() {
+        const from = document.getElementById('fromCurrency').value;
+        const to   = document.getElementById('toCurrency').value;
+        const amount = parseFloat(document.getElementById('fromAmount').value) || 0;
+
+        if (from === to) {
+            document.getElementById('toAmount').value = amount.toFixed(2);
+            document.getElementById('rateText').innerHTML = `<strong>1 ${from} = 1.00 ${to}</strong>`;
+            document.getElementById('rateTime').textContent = 'Cập nhật: ' + new Date().toLocaleTimeString('vi-VN');
+            return;
+        }
+
+        const rate = rates[from]?.[to] ?? null;
+        if (!rate) {
+            document.getElementById('rateText').textContent = 'Không hỗ trợ cặp tiền này';
+            document.getElementById('toAmount').value = '';
+            return;
+        }
+        const result = amount * rate;
+        document.getElementById('toAmount').value = result.toFixed(2);
+        document.getElementById('rateText').innerHTML = `<strong>1 ${from} = ${rate.toLocaleString('vi-VN', { maximumFractionDigits: 6 })} ${to}</strong>`;
+        document.getElementById('rateTime').textContent = 'Cập nhật: ' + new Date().toLocaleTimeString('vi-VN');
+    }
+
+    /* ===================== SWAP FIX ===================== */
     function swapCurrencies() {
-        // Xoay mũi tên thêm 180 độ
-        rotationDegree += 180;
-        document.getElementById('btn-swap').style.transform = `rotate(${rotationDegree}deg)`;
+        const fromSel = document.getElementById('fromCurrency');
+        const toSel   = document.getElementById('toCurrency');
 
-        // Đảo ngược giá trị
-        const f = document.getElementById('from-currency');
-        const t = document.getElementById('to-currency');
-        [f.value, t.value] = [t.value, f.value];
-        updateUI('from'); updateUI('to');
+        // Swap values
+        const tmp = fromSel.value;
+        fromSel.value = toSel.value;
+        toSel.value   = tmp;
+
+        // Spin animation
+        const btn = document.getElementById('swapBtn');
+        btn.classList.add('spinning');
+        btn.addEventListener('animationend', () => btn.classList.remove('spinning'), { once: true });
+
+        updateRate();
+        showNotification('info', '🔄 Hoán Đổi', `${toSel.value} ⇌ ${fromSel.value} đã được hoán đổi`);
     }
 
-    document.getElementById('amount').addEventListener('input', () => { clearTimeout(window.t); window.t = setTimeout(calculate, 500); });
-    updateUI('from');
-</script>
+    /* ===================== CONVERT ===================== */
+    function convertCurrency() {
+        const from       = document.getElementById('fromCurrency').value;
+        const to         = document.getElementById('toCurrency').value;
+        const fromAmount = document.getElementById('fromAmount').value;
+        const toAmount   = document.getElementById('toAmount').value;
 
+        if (!fromAmount || parseFloat(fromAmount) <= 0) {
+            showNotification('warning', '⚠️ Cảnh Báo', 'Vui lòng nhập số tiền hợp lệ!');
+            return;
+        }
+
+        showNotification('success', '✅ Thành Công', `${parseFloat(fromAmount).toLocaleString('vi-VN')} ${from} = ${parseFloat(toAmount).toLocaleString('vi-VN')} ${to}`);
+
+        const historyItem = document.createElement('div');
+        historyItem.className = 'history-item';
+        historyItem.style.animation = 'fadeIn 0.4s ease both';
+        historyItem.innerHTML = `
+            <div class="history-left">
+                <p>${parseFloat(fromAmount).toLocaleString('vi-VN')} ${from} → ${to}</p>
+                <p>${new Date().toLocaleString('vi-VN')}</p>
+            </div>
+            <div class="history-right">
+                <p>${parseFloat(toAmount).toLocaleString('vi-VN')} ${to}</p>
+                <p>✓ Thành công</p>
+            </div>
+        `;
+        const historyList = document.getElementById('historyList');
+        historyList.insertBefore(historyItem, historyList.firstChild);
+    }
+
+    function refreshRates() {
+        const btn = document.querySelector('.icon-btn .bi-arrow-clockwise');
+        if (btn) {
+            btn.style.transition = 'transform 0.6s ease';
+            btn.style.transform  = 'rotate(360deg)';
+            setTimeout(() => { btn.style.transform = 'rotate(0deg)'; btn.style.transition = ''; }, 650);
+        }
+        updateRate();
+        showNotification('info', '🔄 Làm Mới', 'Tỷ giá đã được cập nhật!');
+    }
+
+    /* ===================== CHAT ===================== */
+    function selectChat(element) {
+        document.querySelectorAll('.chat-item').forEach(item => item.classList.remove('active'));
+        element.classList.add('active');
+    }
+
+    function sendMessage() {
+        const input   = document.getElementById('chatInput');
+        const message = input.value.trim();
+        if (!message) return;
+
+        const chatMessages = document.getElementById('chatMessages');
+        const msgDiv = document.createElement('div');
+        msgDiv.className = 'message own';
+        msgDiv.innerHTML = `<div class="message-bubble own">${message}</div>`;
+        chatMessages.appendChild(msgDiv);
+        input.value = '';
+        chatMessages.scrollTop = chatMessages.scrollHeight;
+
+        setTimeout(() => {
+            const replyDiv = document.createElement('div');
+            replyDiv.className = 'message';
+            replyDiv.innerHTML = `<div class="message-bubble other">😊 Cảm ơn bạn! Chúng tôi sẽ trả lời trong giây lát...</div>`;
+            chatMessages.appendChild(replyDiv);
+            chatMessages.scrollTop = chatMessages.scrollHeight;
+        }, 700);
+    }
+
+    /* ===================== NOTIFICATION (UPGRADED) ===================== */
+    let notifStack = 0;
+
+    function showNotification(type = 'info', title = '', message = '') {
+        // type: 'success' | 'error' | 'warning' | 'info'
+        const icons = { success: '✅', error: '❌', warning: '⚠️', info: 'ℹ️' };
+
+        const notif = document.createElement('div');
+        notif.className = `notification ${type}`;
+        notif.style.top = (28 + notifStack * 100) + 'px';
+        notif.innerHTML = `
+            <div class="notification-inner">
+                <div class="notification-icon">${icons[type] || 'ℹ️'}</div>
+                <div class="notification-body">
+                    <div class="notification-title">${title}</div>
+                    <div class="notification-msg">${message}</div>
+                </div>
+            </div>
+            <div class="notification-progress"></div>
+        `;
+        document.body.appendChild(notif);
+        notifStack++;
+
+        setTimeout(() => {
+            notif.remove();
+            notifStack = Math.max(0, notifStack - 1);
+        }, 3900);
+    }
+
+    /* ===================== SETTINGS ===================== */
+    function openSettings() {
+        document.getElementById('settingsOverlay').classList.add('open');
+        document.getElementById('settingsPanel').classList.add('open');
+    }
+
+    function closeSettings() {
+        document.getElementById('settingsPanel').classList.remove('open');
+        document.getElementById('settingsOverlay').classList.remove('open');
+    }
+
+    function applySetting(id) {
+        const checked = document.getElementById(id).checked;
+        const labels  = {
+            darkMode:    ['Chế độ tối đã bật', 'Chế độ tối đã tắt'],
+            motionBlur:  ['Motion blur đã bật', 'Motion blur đã tắt'],
+            smoothAnim:  ['Hoạt ảnh mượt đã bật', 'Hoạt ảnh mượt đã tắt'],
+            notifTx:     ['Thông báo giao dịch bật', 'Thông báo giao dịch tắt'],
+            notifRate:   ['Cảnh báo tỷ giá bật', 'Cảnh báo tỷ giá tắt'],
+            notifChat:   ['Thông báo chat bật', 'Thông báo chat tắt'],
+            notifSound:  ['Âm thanh thông báo bật', 'Âm thanh thông báo tắt'],
+            autoRefresh: ['Tự động cập nhật bật', 'Tự động cập nhật tắt'],
+            biometric:   ['Xác thực sinh trắc đã bật', 'Xác thực sinh trắc đã tắt'],
+            appLock:     ['Khóa ứng dụng đã bật', 'Khóa ứng dụng đã tắt'],
+        };
+
+        if (id === 'motionBlur') {
+            document.documentElement.style.setProperty('--blur-strength', checked ? '20px' : '0px');
+        }
+        if (id === 'smoothAnim') {
+            document.documentElement.style.setProperty('--transition-speed', checked ? '0.4s' : '0.05s');
+        }
+
+        const msg = labels[id] ? labels[id][checked ? 0 : 1] : 'Cài đặt đã thay đổi';
+        showNotification(checked ? 'success' : 'info', '⚙️ Cài Đặt', msg);
+    }
+
+    function setAccentColor(primary, secondary, dotEl) {
+        document.documentElement.style.setProperty('--primary', primary);
+        document.documentElement.style.setProperty('--secondary', secondary);
+        document.querySelectorAll('.theme-dot').forEach(d => d.classList.remove('active'));
+        dotEl.classList.add('active');
+        showNotification('success', '🎨 Giao Diện', 'Màu chủ đạo đã được thay đổi!');
+    }
+
+    function saveSettings() {
+        const settings = {
+            darkMode:    document.getElementById('darkMode').checked,
+            motionBlur:  document.getElementById('motionBlur').checked,
+            smoothAnim:  document.getElementById('smoothAnim').checked,
+            notifTx:     document.getElementById('notifTx').checked,
+            notifRate:   document.getElementById('notifRate').checked,
+            notifChat:   document.getElementById('notifChat').checked,
+            notifSound:  document.getElementById('notifSound').checked,
+            autoRefresh: document.getElementById('autoRefresh').checked,
+            biometric:   document.getElementById('biometric').checked,
+            appLock:     document.getElementById('appLock').checked,
+            refreshRate: document.getElementById('refreshRate').value,
+            defaultCurrency: document.getElementById('defaultCurrency').value,
+        };
+        localStorage.setItem('fluxtea_settings', JSON.stringify(settings));
+        showNotification('success', '✅ Đã Lưu', 'Cài đặt đã được lưu thành công!');
+        setTimeout(closeSettings, 800);
+    }
+
+    function loadSettings() {
+        const saved = localStorage.getItem('fluxtea_settings');
+        if (!saved) return;
+        try {
+            const s = JSON.parse(saved);
+            Object.keys(s).forEach(key => {
+                const el = document.getElementById(key);
+                if (el && el.type === 'checkbox') el.checked = s[key];
+                else if (el) el.value = s[key];
+            });
+            if (s.motionBlur === false) document.documentElement.style.setProperty('--blur-strength', '0px');
+            if (s.smoothAnim === false) document.documentElement.style.setProperty('--transition-speed', '0.05s');
+        } catch(e) {}
+    }
+
+    /* ===================== INIT ===================== */
+    document.addEventListener('DOMContentLoaded', () => {
+        loadSettings();
+        updateRate();
+        setTimeout(() => showNotification('info', '👋 Chào Mừng', 'FluxTea v2.1.0 sẵn sàng phục vụ!'), 800);
+    });
+</script>
 </body>
-</html>
 </html>
