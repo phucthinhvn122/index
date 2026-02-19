@@ -1,0 +1,330 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover">
+    <title>Đổi Tiền & Thị Trường</title>
+    
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+    <link rel="apple-touch-icon" href="https://cdn-icons-png.flaticon.com/512/2933/2933116.png">
+
+    <style>
+        :root {
+            --primary: #007AFF;
+            --bg: #000000;
+            --card-bg: #1C1C1E;
+            --text: #FFFFFF;
+            --text-secondary: #8E8E93;
+            --input-bg: #2C2C2E;
+            --green: #30D158;
+            --red: #FF453A;
+            --nav-bg: rgba(28, 28, 30, 0.9);
+        }
+
+        @media (prefers-color-scheme: light) {
+            :root {
+                --bg: #F2F2F7;
+                --card-bg: #FFFFFF;
+                --text: #000000;
+                --input-bg: #F2F2F7;
+                --green: #34C759;
+                --red: #FF3B30;
+                --nav-bg: rgba(255, 255, 255, 0.9);
+            }
+        }
+
+        * { box-sizing: border-box; font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif; -webkit-tap-highlight-color: transparent; }
+        
+        body {
+            margin: 0;
+            background-color: var(--bg);
+            color: var(--text);
+            overscroll-behavior-y: none;
+            padding-bottom: calc(80px + env(safe-area-inset-bottom));
+        }
+
+        .view-container { display: none; padding: 20px; animation: fadeIn 0.3s; }
+        .view-container.active { display: block; }
+        @keyframes fadeIn { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: translateY(0); } }
+
+        /* UI CHUYỂN ĐỔI */
+        .converter-card { background: var(--card-bg); border-radius: 24px; padding: 20px; box-shadow: 0 4px 20px rgba(0,0,0,0.3); }
+        .input-group { background: var(--input-bg); border-radius: 16px; padding: 16px; margin-bottom: 4px; }
+        .input-row { display: flex; align-items: center; justify-content: space-between; }
+        input[type="number"], input[type="text"] { background: transparent; border: none; color: var(--text); font-size: 24px; font-weight: 700; width: 55%; outline: none; padding: 0; }
+        .currency-pill { display: flex; align-items: center; gap: 8px; background: var(--card-bg); padding: 6px 12px; border-radius: 20px; position: relative; box-shadow: 0 2px 4px rgba(0,0,0,0.1); }
+        .currency-pill img { width: 20px; height: 20px; border-radius: 50%; }
+        select { position: absolute; right: 0; width: 100%; height: 100%; opacity: 0; }
+        
+        .swap-container { height: 0; display: flex; justify-content: center; align-items: center; z-index: 10; position: relative; }
+        .swap-btn { background: var(--primary); color: white; border: 4px solid var(--card-bg); width: 44px; height: 44px; border-radius: 50%; display: flex; align-items: center; justify-content: center; cursor: pointer; box-shadow: 0 4px 10px rgba(0,0,0,0.2); }
+        
+        /* QUAN TRỌNG: Dòng này sửa lỗi mất mũi tên */
+        .swap-btn svg { width: 24px; height: 24px; }
+        
+        .result-box { margin-top: 24px; text-align: center; }
+        .result-main { font-size: 32px; font-weight: 800; color: var(--primary); }
+        .rate-info { font-size: 13px; color: var(--text-secondary); margin-top: 8px; }
+
+        /* UI THỊ TRƯỜNG */
+        .header-title { font-size: 28px; font-weight: 800; margin-bottom: 20px; margin-top: 20px; display: flex; align-items: center; gap: 10px; }
+        .market-list { display: flex; flex-direction: column; gap: 12px; }
+        .market-item { background: var(--card-bg); padding: 16px; border-radius: 16px; display: flex; justify-content: space-between; align-items: center; }
+        .coin-info { display: flex; align-items: center; gap: 12px; }
+        .coin-info img { width: 36px; height: 36px; border-radius: 50%; }
+        .coin-name { font-weight: 600; font-size: 16px; }
+        .coin-symbol { color: var(--text-secondary); font-size: 13px; text-transform: uppercase; }
+        .price-info { text-align: right; }
+        .price { font-weight: 700; font-size: 16px; }
+        .change { font-size: 14px; font-weight: 600; margin-top: 2px; }
+        .change.up { color: var(--green); }
+        .change.down { color: var(--red); }
+
+        /* UI HỒ SƠ */
+        .profile-header { text-align: center; padding: 20px 0 30px 0; }
+        .avatar { width: 80px; height: 80px; border-radius: 50%; background: linear-gradient(135deg, var(--primary), #5AC8FA); color: white; font-size: 28px; font-weight: bold; display: flex; align-items: center; justify-content: center; margin: 0 auto 16px auto; box-shadow: 0 8px 20px rgba(0,122,255,0.3); }
+        .profile-name { font-size: 24px; font-weight: 700; margin: 0 0 4px 0; }
+        .profile-email { color: var(--text-secondary); font-size: 14px; margin: 0; }
+        
+        .settings-group { background: var(--card-bg); border-radius: 16px; overflow: hidden; margin-bottom: 24px; }
+        .setting-item { display: flex; justify-content: space-between; align-items: center; padding: 16px; border-bottom: 1px solid var(--input-bg); }
+        .setting-item:last-child { border-bottom: none; }
+        .setting-label { font-size: 16px; display: flex; align-items: center; gap: 12px; }
+        .setting-value { color: var(--text-secondary); font-size: 15px; }
+
+        /* TAB BAR */
+        .tab-bar { position: fixed; bottom: 0; left: 0; width: 100%; background: var(--nav-bg); backdrop-filter: blur(20px); -webkit-backdrop-filter: blur(20px); display: flex; justify-content: space-around; padding: 10px 0 calc(10px + env(safe-area-inset-bottom)); border-top: 0.5px solid rgba(128,128,128,0.2); z-index: 100; }
+        .tab-item { display: flex; flex-direction: column; align-items: center; color: var(--text-secondary); font-size: 10px; gap: 4px; cursor: pointer; transition: 0.2s; width: 33%; }
+        .tab-item.active { color: var(--primary); }
+        .tab-item svg { width: 24px; height: 24px; }
+
+    </style>
+</head>
+<body>
+
+<div id="view-home" class="view-container active">
+    <div class="header-title">Đổi Tiền</div>
+    <div class="converter-card">
+        <div class="input-group">
+            <label>Số tiền</label>
+            <div class="input-row">
+                <input type="number" id="amount" value="1" placeholder="0">
+                <div class="currency-pill">
+                    <img id="from-flag" src="https://flagcdn.com/w40/vn.png">
+                    <span id="from-text">VND</span>
+                    <select id="from-currency" onchange="updateUI('from')">
+                        <option value="VND">VND</option>
+                        <option value="USD">USDT</option>
+                        <option value="BRL">BRL</option>
+                        <option value="EUR">EUR</option>
+                    </select>
+                </div>
+            </div>
+        </div>
+
+        <div class="swap-container">
+            <div class="swap-btn" onclick="swapCurrencies()">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+                    <path d="M7 16V4M7 4L3 8M7 4L11 8"></path>
+                    <path d="M17 8v12M17 20l4-4M17 20l-4-4"></path>
+                </svg>
+            </div>
+        </div>
+
+        <div class="input-group" style="margin-top: 4px;">
+            <label>Chuyển thành</label>
+            <div class="input-row">
+                <input type="text" id="result-amount" disabled placeholder="0" readonly>
+                <div class="currency-pill">
+                    <img id="to-flag" src="https://cryptologos.cc/logos/tether-usdt-logo.png?v=026">
+                    <span id="to-text">USDT</span>
+                    <select id="to-currency" onchange="updateUI('to')">
+                        <option value="USD" selected>USDT</option>
+                        <option value="VND">VND</option>
+                        <option value="BRL">BRL</option>
+                        <option value="EUR">EUR</option>
+                    </select>
+                </div>
+            </div>
+        </div>
+
+        <div class="result-box">
+            <div class="result-main" id="display-result">...</div>
+            <div class="rate-info" id="rate-info">Đang tải...</div>
+        </div>
+    </div>
+</div>
+
+<div id="view-market" class="view-container">
+    <div class="header-title">Thị trường 24h</div>
+    <div class="market-list" id="market-data-container">
+        <div style="text-align:center; color: #888; padding: 40px;">Đang tải dữ liệu thực...</div>
+    </div>
+</div>
+
+<div id="view-profile" class="view-container">
+    <div class="header-title">Hồ sơ</div>
+    
+    <div class="profile-header">
+        <div class="avatar">PT</div>
+        <h2 class="profile-name">Phúc Thịnh</h2>
+        <p class="profile-email">phucthinhvn122@gmail.com</p>
+    </div>
+
+    <div class="settings-group">
+        <div class="setting-item">
+            <div class="setting-label">📱 Thiết bị</div>
+            <div class="setting-value">iPhone XS</div>
+        </div>
+        <div class="setting-item">
+            <div class="setting-label">🎓 Ngành học</div>
+            <div class="setting-value">Dược (Pharmacy)</div>
+        </div>
+        <div class="setting-item">
+            <div class="setting-label">💳 Đơn vị gốc</div>
+            <div class="setting-value">VND</div>
+        </div>
+    </div>
+
+    <div class="settings-group">
+        <div class="setting-item">
+            <div class="setting-label">⚙️ Phiên bản App</div>
+            <div class="setting-value">2.1 (Fix Icon)</div>
+        </div>
+    </div>
+</div>
+
+<div class="tab-bar">
+    <div class="tab-item active" onclick="switchTab('home', this)">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"></path><polyline points="9 22 9 12 15 12 15 22"></polyline></svg>
+        <span>Đổi tiền</span>
+    </div>
+    <div class="tab-item" onclick="switchTab('market', this)">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="18" y1="20" x2="18" y2="10"></line><line x1="12" y1="20" x2="12" y2="4"></line><line x1="6" y1="20" x2="6" y2="14"></line></svg>
+        <span>Thị trường</span>
+    </div>
+    <div class="tab-item" onclick="switchTab('profile', this)">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"></path><circle cx="12" cy="7" r="4"></circle></svg>
+        <span>Hồ sơ</span>
+    </div>
+</div>
+
+<script>
+    // --- NAV ---
+    function switchTab(tabId, element) {
+        document.querySelectorAll('.view-container').forEach(el => el.classList.remove('active'));
+        document.querySelectorAll('.tab-item').forEach(el => el.classList.remove('active'));
+        document.getElementById('view-' + tabId).classList.add('active');
+        element.classList.add('active');
+        if (tabId === 'market' && !marketLoaded) fetchMarketData();
+    }
+
+    // --- MARKET ---
+    let marketLoaded = false;
+    async function fetchMarketData() {
+        const container = document.getElementById('market-data-container');
+        try {
+            const resCrypto = await fetch('https://api.coingecko.com/api/v3/coins/markets?vs_currency=vnd&ids=bitcoin,ethereum,tether,binancecoin,solana&order=market_cap_desc');
+            const cryptoData = await resCrypto.json();
+            const resFiat = await fetch('https://api.exchangerate-api.com/v4/latest/USD');
+            const fiatData = await resFiat.json();
+
+            let html = '';
+            // Fiat
+            const fiatList = [
+                { id: 'usd', name: 'Đô la Mỹ', symbol: 'USD', img: 'https://flagcdn.com/w40/us.png', price: fiatData.rates['VND'], change: 0.15 },
+                { id: 'eur', name: 'Euro', symbol: 'EUR', img: 'https://flagcdn.com/w40/eu.png', price: fiatData.rates['VND'] / fiatData.rates['EUR'], change: -0.12 },
+                { id: 'brl', name: 'Brazil Real', symbol: 'BRL', img: 'https://flagcdn.com/w40/br.png', price: fiatData.rates['VND'] / fiatData.rates['BRL'], change: 0.45 }
+            ];
+            
+            fiatList.forEach(c => {
+                const color = c.change >= 0 ? 'up' : 'down';
+                const sign = c.change >= 0 ? '+' : '';
+                html += `<div class="market-item"><div class="coin-info"><img src="${c.img}"><div><div class="coin-name">${c.symbol}</div><div class="coin-symbol">${c.name}</div></div></div><div class="price-info"><div class="price">${c.price.toLocaleString('vi-VN', {maximumFractionDigits:0})} ₫</div><div class="change ${color}">${sign}${c.change}%</div></div></div>`;
+            });
+
+            // Crypto
+            cryptoData.forEach(c => {
+                const chg = c.price_change_percentage_24h;
+                const color = chg >= 0 ? 'up' : 'down';
+                const sign = chg >= 0 ? '+' : '';
+                html += `<div class="market-item"><div class="coin-info"><img src="${c.image}"><div><div class="coin-name">${c.symbol.toUpperCase()}</div><div class="coin-symbol">${c.name}</div></div></div><div class="price-info"><div class="price">${c.current_price.toLocaleString('vi-VN')} ₫</div><div class="change ${color}">${sign}${chg.toFixed(2)}%</div></div></div>`;
+            });
+            container.innerHTML = html;
+            marketLoaded = true;
+        } catch (e) { container.innerHTML = '<div style="text-align:center;margin-top:20px;">Lỗi tải dữ liệu</div>'; }
+    }
+
+    // --- CONVERTER ---
+    const meta = {
+        'VND': { flag: 'https://flagcdn.com/w40/vn.png', text: 'VND' },
+        'USD': { flag: 'https://cryptologos.cc/logos/tether-usdt-logo.png?v=026', text: 'USDT' },
+        'BRL': { flag: 'https://flagcdn.com/w40/br.png', text: 'BRL' },
+        'EUR': { flag: 'https://flagcdn.com/w40/eu.png', text: 'EUR' }
+    };
+
+    function updateUI(type) {
+        const code = document.getElementById(type + '-currency').value;
+        if(meta[code]) {
+            document.getElementById(type + '-flag').src = meta[code].flag;
+            document.getElementById(type + '-text').innerText = meta[code].text;
+        }
+        calculate();
+    }
+
+    async function calculate() {
+        const amount = parseFloat(document.getElementById('amount').value);
+        const from = document.getElementById('from-currency').value;
+        const to = document.getElementById('to-currency').value;
+        const dRes = document.getElementById('display-result');
+
+        if (isNaN(amount)) { dRes.innerText = "0"; document.getElementById('result-amount').value = ""; return; }
+        dRes.style.opacity = '0.5';
+
+        try {
+            // Logic cũ (giữ nguyên độ chính xác)
+            let rate = 1;
+            if(from !== to) {
+                const req = await fetch('https://api.exchangerate-api.com/v4/latest/USD');
+                const data = await req.json();
+                rate = (1 / data.rates[from]) * data.rates[to];
+            }
+            updateDisplay(amount, amount * rate, rate, from, to);
+        } catch(e) { document.getElementById('rate-info').innerText = "Lỗi mạng"; }
+    }
+
+    function updateDisplay(amt, total, rate, from, to) {
+        const resInput = document.getElementById('result-amount');
+        const dRes = document.getElementById('display-result');
+        const rInfo = document.getElementById('rate-info');
+        
+        let prec = total < 1 ? 6 : (total < 1000 ? 4 : 2);
+        if(total > 0 && total < 0.0001) prec = 8;
+
+        const fmtTot = total.toLocaleString('vi-VN', { maximumFractionDigits: prec, minimumFractionDigits: 0 });
+        resInput.value = fmtTot;
+        dRes.innerText = `${fmtTot} ${meta[to].text}`;
+        dRes.style.opacity = '1';
+
+        if (rate < 1 && rate > 0) {
+            rInfo.innerText = `1 ${meta[to].text} ≈ ${(1/rate).toLocaleString('vi-VN', {maximumFractionDigits:2})} ${meta[from].text}`;
+        } else {
+            rInfo.innerText = `1 ${meta[from].text} ≈ ${rate.toLocaleString('vi-VN', {maximumFractionDigits:4})} ${meta[to].text}`;
+        }
+    }
+
+    function swapCurrencies() {
+        const f = document.getElementById('from-currency');
+        const t = document.getElementById('to-currency');
+        [f.value, t.value] = [t.value, f.value];
+        updateUI('from'); updateUI('to');
+    }
+
+    document.getElementById('amount').addEventListener('input', () => { clearTimeout(window.t); window.t = setTimeout(calculate, 500); });
+    updateUI('from');
+</script>
+
+</body>
+</html>
+
