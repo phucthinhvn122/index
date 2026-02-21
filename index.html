@@ -1,5 +1,6 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -21,22 +22,27 @@
             --dark: #0a0e27;
             --darker: #050812;
             --surface: #1a1f3a;
-            --glass: rgba(255, 255, 255, 0.08);
-            --glass-border: rgba(255, 255, 255, 0.15);
+            --glass: rgba(255, 255, 255, 0.10);
+            --glass-border: rgba(255, 255, 255, 0.22);
             --text: #e8f0ff;
             --text-muted: #8b95b4;
             --success: #00d9a3;
             --danger: #ff3366;
             --warning: #ffa500;
-            --blur-strength: 20px;
-            --transition-speed: 0.4s;
+            --blur-strength: 28px;
+            --transition-speed: 0.35s;
         }
 
-        html { scroll-behavior: smooth; }
+        html {
+            scroll-behavior: smooth;
+        }
 
         body {
             font-family: 'Segoe UI', 'Helvetica Neue', sans-serif;
-            background: linear-gradient(135deg, var(--darker) 0%, #0f1535 25%, #1a0f35 50%, var(--darker) 100%);
+            background:
+                radial-gradient(circle at 0% 0%, #162040 0%, transparent 55%),
+                radial-gradient(circle at 100% 100%, #1b1040 0%, transparent 55%),
+                linear-gradient(135deg, #050812 0%, #0d1530 50%, #050812 100%);
             background-attachment: fixed;
             color: var(--text);
             line-height: 1.6;
@@ -47,67 +53,215 @@
         body::before {
             content: '';
             position: fixed;
-            top: 0; left: 0;
-            width: 100%; height: 100%;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
             background:
-                radial-gradient(circle at 20% 50%, rgba(0, 217, 255, 0.05) 0%, transparent 50%),
+                radial-gradient(circle at 20% 50%, rgba(0, 217, 255, 0.06) 0%, transparent 50%),
+                radial-gradient(circle at 80% 20%, rgba(0, 255, 163, 0.04) 0%, transparent 45%),
                 radial-gradient(circle at 80% 80%, rgba(255, 0, 110, 0.05) 0%, transparent 50%);
             pointer-events: none;
             z-index: 1;
         }
 
-        /* ===================== MOTION BLUR SMOOTH ===================== */
+        /* ===================== OPTIMIZED ANIMATIONS ===================== */
         @keyframes fadeInDown {
-            from { opacity: 0; transform: translateY(-20px); filter: blur(8px); }
-            to   { opacity: 1; transform: translateY(0);     filter: blur(0); }
+            from {
+                opacity: 0;
+                transform: translateY(-18px);
+            }
+
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
         }
+
         @keyframes fadeInUp {
-            from { opacity: 0; transform: translateY(20px);  filter: blur(8px); }
-            to   { opacity: 1; transform: translateY(0);     filter: blur(0); }
+            from {
+                opacity: 0;
+                transform: translateY(18px);
+            }
+
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
         }
+
         @keyframes fadeInLeft {
-            from { opacity: 0; transform: translateX(-30px); filter: blur(6px); }
-            to   { opacity: 1; transform: translateX(0);     filter: blur(0); }
+            from {
+                opacity: 0;
+                transform: translateX(-28px);
+            }
+
+            to {
+                opacity: 1;
+                transform: translateX(0);
+            }
         }
+
         @keyframes slideInRight {
-            from { opacity: 0; transform: translateX(40px);  filter: blur(8px); }
-            to   { opacity: 1; transform: translateX(0);     filter: blur(0); }
+            from {
+                opacity: 0;
+                transform: translateX(36px);
+            }
+
+            to {
+                opacity: 1;
+                transform: translateX(0);
+            }
         }
+
         @keyframes scaleIn {
-            from { opacity: 0; transform: scale(0.85);       filter: blur(6px); }
-            to   { opacity: 1; transform: scale(1);          filter: blur(0); }
+            from {
+                opacity: 0;
+                transform: scale(0.88);
+            }
+
+            to {
+                opacity: 1;
+                transform: scale(1);
+            }
         }
+
         @keyframes swapSpin {
-            0%   { transform: rotate(0deg)   scale(1);    filter: blur(0); }
-            40%  { transform: rotate(120deg) scale(1.2);  filter: blur(3px); }
-            80%  { transform: rotate(200deg) scale(0.95); filter: blur(1px); }
-            100% { transform: rotate(180deg) scale(1);    filter: blur(0); }
+            0% {
+                transform: rotate(0deg) scale(1);
+            }
+
+            50% {
+                transform: rotate(120deg) scale(1.18);
+            }
+
+            100% {
+                transform: rotate(180deg) scale(1);
+            }
         }
+
         @keyframes notifSlide {
-            0%   { opacity: 0; transform: translateX(120%) scale(0.9); filter: blur(6px); }
-            15%  { opacity: 1; transform: translateX(0)    scale(1);   filter: blur(0); }
-            80%  { opacity: 1; transform: translateX(0)    scale(1);   filter: blur(0); }
-            100% { opacity: 0; transform: translateX(120%) scale(0.9); filter: blur(4px); }
+            0% {
+                opacity: 0;
+                transform: translateX(110%) scale(0.92);
+            }
+
+            12% {
+                opacity: 1;
+                transform: translateX(0) scale(1);
+            }
+
+            80% {
+                opacity: 1;
+                transform: translateX(0) scale(1);
+            }
+
+            100% {
+                opacity: 0;
+                transform: translateX(110%) scale(0.92);
+            }
         }
+
         @keyframes pageEnter {
-            from { opacity: 0; transform: translateY(16px); filter: blur(10px); }
-            to   { opacity: 1; transform: translateY(0);    filter: blur(0); }
+            from {
+                opacity: 0;
+                transform: translateY(14px);
+            }
+
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
         }
+
         @keyframes settingsOpen {
-            from { opacity: 0; transform: translateX(100%) scale(0.95); filter: blur(12px); }
-            to   { opacity: 1; transform: translateX(0)    scale(1);    filter: blur(0); }
+            from {
+                opacity: 0;
+                transform: translateX(100%);
+            }
+
+            to {
+                opacity: 1;
+                transform: translateX(0);
+            }
         }
+
         @keyframes overlayIn {
-            from { opacity: 0; backdrop-filter: blur(0px); }
-            to   { opacity: 1; backdrop-filter: blur(8px); }
+            from {
+                opacity: 0;
+            }
+
+            to {
+                opacity: 1;
+            }
         }
+
         @keyframes pulse-glow {
-            0%, 100% { box-shadow: 0 0 8px rgba(0, 217, 255, 0.3); }
-            50%       { box-shadow: 0 0 20px rgba(0, 217, 255, 0.7), 0 0 40px rgba(0, 255, 163, 0.3); }
+
+            0%,
+            100% {
+                box-shadow: 0 0 10px rgba(0, 217, 255, 0.35);
+            }
+
+            50% {
+                box-shadow: 0 0 24px rgba(0, 217, 255, 0.75), 0 0 48px rgba(0, 255, 163, 0.25);
+            }
         }
+
         @keyframes fadeIn {
-            from { opacity: 0; transform: translateY(8px); filter: blur(4px); }
-            to   { opacity: 1; transform: translateY(0);   filter: blur(0); }
+            from {
+                opacity: 0;
+                transform: translateY(6px);
+            }
+
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        @keyframes spin360 {
+            from {
+                transform: rotate(0deg);
+            }
+
+            to {
+                transform: rotate(360deg);
+            }
+        }
+
+        @keyframes shimmer {
+            0% {
+                background-position: -200% center;
+            }
+
+            100% {
+                background-position: 200% center;
+            }
+        }
+
+        @keyframes floatOrb {
+
+            0%,
+            100% {
+                transform: translateY(0) scale(1);
+            }
+
+            50% {
+                transform: translateY(-12px) scale(1.04);
+            }
+        }
+
+        @keyframes notifProgress {
+            from {
+                width: 100%;
+                opacity: 1;
+            }
+
+            to {
+                width: 0%;
+                opacity: 0.4;
+            }
         }
 
         /* ===================== LAYOUT ===================== */
@@ -118,33 +272,95 @@
             height: 100vh;
         }
 
-        /* SIDEBAR */
+        /* ===================== LIQUID GLASS MIXIN ===================== */
+        @keyframes liquidShimmer {
+            0% {
+                background-position: -200% 0;
+            }
+
+            100% {
+                background-position: 200% 0;
+            }
+        }
+
+        @keyframes glassFloat {
+
+            0%,
+            100% {
+                box-shadow: 0 20px 50px rgba(0, 0, 0, 0.45), inset 0 1px 0 rgba(255, 255, 255, 0.18), 0 0 0 1px rgba(0, 217, 255, 0.06);
+            }
+
+            50% {
+                box-shadow: 0 28px 64px rgba(0, 0, 0, 0.52), inset 0 1px 0 rgba(255, 255, 255, 0.24), 0 0 0 1px rgba(0, 217, 255, 0.12);
+            }
+        }
+
+        .liquid-glass {
+            background:
+                radial-gradient(circle at 0% 0%, rgba(255, 255, 255, 0.18), rgba(255, 255, 255, 0.04)),
+                rgba(12, 16, 40, 0.55);
+            backdrop-filter: blur(var(--blur-strength)) saturate(1.8) brightness(1.06);
+            -webkit-backdrop-filter: blur(var(--blur-strength)) saturate(1.8) brightness(1.06);
+            border: 1px solid var(--glass-border);
+            box-shadow:
+                0 20px 50px rgba(0, 0, 0, 0.45),
+                inset 0 1px 0 rgba(255, 255, 255, 0.22),
+                inset 0 -1px 0 rgba(0, 0, 0, 0.2),
+                0 0 0 1px rgba(0, 217, 255, 0.06);
+            position: relative;
+            overflow: hidden;
+        }
+
+        .liquid-glass::after {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            height: 1px;
+            background: linear-gradient(90deg, transparent 0%, rgba(255, 255, 255, 0.55) 40%, rgba(0, 217, 255, 0.4) 60%, transparent 100%);
+            opacity: 0.7;
+            pointer-events: none;
+        }
+
+        /* ===================== SIDEBAR ===================== */
         .sidebar {
             width: 300px;
-            background: rgba(26, 31, 58, 0.6);
-            backdrop-filter: blur(var(--blur-strength));
-            border-right: 1px solid var(--glass-border);
+            background:
+                radial-gradient(ellipse at 0% 0%, rgba(255, 255, 255, 0.15) 0%, transparent 55%),
+                radial-gradient(ellipse at 100% 100%, rgba(0, 217, 255, 0.08) 0%, transparent 50%),
+                rgba(10, 14, 36, 0.62);
+            backdrop-filter: blur(var(--blur-strength)) saturate(1.9) brightness(1.04);
+            -webkit-backdrop-filter: blur(var(--blur-strength)) saturate(1.9) brightness(1.04);
+            border-right: 1px solid rgba(255, 255, 255, 0.14);
+            box-shadow:
+                2px 0 40px rgba(0, 0, 0, 0.4),
+                inset -1px 0 0 rgba(255, 255, 255, 0.06),
+                inset 0 1px 0 rgba(255, 255, 255, 0.14);
             padding: 24px 0;
             display: flex;
             flex-direction: column;
             overflow-y: auto;
             position: relative;
             z-index: 100;
-            animation: fadeInLeft 0.6s ease both;
+            animation: fadeInLeft 0.5s ease both;
+            will-change: transform;
         }
 
         .sidebar::before {
             content: '';
             position: absolute;
-            top: 0; left: 0; right: 0;
+            top: 0;
+            left: 0;
+            right: 0;
             height: 1px;
             background: linear-gradient(90deg, transparent, var(--primary), transparent);
-            opacity: 0.5;
+            opacity: 0.6;
         }
 
         .logo-section {
             padding: 0 24px 32px;
-            border-bottom: 1px solid rgba(255,255,255,0.05);
+            border-bottom: 1px solid rgba(255, 255, 255, 0.06);
             margin-bottom: 24px;
         }
 
@@ -152,10 +368,12 @@
             font-size: 28px;
             font-weight: 800;
             background: linear-gradient(135deg, var(--primary), var(--secondary));
+            background-size: 200% auto;
             -webkit-background-clip: text;
             -webkit-text-fill-color: transparent;
             background-clip: text;
             letter-spacing: -0.5px;
+            animation: shimmer 3s linear infinite;
         }
 
         .logo-sub {
@@ -166,7 +384,11 @@
             margin-top: 4px;
         }
 
-        .nav-section { padding: 0 16px; flex: 1; }
+        .nav-section {
+            padding: 0 16px;
+            flex: 1;
+        }
+
         .nav-label {
             font-size: 10px;
             letter-spacing: 2px;
@@ -181,41 +403,93 @@
             align-items: center;
             gap: 14px;
             padding: 12px 16px;
-            border-radius: 12px;
+            border-radius: 16px;
             cursor: pointer;
             transition: all var(--transition-speed) cubic-bezier(0.34, 1.56, 0.64, 1);
-            margin-bottom: 4px;
+            margin-bottom: 6px;
             position: relative;
             overflow: hidden;
+            will-change: transform;
+            /* Glass base trên mọi item */
+            background:
+                radial-gradient(ellipse at 10% 10%, rgba(255, 255, 255, 0.08) 0%, transparent 60%),
+                rgba(255, 255, 255, 0.04);
+            border: 1px solid rgba(255, 255, 255, 0.07);
+            backdrop-filter: blur(12px) saturate(1.4);
+            -webkit-backdrop-filter: blur(12px) saturate(1.4);
+            box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.10), 0 2px 8px rgba(0, 0, 0, 0.12);
         }
 
+        /* Specular top-edge highlight */
+        .nav-item::after {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 10%;
+            right: 10%;
+            height: 1px;
+            background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.45), transparent);
+            opacity: 0.7;
+            pointer-events: none;
+        }
+
+        /* Shimmer sweep overlay (hover/active glow layer) */
         .nav-item::before {
             content: '';
             position: absolute;
             inset: 0;
-            background: linear-gradient(135deg, rgba(0,217,255,0.1), rgba(0,255,163,0.05));
+            background: linear-gradient(135deg,
+                    rgba(0, 217, 255, 0.14) 0%,
+                    rgba(0, 255, 163, 0.08) 50%,
+                    rgba(0, 217, 255, 0.04) 100%);
             opacity: 0;
             transition: opacity 0.3s ease;
-            border-radius: 12px;
+            border-radius: 16px;
         }
 
         .nav-item:hover::before,
-        .nav-item.active::before { opacity: 1; }
-
-        .nav-item.active {
-            background: rgba(0, 217, 255, 0.1);
-            border: 1px solid rgba(0, 217, 255, 0.2);
+        .nav-item.active::before {
+            opacity: 1;
         }
 
-        .nav-item:hover { transform: translateX(4px); }
+        .nav-item.active {
+            background:
+                radial-gradient(ellipse at 15% 15%, rgba(0, 217, 255, 0.22) 0%, transparent 55%),
+                radial-gradient(ellipse at 85% 85%, rgba(0, 255, 163, 0.1) 0%, transparent 50%),
+                rgba(0, 217, 255, 0.08);
+            border: 1px solid rgba(0, 217, 255, 0.35);
+            box-shadow:
+                0 6px 24px rgba(0, 217, 255, 0.18),
+                inset 0 1px 0 rgba(255, 255, 255, 0.22),
+                inset 0 -1px 0 rgba(0, 217, 255, 0.08),
+                0 0 0 1px rgba(0, 217, 255, 0.08);
+        }
+
+        .nav-item:hover {
+            transform: translateX(5px) scale(1.01);
+            background:
+                radial-gradient(ellipse at 10% 10%, rgba(255, 255, 255, 0.12) 0%, transparent 55%),
+                rgba(255, 255, 255, 0.07);
+            border-color: rgba(255, 255, 255, 0.14);
+            box-shadow:
+                inset 0 1px 0 rgba(255, 255, 255, 0.18),
+                0 4px 16px rgba(0, 0, 0, 0.18);
+        }
+
+        .nav-item.active:hover {
+            transform: translateX(5px) scale(1.01);
+        }
 
         .nav-icon {
-            width: 38px; height: 38px;
+            width: 38px;
+            height: 38px;
             border-radius: 10px;
-            display: flex; align-items: center; justify-content: center;
+            display: flex;
+            align-items: center;
+            justify-content: center;
             font-size: 18px;
-            background: rgba(255,255,255,0.05);
-            transition: all 0.3s ease;
+            background: rgba(255, 255, 255, 0.06);
+            transition: all 0.25s ease;
             flex-shrink: 0;
         }
 
@@ -223,9 +497,14 @@
         .nav-item:hover .nav-icon {
             background: rgba(0, 217, 255, 0.15);
             color: var(--primary);
+            box-shadow: 0 0 12px rgba(0, 217, 255, 0.2);
         }
 
-        .nav-text { font-size: 14px; font-weight: 500; }
+        .nav-text {
+            font-size: 14px;
+            font-weight: 500;
+        }
+
         .nav-badge {
             margin-left: auto;
             background: var(--accent);
@@ -236,7 +515,7 @@
             font-weight: 700;
         }
 
-        /* MAIN */
+        /* ===================== MAIN ===================== */
         .main-content {
             flex: 1;
             display: flex;
@@ -250,35 +529,52 @@
             align-items: center;
             justify-content: space-between;
             border-bottom: 1px solid var(--glass-border);
-            background: rgba(10, 14, 39, 0.4);
-            backdrop-filter: blur(var(--blur-strength));
+            background:
+                radial-gradient(circle at 50% 0%, rgba(0, 217, 255, 0.05), transparent 70%),
+                rgba(8, 12, 32, 0.48);
+            backdrop-filter: blur(var(--blur-strength)) saturate(1.5);
+            -webkit-backdrop-filter: blur(var(--blur-strength)) saturate(1.5);
             position: sticky;
             top: 0;
             z-index: 50;
-            animation: fadeInDown 0.5s ease both;
+            animation: fadeInDown 0.45s ease both;
+            box-shadow: 0 4px 24px rgba(0, 0, 0, 0.25), inset 0 -1px 0 rgba(255, 255, 255, 0.07);
         }
 
-        .page-title { font-size: 22px; font-weight: 700; }
-        .top-actions { display: flex; gap: 12px; align-items: center; }
+        .page-title {
+            font-size: 22px;
+            font-weight: 700;
+        }
+
+        .top-actions {
+            display: flex;
+            gap: 12px;
+            align-items: center;
+        }
 
         .icon-btn {
-            width: 40px; height: 40px;
-            border-radius: 10px;
+            width: 40px;
+            height: 40px;
+            border-radius: 12px;
             border: 1px solid var(--glass-border);
-            background: var(--glass);
+            background: rgba(255, 255, 255, 0.07);
+            backdrop-filter: blur(12px);
             color: var(--text);
             cursor: pointer;
-            display: flex; align-items: center; justify-content: center;
+            display: flex;
+            align-items: center;
+            justify-content: center;
             font-size: 18px;
-            transition: all 0.3s cubic-bezier(0.34, 1.56, 0.64, 1);
+            transition: all 0.25s cubic-bezier(0.34, 1.56, 0.64, 1);
+            will-change: transform;
         }
 
         .icon-btn:hover {
-            background: rgba(0, 217, 255, 0.15);
+            background: rgba(0, 217, 255, 0.18);
             border-color: var(--primary);
             color: var(--primary);
             transform: scale(1.1);
-            filter: drop-shadow(0 0 6px rgba(0,217,255,0.5));
+            box-shadow: 0 0 18px rgba(0, 217, 255, 0.35), inset 0 1px 0 rgba(255, 255, 255, 0.15);
         }
 
         .content-area {
@@ -288,8 +584,14 @@
             scroll-behavior: smooth;
         }
 
-        .page { display: none; animation: pageEnter 0.45s ease both; }
-        .page.active { display: block; }
+        .page {
+            display: none;
+            animation: pageEnter 0.4s ease both;
+        }
+
+        .page.active {
+            display: block;
+        }
 
         /* ===================== EXCHANGE PAGE ===================== */
         .exchange-grid {
@@ -299,19 +601,62 @@
         }
 
         .card {
-            background: rgba(26, 31, 58, 0.6);
-            backdrop-filter: blur(var(--blur-strength));
+            background:
+                radial-gradient(ellipse at 20% 10%, rgba(255, 255, 255, 0.16) 0%, transparent 60%),
+                radial-gradient(ellipse at 80% 90%, rgba(0, 217, 255, 0.07) 0%, transparent 50%),
+                rgba(14, 18, 44, 0.58);
+            backdrop-filter: blur(var(--blur-strength)) saturate(1.8) brightness(1.06);
+            -webkit-backdrop-filter: blur(var(--blur-strength)) saturate(1.8) brightness(1.06);
             border: 1px solid var(--glass-border);
-            border-radius: 20px;
+            border-radius: 22px;
             padding: 28px;
-            transition: all 0.4s ease;
-            animation: scaleIn 0.5s ease both;
+            transition: all 0.35s cubic-bezier(0.34, 1.56, 0.64, 1);
+            animation: scaleIn 0.45s ease both;
+            box-shadow:
+                0 20px 48px rgba(0, 0, 0, 0.42),
+                inset 0 1px 0 rgba(255, 255, 255, 0.22),
+                inset 0 -1px 0 rgba(0, 0, 0, 0.15),
+                0 0 0 1px rgba(255, 255, 255, 0.04);
+            will-change: transform;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .card::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: -100%;
+            width: 60%;
+            height: 100%;
+            background: linear-gradient(105deg, transparent 40%, rgba(255, 255, 255, 0.06) 50%, transparent 60%);
+            pointer-events: none;
+            transition: left 0.6s ease;
+        }
+
+        .card:hover::before {
+            left: 150%;
+        }
+
+        .card::after {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            height: 1px;
+            background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.5) 30%, rgba(0, 217, 255, 0.35) 70%, transparent);
+            pointer-events: none;
         }
 
         .card:hover {
-            border-color: rgba(0, 217, 255, 0.3);
-            box-shadow: 0 8px 32px rgba(0, 217, 255, 0.1);
-            transform: translateY(-2px);
+            border-color: rgba(0, 217, 255, 0.38);
+            box-shadow:
+                0 28px 64px rgba(0, 0, 0, 0.52),
+                0 0 0 1px rgba(0, 217, 255, 0.15),
+                inset 0 1px 0 rgba(255, 255, 255, 0.28),
+                0 0 40px rgba(0, 217, 255, 0.08);
+            transform: translateY(-3px);
         }
 
         .card-title {
@@ -332,14 +677,18 @@
 
         .exchange-card {
             flex: 1;
-            background: rgba(255,255,255,0.04);
+            background: rgba(255, 255, 255, 0.05);
             border: 1px solid var(--glass-border);
             border-radius: 14px;
             padding: 16px;
-            transition: border-color 0.3s ease;
+            transition: border-color 0.25s ease;
+            backdrop-filter: blur(8px);
         }
 
-        .exchange-card:focus-within { border-color: rgba(0, 217, 255, 0.5); }
+        .exchange-card:focus-within {
+            border-color: rgba(0, 217, 255, 0.55);
+            box-shadow: 0 0 20px rgba(0, 217, 255, 0.1);
+        }
 
         .exchange-card-title {
             font-size: 11px;
@@ -360,11 +709,20 @@
             cursor: pointer;
         }
 
-        .exchange-card input { font-size: 18px; font-weight: 600; }
-        .exchange-card input::placeholder { color: var(--text-muted); font-weight: 400; }
-        .exchange-card select option { background: var(--surface); }
+        .exchange-card input {
+            font-size: 18px;
+            font-weight: 600;
+        }
 
-        /* ===================== SWAP BUTTON FIX ===================== */
+        .exchange-card input::placeholder {
+            color: var(--text-muted);
+            font-weight: 400;
+        }
+
+        .exchange-card select option {
+            background: var(--surface);
+        }
+
         .swap-container {
             display: flex;
             align-items: center;
@@ -374,98 +732,135 @@
         }
 
         .swap-btn {
-            width: 46px; height: 46px;
+            width: 46px;
+            height: 46px;
             border-radius: 50%;
-            background: linear-gradient(135deg, rgba(0,217,255,0.15), rgba(0,255,163,0.1));
-            border: 2px solid rgba(0, 217, 255, 0.35);
+            background: radial-gradient(circle, rgba(0, 217, 255, 0.2), rgba(0, 255, 163, 0.08));
+            border: 2px solid rgba(0, 217, 255, 0.4);
             color: var(--primary);
             cursor: pointer;
-            display: flex; align-items: center; justify-content: center;
+            display: flex;
+            align-items: center;
+            justify-content: center;
             font-size: 18px;
-            transition: all 0.3s cubic-bezier(0.34, 1.56, 0.64, 1);
+            transition: all 0.25s cubic-bezier(0.34, 1.56, 0.64, 1);
             position: relative;
             overflow: hidden;
-        }
-
-        .swap-btn::before {
-            content: '';
-            position: absolute;
-            inset: 0;
-            background: radial-gradient(circle, rgba(0,217,255,0.3), transparent 70%);
-            opacity: 0;
-            transition: opacity 0.3s ease;
-            border-radius: 50%;
+            box-shadow: 0 4px 20px rgba(0, 217, 255, 0.15), inset 0 1px 0 rgba(255, 255, 255, 0.15);
+            will-change: transform;
         }
 
         .swap-btn:hover {
-            background: rgba(0, 217, 255, 0.25);
+            background: radial-gradient(circle, rgba(0, 217, 255, 0.35), rgba(0, 255, 163, 0.15));
             border-color: var(--primary);
             transform: scale(1.12);
-            box-shadow: 0 0 20px rgba(0, 217, 255, 0.4);
+            box-shadow: 0 0 28px rgba(0, 217, 255, 0.5), inset 0 1px 0 rgba(255, 255, 255, 0.2);
         }
 
-        .swap-btn:hover::before { opacity: 1; }
-
-        .swap-btn.spinning .bi { animation: swapSpin 0.55s cubic-bezier(0.34, 1.56, 0.64, 1) both; }
+        .swap-btn.spinning .bi {
+            animation: swapSpin 0.45s cubic-bezier(0.34, 1.56, 0.64, 1) both;
+        }
 
         .rate-display {
-            background: rgba(0, 217, 255, 0.05);
-            border: 1px solid rgba(0, 217, 255, 0.15);
-            border-radius: 10px;
+            background: rgba(0, 217, 255, 0.06);
+            border: 1px solid rgba(0, 217, 255, 0.18);
+            border-radius: 12px;
             padding: 12px 16px;
             font-size: 13px;
             text-align: center;
             margin-bottom: 20px;
+            backdrop-filter: blur(8px);
         }
 
-        .rate-display strong { color: var(--primary); font-weight: 600; }
+        .rate-display strong {
+            color: var(--primary);
+            font-weight: 600;
+        }
+
+        /* Loading spinner in rate display */
+        .rate-loading {
+            display: inline-block;
+            width: 14px;
+            height: 14px;
+            border: 2px solid rgba(0, 217, 255, 0.3);
+            border-top-color: var(--primary);
+            border-radius: 50%;
+            animation: spin360 0.7s linear infinite;
+            vertical-align: middle;
+            margin-right: 6px;
+        }
 
         .convert-btn {
             width: 100%;
             padding: 14px;
             background: linear-gradient(135deg, var(--primary) 0%, var(--secondary) 100%);
             border: none;
-            border-radius: 12px;
+            border-radius: 14px;
             color: var(--darker);
             font-size: 15px;
             font-weight: 700;
             cursor: pointer;
-            transition: all 0.3s cubic-bezier(0.34, 1.56, 0.64, 1);
+            transition: all 0.25s cubic-bezier(0.34, 1.56, 0.64, 1);
             letter-spacing: 0.5px;
+            box-shadow: 0 4px 20px rgba(0, 217, 255, 0.25);
+            will-change: transform;
         }
 
         .convert-btn:hover {
             transform: translateY(-2px) scale(1.02);
-            box-shadow: 0 8px 24px rgba(0, 217, 255, 0.4);
+            box-shadow: 0 10px 30px rgba(0, 217, 255, 0.45);
             filter: brightness(1.1);
         }
 
-        .convert-btn:active { transform: scale(0.97); filter: blur(1px); transition: all 0.1s; }
+        .convert-btn:active {
+            transform: scale(0.97);
+            transition: all 0.08s;
+        }
 
-        /* History */
+        /* ===================== HISTORY ===================== */
         .history-item {
             display: flex;
             justify-content: space-between;
             align-items: center;
             padding: 14px 16px;
-            background: rgba(255,255,255,0.03);
+            background: rgba(255, 255, 255, 0.04);
             border: 1px solid var(--glass-border);
-            border-radius: 12px;
+            border-radius: 14px;
             margin-bottom: 8px;
-            transition: all 0.3s ease;
+            transition: all 0.25s ease;
+            backdrop-filter: blur(8px);
         }
 
         .history-item:hover {
-            background: rgba(0, 217, 255, 0.05);
-            border-color: rgba(0, 217, 255, 0.2);
+            background: rgba(0, 217, 255, 0.07);
+            border-color: rgba(0, 217, 255, 0.25);
             transform: translateX(4px);
         }
 
-        .history-left p:first-child { font-weight: 600; font-size: 14px; }
-        .history-left p:last-child  { font-size: 12px; color: var(--text-muted); margin-top: 2px; }
-        .history-right { text-align: right; }
-        .history-right p:first-child { color: var(--success); font-weight: 600; }
-        .history-right p:last-child  { font-size: 12px; color: var(--success); }
+        .history-left p:first-child {
+            font-weight: 600;
+            font-size: 14px;
+        }
+
+        .history-left p:last-child {
+            font-size: 12px;
+            color: var(--text-muted);
+            margin-top: 2px;
+        }
+
+        .history-right {
+            text-align: right;
+        }
+
+        .history-right p:first-child {
+            color: var(--success);
+            font-weight: 600;
+        }
+
+        .history-right p:last-child {
+            font-size: 12px;
+            color: var(--success);
+        }
 
         /* ===================== MARKET PAGE ===================== */
         .market-grid {
@@ -475,32 +870,94 @@
         }
 
         .market-card {
-            background: rgba(26, 31, 58, 0.6);
-            backdrop-filter: blur(var(--blur-strength));
+            background:
+                radial-gradient(ellipse at 15% 10%, rgba(255, 255, 255, 0.15) 0%, transparent 55%),
+                radial-gradient(ellipse at 85% 85%, rgba(0, 255, 163, 0.06) 0%, transparent 45%),
+                rgba(14, 18, 44, 0.58);
+            backdrop-filter: blur(var(--blur-strength)) saturate(1.8) brightness(1.05);
+            -webkit-backdrop-filter: blur(var(--blur-strength)) saturate(1.8) brightness(1.05);
             border: 1px solid var(--glass-border);
-            border-radius: 18px;
+            border-radius: 20px;
             padding: 24px;
-            transition: all 0.4s cubic-bezier(0.34, 1.56, 0.64, 1);
-            animation: fadeInUp 0.5s ease both;
+            transition: all 0.35s cubic-bezier(0.34, 1.56, 0.64, 1);
+            animation: fadeInUp 0.45s ease both;
+            box-shadow:
+                0 16px 40px rgba(0, 0, 0, 0.4),
+                inset 0 1px 0 rgba(255, 255, 255, 0.22),
+                inset 0 -1px 0 rgba(0, 0, 0, 0.12),
+                0 0 0 1px rgba(255, 255, 255, 0.04);
+            will-change: transform;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .market-card::after {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            height: 1px;
+            background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.45) 40%, rgba(0, 217, 255, 0.3) 60%, transparent);
+            pointer-events: none;
         }
 
         .market-card:hover {
-            transform: translateY(-6px) scale(1.01);
-            border-color: rgba(0, 217, 255, 0.3);
-            box-shadow: 0 12px 40px rgba(0, 217, 255, 0.15);
+            transform: translateY(-7px) scale(1.015);
+            border-color: rgba(0, 217, 255, 0.42);
+            box-shadow:
+                0 28px 64px rgba(0, 0, 0, 0.52),
+                0 0 0 1px rgba(0, 217, 255, 0.18),
+                inset 0 1px 0 rgba(255, 255, 255, 0.3),
+                0 0 50px rgba(0, 217, 255, 0.1);
         }
 
-        .market-pair { font-size: 16px; font-weight: 700; margin-bottom: 4px; }
-        .market-sub  { font-size: 12px; color: var(--text-muted); margin-bottom: 16px; }
-        .market-rate { font-size: 26px; font-weight: 800; color: var(--primary); margin-bottom: 8px; }
+        .market-pair {
+            font-size: 16px;
+            font-weight: 700;
+            margin-bottom: 4px;
+        }
+
+        .market-sub {
+            font-size: 12px;
+            color: var(--text-muted);
+            margin-bottom: 16px;
+        }
+
+        .market-rate {
+            font-size: 26px;
+            font-weight: 800;
+            color: var(--primary);
+            margin-bottom: 8px;
+        }
 
         .market-change {
-            display: inline-flex; align-items: center; gap: 4px;
-            padding: 4px 10px; border-radius: 20px; font-size: 12px; font-weight: 700;
+            display: inline-flex;
+            align-items: center;
+            gap: 4px;
+            padding: 4px 10px;
+            border-radius: 20px;
+            font-size: 12px;
+            font-weight: 700;
         }
 
-        .market-change.up   { background: rgba(0, 217, 163, 0.15); color: var(--success); }
-        .market-change.down { background: rgba(255, 51, 102, 0.15); color: var(--danger); }
+        .market-change.up {
+            background: rgba(0, 217, 163, 0.15);
+            color: var(--success);
+        }
+
+        .market-change.down {
+            background: rgba(255, 51, 102, 0.15);
+            color: var(--danger);
+        }
+
+        .market-loading {
+            text-align: center;
+            padding: 40px;
+            color: var(--text-muted);
+            font-size: 14px;
+            grid-column: 1 / -1;
+        }
 
         /* ===================== CHAT PAGE ===================== */
         .chat-layout {
@@ -511,95 +968,154 @@
         }
 
         .chat-list {
-            background: rgba(26,31,58,0.6);
-            backdrop-filter: blur(var(--blur-strength));
+            background:
+                radial-gradient(circle at 0% 0%, rgba(255, 255, 255, 0.12), rgba(255, 255, 255, 0.03)),
+                rgba(14, 18, 44, 0.55);
+            backdrop-filter: blur(var(--blur-strength)) saturate(1.5);
+            -webkit-backdrop-filter: blur(var(--blur-strength)) saturate(1.5);
             border: 1px solid var(--glass-border);
-            border-radius: 20px;
+            border-radius: 22px;
             overflow-y: auto;
             padding: 16px;
+            box-shadow: 0 16px 40px rgba(0, 0, 0, 0.35), inset 0 1px 0 rgba(255, 255, 255, 0.12);
         }
 
         .chat-item {
-            display: flex; align-items: center; gap: 12px;
-            padding: 12px; border-radius: 12px; cursor: pointer;
-            transition: all 0.3s ease; margin-bottom: 8px;
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            padding: 12px;
+            border-radius: 14px;
+            cursor: pointer;
+            transition: all 0.25s ease;
+            margin-bottom: 8px;
         }
 
-        .chat-item:hover, .chat-item.active {
+        .chat-item:hover,
+        .chat-item.active {
             background: rgba(0, 217, 255, 0.1);
+            box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.08);
         }
 
         .chat-avatar {
-            width: 44px; height: 44px; border-radius: 50%;
+            width: 44px;
+            height: 44px;
+            border-radius: 50%;
             background: linear-gradient(135deg, var(--primary), var(--secondary));
-            display: flex; align-items: center; justify-content: center;
-            font-weight: 700; font-size: 16px; color: var(--darker);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: 700;
+            font-size: 16px;
+            color: var(--darker);
             flex-shrink: 0;
+            box-shadow: 0 4px 12px rgba(0, 217, 255, 0.2);
         }
 
-        .chat-name { font-size: 14px; font-weight: 600; }
-        .chat-preview { font-size: 12px; color: var(--text-muted); }
+        .chat-name {
+            font-size: 14px;
+            font-weight: 600;
+        }
+
+        .chat-preview {
+            font-size: 12px;
+            color: var(--text-muted);
+        }
 
         .chat-main {
-            background: rgba(26,31,58,0.6);
-            backdrop-filter: blur(var(--blur-strength));
+            background:
+                radial-gradient(circle at 0% 0%, rgba(255, 255, 255, 0.12), rgba(255, 255, 255, 0.03)),
+                rgba(14, 18, 44, 0.55);
+            backdrop-filter: blur(var(--blur-strength)) saturate(1.5);
+            -webkit-backdrop-filter: blur(var(--blur-strength)) saturate(1.5);
             border: 1px solid var(--glass-border);
-            border-radius: 20px;
-            display: flex; flex-direction: column;
+            border-radius: 22px;
+            display: flex;
+            flex-direction: column;
             overflow: hidden;
+            box-shadow: 0 16px 40px rgba(0, 0, 0, 0.35), inset 0 1px 0 rgba(255, 255, 255, 0.12);
         }
 
         .chat-header {
             padding: 20px 24px;
             border-bottom: 1px solid var(--glass-border);
-            display: flex; align-items: center; gap: 12px;
-            background: rgba(255,255,255,0.02);
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            background: rgba(255, 255, 255, 0.03);
         }
 
         .chat-messages {
-            flex: 1; overflow-y: auto; padding: 24px;
-            display: flex; flex-direction: column; gap: 16px;
+            flex: 1;
+            overflow-y: auto;
+            padding: 24px;
+            display: flex;
+            flex-direction: column;
+            gap: 16px;
             scroll-behavior: smooth;
         }
 
-        .message { display: flex; }
-        .message.own { justify-content: flex-end; }
+        .message {
+            display: flex;
+        }
+
+        .message.own {
+            justify-content: flex-end;
+        }
 
         .message-bubble {
-            max-width: 70%; padding: 12px 16px; border-radius: 16px;
-            font-size: 14px; line-height: 1.5;
+            max-width: 70%;
+            padding: 12px 16px;
+            border-radius: 16px;
+            font-size: 14px;
+            line-height: 1.5;
         }
 
         .message-bubble.other {
-            background: rgba(255,255,255,0.07);
+            background: rgba(255, 255, 255, 0.08);
             border: 1px solid var(--glass-border);
             border-radius: 16px 16px 16px 4px;
             animation: fadeInLeft 0.3s ease both;
+            backdrop-filter: blur(8px);
         }
 
         .message-bubble.own {
             background: linear-gradient(135deg, var(--primary-dark), #005f8a);
             border-radius: 16px 16px 4px 16px;
             animation: slideInRight 0.3s ease both;
+            box-shadow: 0 4px 16px rgba(0, 153, 204, 0.3);
         }
 
         .chat-input-area {
             padding: 20px 24px;
             border-top: 1px solid var(--glass-border);
-            display: flex; gap: 12px; align-items: center;
-            background: rgba(255,255,255,0.02);
+            display: flex;
+            gap: 12px;
+            align-items: center;
+            background: rgba(255, 255, 255, 0.02);
         }
 
         .chat-input {
-            flex: 1; background: rgba(255,255,255,0.06);
+            flex: 1;
+            background: rgba(255, 255, 255, 0.07);
             border: 1px solid var(--glass-border);
-            border-radius: 12px; padding: 12px 16px;
-            color: var(--text); font-size: 14px; outline: none;
-            transition: border-color 0.3s ease;
+            border-radius: 12px;
+            padding: 12px 16px;
+            color: var(--text);
+            font-size: 14px;
+            outline: none;
+            transition: border-color 0.25s ease;
+            backdrop-filter: blur(8px);
         }
 
-        .chat-input:focus { border-color: rgba(0, 217, 255, 0.5); }
-        .chat-input::placeholder { color: var(--text-muted); }
+        .chat-input:focus {
+            border-color: rgba(0, 217, 255, 0.55);
+            box-shadow: 0 0 20px rgba(0, 217, 255, 0.08);
+        }
+
+        .chat-input::placeholder {
+            color: var(--text-muted);
+        }
 
         /* ===================== PROFILE PAGE ===================== */
         .profile-grid {
@@ -609,48 +1125,90 @@
         }
 
         .profile-card {
-            background: rgba(26,31,58,0.6);
-            backdrop-filter: blur(var(--blur-strength));
+            background:
+                radial-gradient(circle at 0% 0%, rgba(255, 255, 255, 0.13), rgba(255, 255, 255, 0.03)),
+                rgba(14, 18, 44, 0.55);
+            backdrop-filter: blur(var(--blur-strength)) saturate(1.5);
+            -webkit-backdrop-filter: blur(var(--blur-strength)) saturate(1.5);
             border: 1px solid var(--glass-border);
-            border-radius: 20px;
+            border-radius: 22px;
             padding: 32px;
             text-align: center;
-            animation: scaleIn 0.5s ease both;
+            animation: scaleIn 0.45s ease both;
+            box-shadow: 0 20px 48px rgba(0, 0, 0, 0.4), inset 0 1px 0 rgba(255, 255, 255, 0.13);
         }
 
         .profile-avatar {
-            width: 90px; height: 90px;
+            width: 90px;
+            height: 90px;
             border-radius: 50%;
             background: linear-gradient(135deg, var(--primary), var(--secondary));
-            display: flex; align-items: center; justify-content: center;
-            font-size: 36px; font-weight: 800; color: var(--darker);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 36px;
+            font-weight: 800;
+            color: var(--darker);
             margin: 0 auto 20px;
             animation: pulse-glow 2.5s infinite;
+            box-shadow: 0 8px 32px rgba(0, 217, 255, 0.25);
         }
 
-        .profile-name  { font-size: 20px; font-weight: 700; margin-bottom: 4px; }
-        .profile-email { font-size: 13px; color: var(--text-muted); margin-bottom: 24px; }
+        .profile-name {
+            font-size: 20px;
+            font-weight: 700;
+            margin-bottom: 4px;
+        }
 
-        .profile-stats { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; }
+        .profile-email {
+            font-size: 13px;
+            color: var(--text-muted);
+            margin-bottom: 24px;
+        }
+
+        .profile-stats {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 12px;
+        }
 
         .stat-item {
-            background: rgba(255,255,255,0.04);
-            border-radius: 12px;
+            background: rgba(255, 255, 255, 0.05);
+            border-radius: 14px;
             padding: 14px;
-            transition: all 0.3s ease;
+            transition: all 0.25s ease;
+            border: 1px solid rgba(255, 255, 255, 0.07);
+            backdrop-filter: blur(8px);
         }
 
-        .stat-item:hover { background: rgba(0,217,255,0.08); transform: scale(1.03); }
-        .stat-value { font-size: 20px; font-weight: 800; color: var(--primary); }
-        .stat-label { font-size: 11px; color: var(--text-muted); margin-top: 2px; }
+        .stat-item:hover {
+            background: rgba(0, 217, 255, 0.09);
+            transform: scale(1.03);
+        }
+
+        .stat-value {
+            font-size: 20px;
+            font-weight: 800;
+            color: var(--primary);
+        }
+
+        .stat-label {
+            font-size: 11px;
+            color: var(--text-muted);
+            margin-top: 2px;
+        }
 
         .profile-details {
-            background: rgba(26,31,58,0.6);
-            backdrop-filter: blur(var(--blur-strength));
+            background:
+                radial-gradient(circle at 0% 0%, rgba(255, 255, 255, 0.12), rgba(255, 255, 255, 0.03)),
+                rgba(14, 18, 44, 0.55);
+            backdrop-filter: blur(var(--blur-strength)) saturate(1.5);
+            -webkit-backdrop-filter: blur(var(--blur-strength)) saturate(1.5);
             border: 1px solid var(--glass-border);
-            border-radius: 20px;
+            border-radius: 22px;
             padding: 28px;
-            animation: slideInRight 0.5s ease both;
+            animation: slideInRight 0.45s ease both;
+            box-shadow: 0 20px 48px rgba(0, 0, 0, 0.4), inset 0 1px 0 rgba(255, 255, 255, 0.13);
         }
 
         .detail-item {
@@ -658,44 +1216,83 @@
             justify-content: space-between;
             align-items: center;
             padding: 14px 0;
-            border-bottom: 1px solid rgba(255,255,255,0.05);
+            border-bottom: 1px solid rgba(255, 255, 255, 0.05);
         }
 
-        .detail-item:last-child { border-bottom: none; }
-        .detail-label { color: var(--text-muted); font-size: 14px; }
-        .detail-value { font-weight: 600; font-size: 14px; }
+        .detail-item:last-child {
+            border-bottom: none;
+        }
+
+        .detail-label {
+            color: var(--text-muted);
+            font-size: 14px;
+        }
+
+        .detail-value {
+            font-weight: 600;
+            font-size: 14px;
+        }
 
         /* ===================== NOTIFICATION ===================== */
         .notification {
             position: fixed;
-            top: 28px; right: 28px;
+            top: 28px;
+            right: 28px;
             z-index: 9999;
-            background: rgba(10, 14, 39, 0.92);
-            backdrop-filter: blur(24px) saturate(1.5);
-            border: 1px solid rgba(0,217,255,0.35);
-            border-radius: 16px;
+            background:
+                radial-gradient(ellipse at 15% 20%, rgba(255, 255, 255, 0.18) 0%, transparent 55%),
+                radial-gradient(ellipse at 85% 80%, rgba(0, 217, 255, 0.09) 0%, transparent 50%),
+                rgba(8, 12, 32, 0.88);
+            backdrop-filter: blur(36px) saturate(2) brightness(1.08);
+            -webkit-backdrop-filter: blur(36px) saturate(2) brightness(1.08);
+            border: 1px solid rgba(255, 255, 255, 0.22);
+            border-top-color: rgba(255, 255, 255, 0.35);
+            border-radius: 18px;
             padding: 16px 22px;
             max-width: 360px;
             min-width: 260px;
-            box-shadow: 0 8px 40px rgba(0,0,0,0.5), 0 0 0 1px rgba(0,217,255,0.1);
+            box-shadow:
+                0 16px 56px rgba(0, 0, 0, 0.6),
+                0 0 0 1px rgba(0, 217, 255, 0.12),
+                inset 0 1px 0 rgba(255, 255, 255, 0.3),
+                inset 0 -1px 0 rgba(0, 0, 0, 0.15);
             animation: notifSlide 3.8s cubic-bezier(0.22, 1, 0.36, 1) forwards;
+            pointer-events: none;
+            overflow: hidden;
+        }
+
+        .notification::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            height: 1px;
+            background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.7) 40%, rgba(0, 217, 255, 0.5) 60%, transparent);
             pointer-events: none;
         }
 
         .notification-inner {
-            display: flex; align-items: flex-start; gap: 12px;
+            display: flex;
+            align-items: flex-start;
+            gap: 12px;
         }
 
         .notification-icon {
-            font-size: 22px; flex-shrink: 0;
-            filter: drop-shadow(0 0 6px rgba(0,217,255,0.6));
+            font-size: 22px;
+            flex-shrink: 0;
+            filter: drop-shadow(0 0 6px rgba(0, 217, 255, 0.6));
         }
 
-        .notification-body { flex: 1; }
+        .notification-body {
+            flex: 1;
+        }
 
         .notification-title {
-            font-size: 13px; font-weight: 700;
-            color: var(--primary); margin-bottom: 3px;
+            font-size: 13px;
+            font-weight: 700;
+            color: var(--primary);
+            margin-bottom: 3px;
             letter-spacing: 0.3px;
         }
 
@@ -713,871 +1310,1082 @@
             animation: notifProgress 3.5s linear forwards;
         }
 
-        @keyframes notifProgress {
-            from { width: 100%; opacity: 1; }
-            to   { width: 0%;   opacity: 0.4; }
+        .notification.success {
+            border-color: rgba(0, 217, 163, 0.4);
+            box-shadow: 0 16px 56px rgba(0, 0, 0, 0.6), 0 0 0 1px rgba(0, 217, 163, 0.15), inset 0 1px 0 rgba(255, 255, 255, 0.3);
         }
 
-        .notification.success { border-color: rgba(0, 217, 163, 0.4); }
-        .notification.success .notification-title { color: var(--success); }
-        .notification.success .notification-progress { background: linear-gradient(90deg, var(--success), var(--secondary)); }
+        .notification.success .notification-title {
+            color: var(--success);
+        }
 
-        .notification.error { border-color: rgba(255, 51, 102, 0.4); }
-        .notification.error .notification-title { color: var(--danger); }
-        .notification.error .notification-progress { background: linear-gradient(90deg, var(--danger), var(--warning)); }
+        .notification.success .notification-progress {
+            background: linear-gradient(90deg, var(--success), var(--secondary));
+        }
 
-        .notification.warning { border-color: rgba(255, 165, 0, 0.4); }
-        .notification.warning .notification-title { color: var(--warning); }
-        .notification.warning .notification-progress { background: linear-gradient(90deg, var(--warning), #ffd700); }
+        .notification.error {
+            border-color: rgba(255, 51, 102, 0.4);
+            box-shadow: 0 16px 56px rgba(0, 0, 0, 0.6), 0 0 0 1px rgba(255, 51, 102, 0.15), inset 0 1px 0 rgba(255, 255, 255, 0.3);
+        }
+
+        .notification.error .notification-title {
+            color: var(--danger);
+        }
+
+        .notification.error .notification-progress {
+            background: linear-gradient(90deg, var(--danger), var(--warning));
+        }
+
+        .notification.warning {
+            border-color: rgba(255, 165, 0, 0.4);
+            box-shadow: 0 16px 56px rgba(0, 0, 0, 0.6), 0 0 0 1px rgba(255, 165, 0, 0.15), inset 0 1px 0 rgba(255, 255, 255, 0.3);
+        }
+
+        .notification.warning .notification-title {
+            color: var(--warning);
+        }
+
+        .notification.warning .notification-progress {
+            background: linear-gradient(90deg, var(--warning), #ffd700);
+        }
 
         /* ===================== SETTINGS PANEL ===================== */
         .settings-overlay {
-            position: fixed; inset: 0; z-index: 500;
-            background: rgba(5, 8, 18, 0.65);
-            backdrop-filter: blur(8px);
-            opacity: 0; pointer-events: none;
-            transition: opacity 0.4s ease;
+            position: fixed;
+            inset: 0;
+            z-index: 500;
+            background: rgba(4, 8, 20, 0.70);
+            backdrop-filter: blur(10px);
+            opacity: 0;
+            pointer-events: none;
+            transition: opacity 0.35s ease;
         }
 
         .settings-overlay.open {
-            opacity: 1; pointer-events: all;
-            animation: overlayIn 0.4s ease both;
+            opacity: 1;
+            pointer-events: all;
+            animation: overlayIn 0.35s ease both;
         }
 
         .settings-panel {
             position: fixed;
-            top: 0; right: 0;
-            width: 420px; height: 100vh;
-            background: rgba(12, 16, 38, 0.96);
-            backdrop-filter: blur(30px) saturate(1.8);
+            top: 0;
+            right: 0;
+            width: 420px;
+            height: 100vh;
+            background:
+                radial-gradient(circle at 0% 0%, rgba(255, 255, 255, 0.13), rgba(255, 255, 255, 0.03)),
+                rgba(10, 13, 34, 0.96);
+            backdrop-filter: blur(36px) saturate(1.8);
+            -webkit-backdrop-filter: blur(36px) saturate(1.8);
             border-left: 1px solid var(--glass-border);
+            box-shadow: -8px 0 48px rgba(0, 0, 0, 0.55), inset 1px 0 0 rgba(255, 255, 255, 0.08);
             z-index: 501;
             transform: translateX(100%);
-            transition: transform 0.45s cubic-bezier(0.34, 1.56, 0.64, 1);
-            display: flex; flex-direction: column;
+            transition: transform 0.4s cubic-bezier(0.34, 1.56, 0.64, 1);
+            display: flex;
+            flex-direction: column;
             overflow: hidden;
         }
 
         .settings-panel.open {
             transform: translateX(0);
-            animation: settingsOpen 0.45s cubic-bezier(0.34, 1.56, 0.64, 1) both;
+            animation: settingsOpen 0.4s cubic-bezier(0.34, 1.56, 0.64, 1) both;
         }
 
         .settings-header {
             padding: 28px 28px 20px;
             border-bottom: 1px solid var(--glass-border);
-            display: flex; align-items: center; justify-content: space-between;
-            background: rgba(0,217,255,0.04);
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            background: rgba(0, 217, 255, 0.04);
         }
 
-        .settings-header h2 { font-size: 20px; font-weight: 700; }
-        .settings-header h2 span { color: var(--primary); }
+        .settings-header h2 {
+            font-size: 20px;
+            font-weight: 700;
+        }
+
+        .settings-header h2 span {
+            color: var(--primary);
+        }
 
         .settings-close {
-            width: 36px; height: 36px; border-radius: 10px;
-            border: 1px solid var(--glass-border); background: var(--glass);
-            color: var(--text); cursor: pointer;
-            display: flex; align-items: center; justify-content: center;
+            width: 36px;
+            height: 36px;
+            border-radius: 10px;
+            border: 1px solid var(--glass-border);
+            background: var(--glass);
+            color: var(--text);
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
             font-size: 18px;
-            transition: all 0.3s cubic-bezier(0.34, 1.56, 0.64, 1);
+            transition: all 0.25s cubic-bezier(0.34, 1.56, 0.64, 1);
         }
 
         .settings-close:hover {
-            background: rgba(255,51,102,0.15); border-color: var(--danger);
-            color: var(--danger); transform: rotate(90deg) scale(1.1);
+            background: rgba(255, 51, 102, 0.15);
+            border-color: var(--danger);
+            color: var(--danger);
+            transform: rotate(90deg) scale(1.1);
         }
 
-        .settings-body { flex: 1; overflow-y: auto; padding: 24px 28px; }
+        .settings-body {
+            flex: 1;
+            overflow-y: auto;
+            padding: 24px 28px;
+        }
 
         .settings-section {
             margin-bottom: 32px;
-            animation: fadeInUp 0.4s ease both;
+            animation: fadeInUp 0.35s ease both;
         }
 
         .settings-section-title {
-            font-size: 11px; letter-spacing: 2px;
-            text-transform: uppercase; color: var(--text-muted);
-            margin-bottom: 16px; padding-bottom: 8px;
-            border-bottom: 1px solid rgba(255,255,255,0.05);
+            font-size: 11px;
+            letter-spacing: 2px;
+            text-transform: uppercase;
+            color: var(--text-muted);
+            margin-bottom: 16px;
+            padding-bottom: 8px;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.05);
         }
 
         .settings-item {
-            display: flex; align-items: center; justify-content: space-between;
-            padding: 14px 16px; border-radius: 14px;
-            background: rgba(255,255,255,0.03);
-            border: 1px solid rgba(255,255,255,0.06);
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding: 14px 16px;
+            border-radius: 14px;
+            background:
+                radial-gradient(ellipse at 0% 0%, rgba(255, 255, 255, 0.10) 0%, transparent 60%),
+                rgba(255, 255, 255, 0.04);
+            border: 1px solid rgba(255, 255, 255, 0.10);
+            border-top-color: rgba(255, 255, 255, 0.18);
             margin-bottom: 10px;
-            transition: all 0.3s ease;
+            transition: all 0.3s cubic-bezier(0.34, 1.56, 0.64, 1);
+            backdrop-filter: blur(16px) saturate(1.5);
+            -webkit-backdrop-filter: blur(16px) saturate(1.5);
+            box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.12), 0 2px 8px rgba(0, 0, 0, 0.15);
+            position: relative;
+            overflow: hidden;
+        }
+
+        .settings-item::after {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            height: 1px;
+            background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.4) 50%, transparent);
+            opacity: 0.6;
+            pointer-events: none;
         }
 
         .settings-item:hover {
-            background: rgba(0,217,255,0.05);
-            border-color: rgba(0,217,255,0.2);
+            background:
+                radial-gradient(ellipse at 0% 0%, rgba(0, 217, 255, 0.12) 0%, transparent 60%),
+                rgba(0, 217, 255, 0.05);
+            border-color: rgba(0, 217, 255, 0.28);
+            box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.18), 0 4px 16px rgba(0, 217, 255, 0.08);
+            transform: translateX(2px);
         }
 
-        .settings-item-left { display: flex; align-items: center; gap: 14px; }
+        .settings-item-left {
+            display: flex;
+            align-items: center;
+            gap: 14px;
+        }
 
         .settings-item-icon {
-            width: 40px; height: 40px; border-radius: 10px;
-            background: rgba(0,217,255,0.1);
-            display: flex; align-items: center; justify-content: center;
-            font-size: 18px; color: var(--primary);
+            width: 40px;
+            height: 40px;
+            border-radius: 10px;
+            background: rgba(0, 217, 255, 0.1);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 18px;
+            color: var(--primary);
         }
 
-        .settings-item-info { }
-        .settings-item-name  { font-size: 14px; font-weight: 600; }
-        .settings-item-desc  { font-size: 12px; color: var(--text-muted); margin-top: 2px; }
+        .settings-item-name {
+            font-size: 14px;
+            font-weight: 600;
+        }
 
-        /* Toggle Switch */
+        .settings-item-desc {
+            font-size: 12px;
+            color: var(--text-muted);
+            margin-top: 2px;
+        }
+
         .toggle {
-            position: relative; width: 48px; height: 26px;
+            position: relative;
+            width: 48px;
+            height: 26px;
             flex-shrink: 0;
         }
 
-        .toggle input { opacity: 0; width: 0; height: 0; }
+        .toggle input {
+            opacity: 0;
+            width: 0;
+            height: 0;
+        }
 
         .toggle-slider {
-            position: absolute; inset: 0;
-            background: rgba(255,255,255,0.1);
-            border-radius: 13px; cursor: pointer;
-            border: 1px solid rgba(255,255,255,0.15);
-            transition: all 0.35s cubic-bezier(0.34, 1.56, 0.64, 1);
+            position: absolute;
+            inset: 0;
+            background: rgba(255, 255, 255, 0.1);
+            border-radius: 13px;
+            cursor: pointer;
+            border: 1px solid rgba(255, 255, 255, 0.15);
+            transition: all 0.3s cubic-bezier(0.34, 1.56, 0.64, 1);
         }
 
         .toggle-slider::before {
             content: '';
             position: absolute;
-            width: 20px; height: 20px;
-            left: 2px; top: 2px;
+            width: 20px;
+            height: 20px;
+            left: 2px;
+            top: 2px;
             background: var(--text-muted);
             border-radius: 50%;
-            transition: all 0.35s cubic-bezier(0.34, 1.56, 0.64, 1);
+            transition: all 0.3s cubic-bezier(0.34, 1.56, 0.64, 1);
         }
 
-        .toggle input:checked + .toggle-slider {
-            background: rgba(0,217,255,0.25);
-            border-color: rgba(0,217,255,0.5);
-            box-shadow: 0 0 12px rgba(0,217,255,0.3);
+        .toggle input:checked~.toggle-slider {
+            background: rgba(0, 217, 255, 0.25);
+            border-color: rgba(0, 217, 255, 0.5);
+            box-shadow: 0 0 12px rgba(0, 217, 255, 0.3);
         }
 
-        .toggle input:checked + .toggle-slider::before {
+        .toggle input:checked~.toggle-slider::before {
             transform: translateX(22px);
             background: var(--primary);
-            box-shadow: 0 0 8px rgba(0,217,255,0.6);
+            box-shadow: 0 0 8px rgba(0, 217, 255, 0.6);
         }
 
-        /* Select in settings */
         .settings-select {
-            background: rgba(255,255,255,0.06);
+            background: rgba(255, 255, 255, 0.07);
             border: 1px solid var(--glass-border);
-            border-radius: 8px; padding: 6px 10px;
-            color: var(--text); font-size: 13px;
-            cursor: pointer; outline: none;
-            transition: border-color 0.3s ease;
+            border-radius: 8px;
+            padding: 6px 10px;
+            color: var(--text);
+            font-size: 13px;
+            cursor: pointer;
+            outline: none;
+            transition: border-color 0.25s ease;
         }
 
-        .settings-select:focus { border-color: rgba(0,217,255,0.5); }
-        .settings-select option { background: var(--surface); }
+        .settings-select:focus {
+            border-color: rgba(0, 217, 255, 0.5);
+        }
 
-        /* Color dots */
-        .theme-dots { display: flex; gap: 8px; }
+        .settings-select option {
+            background: var(--surface);
+        }
+
+        .theme-dots {
+            display: flex;
+            gap: 8px;
+        }
 
         .theme-dot {
-            width: 24px; height: 24px; border-radius: 50%;
-            cursor: pointer; transition: all 0.3s cubic-bezier(0.34, 1.56, 0.64, 1);
+            width: 24px;
+            height: 24px;
+            border-radius: 50%;
+            cursor: pointer;
+            transition: all 0.25s cubic-bezier(0.34, 1.56, 0.64, 1);
             border: 2px solid transparent;
         }
 
-        .theme-dot:hover, .theme-dot.active {
+        .theme-dot:hover,
+        .theme-dot.active {
             transform: scale(1.3);
             border-color: white;
+            box-shadow: 0 0 12px rgba(255, 255, 255, 0.3);
         }
 
         .settings-footer {
             padding: 20px 28px;
             border-top: 1px solid var(--glass-border);
-            background: rgba(0,217,255,0.02);
+            background: rgba(0, 217, 255, 0.02);
         }
 
         .settings-save-btn {
-            width: 100%; padding: 14px;
+            width: 100%;
+            padding: 14px;
             background: linear-gradient(135deg, var(--primary), var(--secondary));
-            border: none; border-radius: 12px;
-            color: var(--darker); font-size: 15px; font-weight: 700;
+            border: none;
+            border-radius: 12px;
+            color: var(--darker);
+            font-size: 15px;
+            font-weight: 700;
             cursor: pointer;
-            transition: all 0.3s cubic-bezier(0.34, 1.56, 0.64, 1);
+            transition: all 0.25s cubic-bezier(0.34, 1.56, 0.64, 1);
+            box-shadow: 0 4px 20px rgba(0, 217, 255, 0.25);
+            will-change: transform;
         }
 
         .settings-save-btn:hover {
             transform: translateY(-2px);
-            box-shadow: 0 8px 24px rgba(0,217,255,0.4);
+            box-shadow: 0 10px 30px rgba(0, 217, 255, 0.45);
             filter: brightness(1.08);
         }
 
         /* ===================== RESPONSIVE ===================== */
         @media (max-width: 768px) {
             .sidebar {
-                position: fixed; left: -300px;
-                top: 0; height: 100vh;
-                transition: left 0.4s cubic-bezier(0.34, 1.56, 0.64, 1);
+                position: fixed;
+                left: -300px;
+                top: 0;
+                height: 100vh;
+                transition: left 0.35s cubic-bezier(0.34, 1.56, 0.64, 1);
             }
 
-            .sidebar.active { left: 0; }
-            .exchange-grid, .profile-grid { grid-template-columns: 1fr; }
-            .chat-layout { grid-template-columns: 1fr; }
-            .settings-panel { width: 100%; }
-            .content-area { padding: 20px 16px; }
+            .sidebar.active {
+                left: 0;
+            }
+
+            .exchange-grid,
+            .profile-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .chat-layout {
+                grid-template-columns: 1fr;
+            }
+
+            .settings-panel {
+                width: 100%;
+            }
+
+            .content-area {
+                padding: 20px 16px;
+            }
         }
 
-        /* Scrollbar */
-        ::-webkit-scrollbar { width: 5px; }
-        ::-webkit-scrollbar-track { background: transparent; }
-        ::-webkit-scrollbar-thumb { background: rgba(0,217,255,0.2); border-radius: 4px; }
-        ::-webkit-scrollbar-thumb:hover { background: rgba(0,217,255,0.4); }
+        /* ===================== SCROLLBAR ===================== */
+        ::-webkit-scrollbar {
+            width: 5px;
+        }
+
+        ::-webkit-scrollbar-track {
+            background: transparent;
+        }
+
+        ::-webkit-scrollbar-thumb {
+            background: rgba(0, 217, 255, 0.2);
+            border-radius: 4px;
+        }
+
+        ::-webkit-scrollbar-thumb:hover {
+            background: rgba(0, 217, 255, 0.4);
+        }
     </style>
 </head>
+
 <body>
 
-<!-- ===================== SETTINGS OVERLAY + PANEL ===================== -->
-<div class="settings-overlay" id="settingsOverlay" onclick="closeSettings()"></div>
-<div class="settings-panel" id="settingsPanel">
-    <div class="settings-header">
-        <h2>⚙️ Cài <span>Đặt</span></h2>
-        <button class="settings-close" onclick="closeSettings()"><i class="bi bi-x-lg"></i></button>
-    </div>
-
-    <div class="settings-body">
-
-        <!-- Giao diện -->
-        <div class="settings-section" style="animation-delay:0.05s">
-            <div class="settings-section-title">🎨 Giao Diện</div>
-
-            <div class="settings-item">
-                <div class="settings-item-left">
-                    <div class="settings-item-icon"><i class="bi bi-moon-stars"></i></div>
-                    <div class="settings-item-info">
-                        <div class="settings-item-name">Chế độ tối</div>
-                        <div class="settings-item-desc">Bật/tắt dark mode</div>
-                    </div>
-                </div>
-                <label class="toggle">
-                    <input type="checkbox" id="darkMode" checked onchange="applySetting('darkMode')">
-                    <span class="toggle-slider"></span>
-                </label>
-            </div>
-
-            <div class="settings-item">
-                <div class="settings-item-left">
-                    <div class="settings-item-icon"><i class="bi bi-wind"></i></div>
-                    <div class="settings-item-info">
-                        <div class="settings-item-name">Motion Blur</div>
-                        <div class="settings-item-desc">Hiệu ứng mờ khi chuyển trang</div>
-                    </div>
-                </div>
-                <label class="toggle">
-                    <input type="checkbox" id="motionBlur" checked onchange="applySetting('motionBlur')">
-                    <span class="toggle-slider"></span>
-                </label>
-            </div>
-
-            <div class="settings-item">
-                <div class="settings-item-left">
-                    <div class="settings-item-icon"><i class="bi bi-lightning"></i></div>
-                    <div class="settings-item-info">
-                        <div class="settings-item-name">Hoạt ảnh mượt</div>
-                        <div class="settings-item-desc">Smooth transition toàn cục</div>
-                    </div>
-                </div>
-                <label class="toggle">
-                    <input type="checkbox" id="smoothAnim" checked onchange="applySetting('smoothAnim')">
-                    <span class="toggle-slider"></span>
-                </label>
-            </div>
-
-            <div class="settings-item">
-                <div class="settings-item-left">
-                    <div class="settings-item-icon"><i class="bi bi-palette"></i></div>
-                    <div class="settings-item-info">
-                        <div class="settings-item-name">Màu chủ đạo</div>
-                        <div class="settings-item-desc">Chọn màu accent</div>
-                    </div>
-                </div>
-                <div class="theme-dots">
-                    <div class="theme-dot active" style="background:#00d9ff"  onclick="setAccentColor('#00d9ff','#00ffa3',this)"></div>
-                    <div class="theme-dot" style="background:#a855f7"  onclick="setAccentColor('#a855f7','#ec4899',this)"></div>
-                    <div class="theme-dot" style="background:#f97316"  onclick="setAccentColor('#f97316','#fbbf24',this)"></div>
-                    <div class="theme-dot" style="background:#22c55e"  onclick="setAccentColor('#22c55e','#86efac',this)"></div>
-                </div>
-            </div>
+    <!-- SETTINGS OVERLAY / PANEL -->
+    <div class="settings-overlay" id="settingsOverlay" onclick="closeSettings()"></div>
+    <div class="settings-panel" id="settingsPanel">
+        <div class="settings-header">
+            <h2>Cài <span>Đặt</span></h2>
+            <button class="settings-close" onclick="closeSettings()"><i class="bi bi-x-lg"></i></button>
         </div>
-
-        <!-- Thông báo -->
-        <div class="settings-section" style="animation-delay:0.1s">
-            <div class="settings-section-title">🔔 Thông Báo</div>
-
-            <div class="settings-item">
-                <div class="settings-item-left">
-                    <div class="settings-item-icon"><i class="bi bi-bell"></i></div>
-                    <div class="settings-item-info">
-                        <div class="settings-item-name">Thông báo giao dịch</div>
-                        <div class="settings-item-desc">Khi chuyển đổi tiền thành công</div>
-                    </div>
-                </div>
-                <label class="toggle">
-                    <input type="checkbox" id="notifTx" checked onchange="applySetting('notifTx')">
-                    <span class="toggle-slider"></span>
-                </label>
-            </div>
-
-            <div class="settings-item">
-                <div class="settings-item-left">
-                    <div class="settings-item-icon"><i class="bi bi-graph-up-arrow"></i></div>
-                    <div class="settings-item-info">
-                        <div class="settings-item-name">Cảnh báo tỷ giá</div>
-                        <div class="settings-item-desc">Khi tỷ giá biến động mạnh</div>
-                    </div>
-                </div>
-                <label class="toggle">
-                    <input type="checkbox" id="notifRate" checked onchange="applySetting('notifRate')">
-                    <span class="toggle-slider"></span>
-                </label>
-            </div>
-
-            <div class="settings-item">
-                <div class="settings-item-left">
-                    <div class="settings-item-icon"><i class="bi bi-chat-dots"></i></div>
-                    <div class="settings-item-info">
-                        <div class="settings-item-name">Thông báo chat</div>
-                        <div class="settings-item-desc">Tin nhắn từ hỗ trợ viên</div>
-                    </div>
-                </div>
-                <label class="toggle">
-                    <input type="checkbox" id="notifChat" onchange="applySetting('notifChat')">
-                    <span class="toggle-slider"></span>
-                </label>
-            </div>
-
-            <div class="settings-item">
-                <div class="settings-item-left">
-                    <div class="settings-item-icon"><i class="bi bi-volume-up"></i></div>
-                    <div class="settings-item-info">
-                        <div class="settings-item-name">Âm thanh thông báo</div>
-                        <div class="settings-item-desc">Phát âm khi có alert</div>
-                    </div>
-                </div>
-                <label class="toggle">
-                    <input type="checkbox" id="notifSound" onchange="applySetting('notifSound')">
-                    <span class="toggle-slider"></span>
-                </label>
-            </div>
-        </div>
-
-        <!-- Tỷ giá -->
-        <div class="settings-section" style="animation-delay:0.15s">
-            <div class="settings-section-title">💱 Tỷ Giá</div>
-
-            <div class="settings-item">
-                <div class="settings-item-left">
-                    <div class="settings-item-icon"><i class="bi bi-arrow-repeat"></i></div>
-                    <div class="settings-item-info">
-                        <div class="settings-item-name">Tự động cập nhật</div>
-                        <div class="settings-item-desc">Làm mới tỷ giá tự động</div>
-                    </div>
-                </div>
-                <label class="toggle">
-                    <input type="checkbox" id="autoRefresh" checked onchange="applySetting('autoRefresh')">
-                    <span class="toggle-slider"></span>
-                </label>
-            </div>
-
-            <div class="settings-item">
-                <div class="settings-item-left">
-                    <div class="settings-item-icon"><i class="bi bi-clock"></i></div>
-                    <div class="settings-item-info">
-                        <div class="settings-item-name">Chu kỳ cập nhật</div>
-                        <div class="settings-item-desc">Tần suất làm mới dữ liệu</div>
-                    </div>
-                </div>
-                <select class="settings-select" id="refreshRate">
-                    <option value="30">30 giây</option>
-                    <option value="60" selected>1 phút</option>
-                    <option value="300">5 phút</option>
-                    <option value="600">10 phút</option>
-                </select>
-            </div>
-
-            <div class="settings-item">
-                <div class="settings-item-left">
-                    <div class="settings-item-icon"><i class="bi bi-currency-exchange"></i></div>
-                    <div class="settings-item-info">
-                        <div class="settings-item-name">Tiền mặc định</div>
-                        <div class="settings-item-desc">Loại tiền hiển thị đầu tiên</div>
-                    </div>
-                </div>
-                <select class="settings-select" id="defaultCurrency">
-                    <option value="USD">USD</option>
-                    <option value="VND" selected>VND</option>
-                    <option value="EUR">EUR</option>
-                </select>
-            </div>
-        </div>
-
-        <!-- Bảo mật -->
-        <div class="settings-section" style="animation-delay:0.2s">
-            <div class="settings-section-title">🔒 Bảo Mật</div>
-
-            <div class="settings-item">
-                <div class="settings-item-left">
-                    <div class="settings-item-icon"><i class="bi bi-fingerprint"></i></div>
-                    <div class="settings-item-info">
-                        <div class="settings-item-name">Xác thực sinh trắc học</div>
-                        <div class="settings-item-desc">Face ID / Vân tay</div>
-                    </div>
-                </div>
-                <label class="toggle">
-                    <input type="checkbox" id="biometric" onchange="applySetting('biometric')">
-                    <span class="toggle-slider"></span>
-                </label>
-            </div>
-
-            <div class="settings-item">
-                <div class="settings-item-left">
-                    <div class="settings-item-icon"><i class="bi bi-shield-lock"></i></div>
-                    <div class="settings-item-info">
-                        <div class="settings-item-name">Khóa ứng dụng</div>
-                        <div class="settings-item-desc">Yêu cầu mã PIN khi mở</div>
-                    </div>
-                </div>
-                <label class="toggle">
-                    <input type="checkbox" id="appLock" onchange="applySetting('appLock')">
-                    <span class="toggle-slider"></span>
-                </label>
-            </div>
-        </div>
-
-        <!-- Phiên bản -->
-        <div class="settings-section" style="animation-delay:0.25s">
-            <div class="settings-section-title">ℹ️ Thông Tin</div>
-            <div class="settings-item">
-                <div class="settings-item-left">
-                    <div class="settings-item-icon"><i class="bi bi-info-circle"></i></div>
-                    <div class="settings-item-info">
-                        <div class="settings-item-name">Phiên bản</div>
-                        <div class="settings-item-desc">FluxTea v2.1.0</div>
-                    </div>
-                </div>
-                <span style="color:var(--text-muted);font-size:12px;">Latest ✓</span>
-            </div>
-        </div>
-
-    </div>
-
-    <div class="settings-footer">
-        <button class="settings-save-btn" onclick="saveSettings()">
-            <i class="bi bi-check2-circle"></i> Lưu Cài Đặt
-        </button>
-    </div>
-</div>
-
-<div class="app-wrapper">
-    <!-- SIDEBAR -->
-    <aside class="sidebar" id="sidebar">
-        <div class="logo-section">
-            <div class="logo">FluxTea</div>
-            <div class="logo-sub">Premium Exchange</div>
-        </div>
-
-        <nav class="nav-section">
-            <div class="nav-label">Menu Chính</div>
-            <div class="nav-item active" onclick="switchPage('exchange', this)">
-                <div class="nav-icon"><i class="bi bi-currency-exchange"></i></div>
-                <span class="nav-text">Đổi Tiền</span>
-            </div>
-            <div class="nav-item" onclick="switchPage('market', this)">
-                <div class="nav-icon"><i class="bi bi-graph-up"></i></div>
-                <span class="nav-text">Thị Trường</span>
-            </div>
-            <div class="nav-item" onclick="switchPage('chat', this)">
-                <div class="nav-icon"><i class="bi bi-chat-dots"></i></div>
-                <span class="nav-text">Hỗ Trợ</span>
-                <span class="nav-badge">2</span>
-            </div>
-            <div class="nav-item" onclick="switchPage('profile', this)">
-                <div class="nav-icon"><i class="bi bi-person"></i></div>
-                <span class="nav-text">Hồ Sơ</span>
-            </div>
-        </nav>
-    </aside>
-
-    <!-- MAIN -->
-    <div class="main-content">
-        <!-- TOP BAR -->
-        <header class="top-bar">
-            <div style="display:flex;align-items:center;gap:16px">
-                <button class="icon-btn" onclick="toggleSidebar()" id="menuBtn">
-                    <i class="bi bi-list"></i>
-                </button>
-                <h1 class="page-title" id="pageTitle">Đổi Tiền</h1>
-            </div>
-            <div class="top-actions">
-                <button class="icon-btn" onclick="refreshRates()" title="Làm mới tỷ giá">
-                    <i class="bi bi-arrow-clockwise"></i>
-                </button>
-                <button class="icon-btn" onclick="openSettings()" title="Cài đặt">
-                    <i class="bi bi-gear"></i>
-                </button>
-                <button class="icon-btn" onclick="showNotification('info','📣 Thông Báo Hệ Thống','Tỷ giá USD/VND vừa được cập nhật!')" title="Thông báo">
-                    <i class="bi bi-bell"></i>
-                </button>
-            </div>
-        </header>
-
-        <div class="content-area">
-            <!-- EXCHANGE PAGE -->
-            <div class="page active" id="exchange">
-                <div class="exchange-grid">
-                    <!-- Converter -->
-                    <div class="card" style="animation-delay:0.1s">
-                        <div class="card-title">
-                            <i class="bi bi-currency-exchange" style="color:var(--primary)"></i>
-                            Chuyển Đổi Tiền Tệ
-                            <span style="font-size:11px;color:var(--text-muted);font-weight:400;margin-left:auto">Tỷ giá thực tế</span>
+        <div class="settings-body">
+            <!-- Giao diện -->
+            <div class="settings-section" style="animation-delay:0.05s">
+                <div class="settings-section-title">Giao Diện</div>
+                <div class="settings-item">
+                    <div class="settings-item-left">
+                        <div class="settings-item-icon"><i class="bi bi-moon-stars"></i></div>
+                        <div class="settings-item-info">
+                            <div class="settings-item-name">Chế tối</div>
+                            <div class="settings-item-desc">Bật tắt dark mode</div>
                         </div>
-
-                        <!-- FROM -->
-                        <div class="exchange-row">
-                            <div class="exchange-card">
-                                <div class="exchange-card-title">Tiền Gửi</div>
-                                <select id="fromCurrency" onchange="updateRate()">
-                                    <option value="USD">🇺🇸 USD - Đô La Mỹ</option>
-                                    <option value="VND">🇻🇳 VND - Đồng Việt Nam</option>
-                                    <option value="EUR">🇪🇺 EUR - Euro</option>
-                                    <option value="BRL">🇧🇷 BRL - Real Brazil</option>
-                                    <option value="USDT">💎 USDT - Tether</option>
-                                </select>
-                            </div>
-                            <div class="exchange-card" style="flex:1.4">
-                                <div class="exchange-card-title">Số Lượng</div>
-                                <input type="number" id="fromAmount" placeholder="0.00" oninput="updateRate()" min="0">
-                            </div>
+                    </div>
+                    <label class="toggle"><input type="checkbox" id="darkMode" checked
+                            onchange="applySetting('darkMode')"><span class="toggle-slider"></span></label>
+                </div>
+                <div class="settings-item">
+                    <div class="settings-item-left">
+                        <div class="settings-item-icon"><i class="bi bi-wind"></i></div>
+                        <div class="settings-item-info">
+                            <div class="settings-item-name">Motion Blur</div>
+                            <div class="settings-item-desc">Hiệu ứng mờ khi chuyển trang</div>
                         </div>
+                    </div>
+                    <label class="toggle"><input type="checkbox" id="motionBlur" checked
+                            onchange="applySetting('motionBlur')"><span class="toggle-slider"></span></label>
+                </div>
+                <div class="settings-item">
+                    <div class="settings-item-left">
+                        <div class="settings-item-icon"><i class="bi bi-lightning"></i></div>
+                        <div class="settings-item-info">
+                            <div class="settings-item-name">Hoạt ảnh mượt</div>
+                            <div class="settings-item-desc">Smooth transition toàn cục</div>
+                        </div>
+                    </div>
+                    <label class="toggle"><input type="checkbox" id="smoothAnim" checked
+                            onchange="applySetting('smoothAnim')"><span class="toggle-slider"></span></label>
+                </div>
+                <div class="settings-item">
+                    <div class="settings-item-left">
+                        <div class="settings-item-icon"><i class="bi bi-palette"></i></div>
+                        <div class="settings-item-info">
+                            <div class="settings-item-name">Màu chủ đạo</div>
+                            <div class="settings-item-desc">Chọn màu accent</div>
+                        </div>
+                    </div>
+                    <div class="theme-dots">
+                        <div class="theme-dot active" style="background:#00d9ff"
+                            onclick="setAccentColor('#00d9ff','#00ffa3',this)"></div>
+                        <div class="theme-dot" style="background:#a855f7"
+                            onclick="setAccentColor('#a855f7','#ec4899',this)"></div>
+                        <div class="theme-dot" style="background:#f97316"
+                            onclick="setAccentColor('#f97316','#fbbf24',this)"></div>
+                        <div class="theme-dot" style="background:#22c55e"
+                            onclick="setAccentColor('#22c55e','#86efac',this)"></div>
+                    </div>
+                </div>
+            </div>
+            <!-- Thông báo -->
+            <div class="settings-section" style="animation-delay:0.1s">
+                <div class="settings-section-title">Thông Báo</div>
+                <div class="settings-item">
+                    <div class="settings-item-left">
+                        <div class="settings-item-icon"><i class="bi bi-bell"></i></div>
+                        <div class="settings-item-info">
+                            <div class="settings-item-name">Thông báo giao dịch</div>
+                            <div class="settings-item-desc">Khi chuyển đổi tiền thành công</div>
+                        </div>
+                    </div>
+                    <label class="toggle"><input type="checkbox" id="notifTx" checked
+                            onchange="applySetting('notifTx')"><span class="toggle-slider"></span></label>
+                </div>
+                <div class="settings-item">
+                    <div class="settings-item-left">
+                        <div class="settings-item-icon"><i class="bi bi-graph-up-arrow"></i></div>
+                        <div class="settings-item-info">
+                            <div class="settings-item-name">Cảnh báo tỷ giá</div>
+                            <div class="settings-item-desc">Khi tỷ giá biến động mạnh</div>
+                        </div>
+                    </div>
+                    <label class="toggle"><input type="checkbox" id="notifRate" checked
+                            onchange="applySetting('notifRate')"><span class="toggle-slider"></span></label>
+                </div>
+                <div class="settings-item">
+                    <div class="settings-item-left">
+                        <div class="settings-item-icon"><i class="bi bi-chat-dots"></i></div>
+                        <div class="settings-item-info">
+                            <div class="settings-item-name">Thông báo chat</div>
+                            <div class="settings-item-desc">Tin nhắn từ hỗ trợ viên</div>
+                        </div>
+                    </div>
+                    <label class="toggle"><input type="checkbox" id="notifChat"
+                            onchange="applySetting('notifChat')"><span class="toggle-slider"></span></label>
+                </div>
+                <div class="settings-item">
+                    <div class="settings-item-left">
+                        <div class="settings-item-icon"><i class="bi bi-volume-up"></i></div>
+                        <div class="settings-item-info">
+                            <div class="settings-item-name">Âm thanh thông báo</div>
+                            <div class="settings-item-desc">Phát âm khi có alert</div>
+                        </div>
+                    </div>
+                    <label class="toggle"><input type="checkbox" id="notifSound"
+                            onchange="applySetting('notifSound')"><span class="toggle-slider"></span></label>
+                </div>
+            </div>
+            <!-- Tỷ giá -->
+            <div class="settings-section" style="animation-delay:0.15s">
+                <div class="settings-section-title">Tỷ Giá</div>
+                <div class="settings-item">
+                    <div class="settings-item-left">
+                        <div class="settings-item-icon"><i class="bi bi-arrow-repeat"></i></div>
+                        <div class="settings-item-info">
+                            <div class="settings-item-name">Tự động cập nhật</div>
+                            <div class="settings-item-desc">Làm mới tỷ giá tự động</div>
+                        </div>
+                    </div>
+                    <label class="toggle"><input type="checkbox" id="autoRefresh" checked
+                            onchange="applySetting('autoRefresh')"><span class="toggle-slider"></span></label>
+                </div>
+                <div class="settings-item">
+                    <div class="settings-item-left">
+                        <div class="settings-item-icon"><i class="bi bi-clock"></i></div>
+                        <div class="settings-item-info">
+                            <div class="settings-item-name">Chu kỳ cập nhật</div>
+                            <div class="settings-item-desc">Tần suất làm mới dữ liệu</div>
+                        </div>
+                    </div>
+                    <select class="settings-select" id="refreshRate">
+                        <option value="30">30 giây</option>
+                        <option value="60" selected>1 phút</option>
+                        <option value="300">5 phút</option>
+                        <option value="600">10 phút</option>
+                    </select>
+                </div>
+                <div class="settings-item">
+                    <div class="settings-item-left">
+                        <div class="settings-item-icon"><i class="bi bi-currency-exchange"></i></div>
+                        <div class="settings-item-info">
+                            <div class="settings-item-name">Tiền mặc định</div>
+                            <div class="settings-item-desc">Loại tiền hiển thị đầu tiên</div>
+                        </div>
+                    </div>
+                    <select class="settings-select" id="defaultCurrency">
+                        <option value="USD">USD</option>
+                        <option value="VND" selected>VND</option>
+                        <option value="EUR">EUR</option>
+                    </select>
+                </div>
+            </div>
+            <!-- Bảo mật -->
+            <div class="settings-section" style="animation-delay:0.2s">
+                <div class="settings-section-title">Bảo Mật</div>
+                <div class="settings-item">
+                    <div class="settings-item-left">
+                        <div class="settings-item-icon"><i class="bi bi-fingerprint"></i></div>
+                        <div class="settings-item-info">
+                            <div class="settings-item-name">Xác thực sinh trắc học</div>
+                            <div class="settings-item-desc">Face ID / Vân tay</div>
+                        </div>
+                    </div>
+                    <label class="toggle"><input type="checkbox" id="biometric"
+                            onchange="applySetting('biometric')"><span class="toggle-slider"></span></label>
+                </div>
+                <div class="settings-item">
+                    <div class="settings-item-left">
+                        <div class="settings-item-icon"><i class="bi bi-shield-lock"></i></div>
+                        <div class="settings-item-info">
+                            <div class="settings-item-name">Khóa ứng dụng</div>
+                            <div class="settings-item-desc">Yêu cầu mở PIN khi mở</div>
+                        </div>
+                    </div>
+                    <label class="toggle"><input type="checkbox" id="appLock" onchange="applySetting('appLock')"><span
+                            class="toggle-slider"></span></label>
+                </div>
+            </div>
+            <!-- Thông tin -->
+            <div class="settings-section" style="animation-delay:0.25s">
+                <div class="settings-section-title">Thông Tin</div>
+                <div class="settings-item">
+                    <div class="settings-item-left">
+                        <div class="settings-item-icon"><i class="bi bi-info-circle"></i></div>
+                        <div class="settings-item-info">
+                            <div class="settings-item-name">Phiên bản</div>
+                            <div class="settings-item-desc">FluxTea v2.1.0</div>
+                        </div>
+                    </div>
+                    <span style="color:var(--text-muted);font-size:12px">Latest</span>
+                </div>
+            </div>
+        </div>
+        <div class="settings-footer">
+            <button class="settings-save-btn" onclick="saveSettings()"><i class="bi bi-check2-circle"></i> Lưu Cài
+                Đặt</button>
+        </div>
+    </div>
 
-                        <!-- SWAP BUTTON (FIXED) -->
-                        <div class="swap-container">
-                            <button class="swap-btn" id="swapBtn" onclick="swapCurrencies()" title="Hoán đổi tiền tệ">
-                                <i class="bi bi-arrow-left-right"></i>
+    <div class="app-wrapper">
+        <!-- SIDEBAR -->
+        <aside class="sidebar" id="sidebar">
+            <div class="logo-section">
+                <div class="logo">FluxTea</div>
+                <div class="logo-sub">Premium Exchange</div>
+            </div>
+            <nav class="nav-section">
+                <div class="nav-label">Menu Chính</div>
+                <div class="nav-item active" onclick="switchPage('exchange', this)">
+                    <div class="nav-icon"><i class="bi bi-currency-exchange"></i></div>
+                    <span class="nav-text">Đổi Tiền</span>
+                </div>
+                <div class="nav-item" onclick="switchPage('market', this)">
+                    <div class="nav-icon"><i class="bi bi-graph-up"></i></div>
+                    <span class="nav-text">Thị Trường</span>
+                </div>
+                <div class="nav-item" onclick="switchPage('chat', this)">
+                    <div class="nav-icon"><i class="bi bi-chat-dots"></i></div>
+                    <span class="nav-text">Hỗ Trợ</span>
+                    <span class="nav-badge">2</span>
+                </div>
+                <div class="nav-item" onclick="switchPage('profile', this)">
+                    <div class="nav-icon"><i class="bi bi-person"></i></div>
+                    <span class="nav-text">Hồ Sơ</span>
+                </div>
+            </nav>
+        </aside>
+
+        <!-- MAIN -->
+        <div class="main-content">
+            <!-- TOP BAR -->
+            <header class="top-bar">
+                <div style="display:flex;align-items:center;gap:16px">
+                    <button class="icon-btn" onclick="toggleSidebar()" id="menuBtn"><i class="bi bi-list"></i></button>
+                    <h1 class="page-title" id="pageTitle">Đổi Tiền</h1>
+                </div>
+                <div class="top-actions">
+                    <button class="icon-btn" onclick="refreshRates()" title="Làm mới tỷ giá"><i
+                            class="bi bi-arrow-clockwise" id="refreshIcon"></i></button>
+                    <button class="icon-btn" onclick="openSettings()" title="Cài đặt"><i
+                            class="bi bi-gear"></i></button>
+                    <button class="icon-btn"
+                        onclick="showNotification('info','🔔 Thông Báo','Tỷ giá USD/VND vừa được cập nhật!')"
+                        title="Thông báo"><i class="bi bi-bell"></i></button>
+                </div>
+            </header>
+
+            <div class="content-area">
+                <!-- EXCHANGE PAGE -->
+                <div class="page active" id="exchange">
+                    <div class="exchange-grid">
+                        <!-- Converter -->
+                        <div class="card" style="animation-delay:0.1s">
+                            <div class="card-title">
+                                <i class="bi bi-currency-exchange" style="color:var(--primary)"></i>
+                                Chuyển Đổi Tiền Tệ
+                                <span style="font-size:11px;color:var(--text-muted);font-weight:400;margin-left:auto">Tỷ
+                                    giá thực tế</span>
+                            </div>
+                            <!-- FROM -->
+                            <div class="exchange-row">
+                                <div class="exchange-card">
+                                    <div class="exchange-card-title">Tiền Gửi</div>
+                                    <select id="fromCurrency" onchange="updateRate()">
+                                        <option value="USD">USD - La Mỹ</option>
+                                        <option value="VND">VND - Đồng Việt Nam</option>
+                                        <option value="EUR">EUR - Euro</option>
+                                        <option value="BRL">BRL - Real Brazil</option>
+                                        <option value="USDT">USDT - Tether</option>
+                                        <option value="GBP">GBP - Bảng Anh</option>
+                                        <option value="JPY">JPY - Yên Nhật</option>
+                                        <option value="KRW">KRW - Won Hàn Quốc</option>
+                                        <option value="CNY">CNY - Nhân dân tệ</option>
+                                        <option value="AUD">AUD - Đô Úc</option>
+                                        <option value="CAD">CAD - Đô Canada</option>
+                                        <option value="THB">THB - Baht Thái</option>
+                                        <option value="SGD">SGD - Đô Singapore</option>
+                                    </select>
+                                </div>
+                                <div class="exchange-card" style="flex:1.4">
+                                    <div class="exchange-card-title">Số Lượng</div>
+                                    <input type="number" id="fromAmount" placeholder="0.00" oninput="updateRate()"
+                                        min="0">
+                                </div>
+                            </div>
+                            <!-- SWAP -->
+                            <div class="swap-container">
+                                <button class="swap-btn" id="swapBtn" onclick="swapCurrencies()"
+                                    title="Hoán đổi tiền tệ">
+                                    <i class="bi bi-arrow-left-right"></i>
+                                </button>
+                            </div>
+                            <!-- TO -->
+                            <div class="exchange-row" style="margin-top:12px">
+                                <div class="exchange-card">
+                                    <div class="exchange-card-title">Tiền Nhận</div>
+                                    <select id="toCurrency" onchange="updateRate()">
+                                        <option value="USD">USD - La Mỹ</option>
+                                        <option value="VND" selected>VND - Đồng Việt Nam</option>
+                                        <option value="EUR">EUR - Euro</option>
+                                        <option value="BRL">BRL - Real Brazil</option>
+                                        <option value="USDT">USDT - Tether</option>
+                                        <option value="GBP">GBP - Bảng Anh</option>
+                                        <option value="JPY">JPY - Yên Nhật</option>
+                                        <option value="KRW">KRW - Won Hàn Quốc</option>
+                                        <option value="CNY">CNY - Nhân dân tệ</option>
+                                        <option value="AUD">AUD - Đô Úc</option>
+                                        <option value="CAD">CAD - Đô Canada</option>
+                                        <option value="THB">THB - Baht Thái</option>
+                                        <option value="SGD">SGD - Đô Singapore</option>
+                                    </select>
+                                </div>
+                                <div class="exchange-card" style="flex:1.4">
+                                    <div class="exchange-card-title">Số Lượng</div>
+                                    <input type="number" id="toAmount" placeholder="0.00" readonly
+                                        style="cursor:default;opacity:0.8">
+                                </div>
+                            </div>
+                            <!-- Rate display -->
+                            <div class="rate-display">
+                                <span id="rateText">Nhập số tiền để xem tỷ giá...</span><br>
+                                <small id="rateTime" style="color:var(--text-muted);font-size:11px"></small>
+                            </div>
+                            <button class="convert-btn" onclick="convertCurrency()">
+                                <i class="bi bi-check2-circle"></i> Xác Nhận Chuyển Đổi
                             </button>
                         </div>
 
-                        <!-- TO -->
-                        <div class="exchange-row" style="margin-top:12px">
-                            <div class="exchange-card">
-                                <div class="exchange-card-title">Tiền Nhận</div>
-                                <select id="toCurrency" onchange="updateRate()">
-                                    <option value="USD">🇺🇸 USD - Đô La Mỹ</option>
-                                    <option value="VND" selected>🇻🇳 VND - Đồng Việt Nam</option>
-                                    <option value="EUR">🇪🇺 EUR - Euro</option>
-                                    <option value="BRL">🇧🇷 BRL - Real Brazil</option>
-                                    <option value="USDT">💎 USDT - Tether</option>
-                                </select>
+                        <!-- History -->
+                        <div class="card" style="animation-delay:0.2s">
+                            <div class="card-title">
+                                <i class="bi bi-clock-history" style="color:var(--secondary)"></i>
+                                Lịch Sử Giao Dịch
                             </div>
-                            <div class="exchange-card" style="flex:1.4">
-                                <div class="exchange-card-title">Số Lượng</div>
-                                <input type="number" id="toAmount" placeholder="0.00" readonly style="cursor:default;opacity:0.8">
-                            </div>
-                        </div>
-
-                        <!-- Rate display -->
-                        <div class="rate-display">
-                            <span id="rateText">Nhập số tiền để xem tỷ giá...</span><br>
-                            <small id="rateTime" style="color:var(--text-muted);font-size:11px"></small>
-                        </div>
-
-                        <button class="convert-btn" onclick="convertCurrency()">
-                            <i class="bi bi-check2-circle"></i> Xác Nhận Chuyển Đổi
-                        </button>
-                    </div>
-
-                    <!-- History -->
-                    <div class="card" style="animation-delay:0.2s">
-                        <div class="card-title">
-                            <i class="bi bi-clock-history" style="color:var(--secondary)"></i>
-                            Lịch Sử Giao Dịch
-                        </div>
-                        <div id="historyList">
-                            <div class="history-item">
-                                <div class="history-left">
-                                    <p>100 USD → VND</p>
-                                    <p>2026-02-19 14:30</p>
-                                </div>
-                                <div class="history-right">
-                                    <p>2,613,962 VND</p>
-                                    <p>✓ Thành công</p>
+                            <div id="historyList">
+                                <div class="history-item">
+                                    <div class="history-left">
+                                        <p>100 USD → VND</p>
+                                        <p>2026-02-19 14:30</p>
+                                    </div>
+                                    <div class="history-right">
+                                        <p>2,613,962 VND</p>
+                                        <p>✓ Thành công</p>
+                                    </div>
                                 </div>
                             </div>
                         </div>
                     </div>
                 </div>
-            </div>
 
-            <!-- MARKET PAGE -->
-            <div class="page" id="market">
-                <div style="margin-bottom:24px">
-                    <h2 style="font-size:20px;font-weight:700;margin-bottom:4px">📈 Thị Trường Tiền Tệ</h2>
-                    <p style="color:var(--text-muted);font-size:14px">Tỷ giá thực tế cập nhật 24/7</p>
-                </div>
-                <div class="market-grid">
-                    <div class="market-card" style="animation-delay:0.05s">
-                        <div class="market-pair">USD/VND</div>
-                        <div class="market-sub">1 USD = ? VND</div>
-                        <div class="market-rate">26,139.62</div>
-                        <span class="market-change up"><i class="bi bi-arrow-up-short"></i> +0.08%</span>
+                <!-- MARKET PAGE -->
+                <div class="page" id="market">
+                    <div style="margin-bottom:24px">
+                        <h2 style="font-size:20px;font-weight:700;margin-bottom:4px">📈 Thị Trường Tiền Tệ</h2>
+                        <p style="color:var(--text-muted);font-size:14px" id="marketUpdateTime">Đang tải tỷ giá thực
+                            tế...</p>
                     </div>
-                    <div class="market-card" style="animation-delay:0.1s">
-                        <div class="market-pair">EUR/VND</div>
-                        <div class="market-sub">1 EUR = ? VND</div>
-                        <div class="market-rate">28,412.50</div>
-                        <span class="market-change up"><i class="bi bi-arrow-up-short"></i> +0.15%</span>
-                    </div>
-                    <div class="market-card" style="animation-delay:0.15s">
-                        <div class="market-pair">BRL/VND</div>
-                        <div class="market-sub">1 BRL = ? VND</div>
-                        <div class="market-rate">5,082.35</div>
-                        <span class="market-change down"><i class="bi bi-arrow-down-short"></i> -0.23%</span>
-                    </div>
-                    <div class="market-card" style="animation-delay:0.2s">
-                        <div class="market-pair">USDT/VND</div>
-                        <div class="market-sub">1 USDT = ? VND</div>
-                        <div class="market-rate">26,139.62</div>
-                        <span class="market-change up"><i class="bi bi-arrow-up-short"></i> +0.12%</span>
-                    </div>
-                    <div class="market-card" style="animation-delay:0.25s">
-                        <div class="market-pair">USD/EUR</div>
-                        <div class="market-sub">1 USD = ? EUR</div>
-                        <div class="market-rate">0.92</div>
-                        <span class="market-change up"><i class="bi bi-arrow-up-short"></i> +0.06%</span>
-                    </div>
-                    <div class="market-card" style="animation-delay:0.3s">
-                        <div class="market-pair">USD/BRL</div>
-                        <div class="market-sub">1 USD = ? BRL</div>
-                        <div class="market-rate">5.14</div>
-                        <span class="market-change down"><i class="bi bi-arrow-down-short"></i> -0.18%</span>
-                    </div>
-                </div>
-            </div>
-
-            <!-- CHAT PAGE -->
-            <div class="page" id="chat">
-                <div class="chat-layout">
-                    <div class="chat-list">
-                        <div style="font-size:13px;color:var(--text-muted);margin-bottom:12px;padding:4px 8px">Kênh hỗ trợ</div>
-                        <div class="chat-item active" onclick="selectChat(this)">
-                            <div class="chat-avatar">S</div>
-                            <div>
-                                <div class="chat-name">Support Team</div>
-                                <div class="chat-preview">Chúng tôi sẽ giúp bạn...</div>
-                            </div>
-                        </div>
-                        <div class="chat-item" onclick="selectChat(this)">
-                            <div class="chat-avatar" style="background:linear-gradient(135deg,var(--accent),var(--warning))">H</div>
-                            <div>
-                                <div class="chat-name">Hỗ Trợ Thanh Toán</div>
-                                <div class="chat-preview">Bạn cần giúp gì?</div>
-                            </div>
-                        </div>
-                        <div class="chat-item" onclick="selectChat(this)">
-                            <div class="chat-avatar" style="background:linear-gradient(135deg,var(--secondary),#00aaff)">C</div>
-                            <div>
-                                <div class="chat-name">Cộng Đồng</div>
-                                <div class="chat-preview">Tham gia trao đổi...</div>
-                            </div>
-                        </div>
-                    </div>
-
-                    <div class="chat-main">
-                        <div class="chat-header">
-                            <div class="chat-avatar" style="width:38px;height:38px;font-size:14px">S</div>
-                            <div>
-                                <div style="font-weight:700">Support Team</div>
-                                <div style="font-size:12px;color:var(--success)">● Trực tuyến</div>
-                            </div>
-                        </div>
-                        <div class="chat-messages" id="chatMessages">
-                            <div class="message">
-                                <div class="message-bubble other">👋 Xin chào! Tôi là trợ lý của FluxTea. Tôi có thể giúp gì cho bạn?</div>
-                            </div>
-                        </div>
-                        <div class="chat-input-area">
-                            <input class="chat-input" id="chatInput" placeholder="Nhập tin nhắn..." onkeydown="if(event.key==='Enter') sendMessage()">
-                            <button class="icon-btn" onclick="sendMessage()" style="background:linear-gradient(135deg,var(--primary),var(--secondary));border:none;color:var(--darker)">
-                                <i class="bi bi-send"></i>
-                            </button>
+                    <div class="market-grid" id="marketGrid">
+                        <div class="market-loading">
+                            <div class="rate-loading" style="width:20px;height:20px;display:inline-block"></div>
+                            Đang tải dữ liệu thị trường...
                         </div>
                     </div>
                 </div>
-            </div>
 
-            <!-- PROFILE PAGE -->
-            <div class="page" id="profile">
-                <div class="profile-grid">
-                    <div class="profile-card">
-                        <div class="profile-avatar">A</div>
-                        <div class="profile-name">Nguyễn Minh A</div>
-                        <div class="profile-email">nguyenminh@example.com</div>
-                        <div class="profile-stats">
-                            <div class="stat-item">
-                                <div class="stat-value">1,243</div>
-                                <div class="stat-label">Giao Dịch</div>
+                <!-- CHAT PAGE -->
+                <div class="page" id="chat">
+                    <div class="chat-layout">
+                        <div class="chat-list">
+                            <div style="font-size:13px;color:var(--text-muted);margin-bottom:12px;padding:4px 8px">Kênh
+                                hỗ trợ</div>
+                            <div class="chat-item active" onclick="selectChat(this)">
+                                <div class="chat-avatar">S</div>
+                                <div>
+                                    <div class="chat-name">Support Team</div>
+                                    <div class="chat-preview">Chúng tôi sẽ giúp bạn...</div>
+                                </div>
                             </div>
-                            <div class="stat-item">
-                                <div class="stat-value">$50K+</div>
-                                <div class="stat-label">Tổng Chuyển</div>
+                            <div class="chat-item" onclick="selectChat(this)">
+                                <div class="chat-avatar"
+                                    style="background:linear-gradient(135deg,var(--accent),var(--warning))">H</div>
+                                <div>
+                                    <div class="chat-name">Hỗ Trợ Thanh Toán</div>
+                                    <div class="chat-preview">Bạn cần giúp gì?</div>
+                                </div>
                             </div>
-                            <div class="stat-item">
-                                <div class="stat-value">2 năm</div>
-                                <div class="stat-label">Thành Viên</div>
+                            <div class="chat-item" onclick="selectChat(this)">
+                                <div class="chat-avatar"
+                                    style="background:linear-gradient(135deg,var(--secondary),#00aaff)">C</div>
+                                <div>
+                                    <div class="chat-name">Cộng Đồng</div>
+                                    <div class="chat-preview">Tham gia trao đổi...</div>
+                                </div>
                             </div>
-                            <div class="stat-item">
-                                <div class="stat-value">Gold ⭐</div>
-                                <div class="stat-label">Xếp Hạng</div>
+                        </div>
+                        <div class="chat-main">
+                            <div class="chat-header">
+                                <div class="chat-avatar" style="width:38px;height:38px;font-size:14px">S</div>
+                                <div>
+                                    <div style="font-weight:700">Support Team</div>
+                                    <div style="font-size:12px;color:var(--success)">● Trực tuyến</div>
+                                </div>
                             </div>
-                        </div>
-                    </div>
-
-                    <div class="profile-details">
-                        <div class="card-title"><i class="bi bi-person-badge" style="color:var(--primary)"></i> Thông Tin Tài Khoản</div>
-                        <div class="detail-item">
-                            <span class="detail-label">Họ và tên</span>
-                            <span class="detail-value">Nguyễn Minh A</span>
-                        </div>
-                        <div class="detail-item">
-                            <span class="detail-label">Email</span>
-                            <span class="detail-value">nguyenminh@example.com</span>
-                        </div>
-                        <div class="detail-item">
-                            <span class="detail-label">Số điện thoại</span>
-                            <span class="detail-value">+84 9xx xxx xxx</span>
-                        </div>
-                        <div class="detail-item">
-                            <span class="detail-label">Quốc gia</span>
-                            <span class="detail-value">🇻🇳 Việt Nam</span>
-                        </div>
-                        <div class="detail-item">
-                            <span class="detail-label">Trạng thái KYC</span>
-                            <span class="detail-value" style="color:var(--success)">✓ Đã xác minh</span>
-                        </div>
-                        <div class="detail-item">
-                            <span class="detail-label">Ngày tham gia</span>
-                            <span class="detail-value">15/02/2024</span>
+                            <div class="chat-messages" id="chatMessages">
+                                <div class="message">
+                                    <div class="message-bubble other">Xin chào! Tôi là trợ lý của FluxTea. Tôi có thể
+                                        giúp gì cho bạn? 😊</div>
+                                </div>
+                            </div>
+                            <div class="chat-input-area">
+                                <input class="chat-input" id="chatInput" placeholder="Nhập tin nhắn..."
+                                    onkeydown="if(event.key==='Enter') sendMessage()">
+                                <button class="icon-btn" onclick="sendMessage()"
+                                    style="background:linear-gradient(135deg,var(--primary),var(--secondary));border:none;color:var(--darker)">
+                                    <i class="bi bi-send"></i>
+                                </button>
+                            </div>
                         </div>
                     </div>
                 </div>
-            </div>
 
-        </div><!-- end content-area -->
-    </div><!-- end main-content -->
-</div><!-- end app-wrapper -->
+                <!-- PROFILE PAGE -->
+                <div class="page" id="profile">
+                    <div class="profile-grid">
+                        <div class="profile-card">
+                            <div class="profile-avatar">A</div>
+                            <div class="profile-name">Nguyễn Minh A</div>
+                            <div class="profile-email">nguyenminh@example.com</div>
+                            <div class="profile-stats">
+                                <div class="stat-item">
+                                    <div class="stat-value">1,243</div>
+                                    <div class="stat-label">Giao Dịch</div>
+                                </div>
+                                <div class="stat-item">
+                                    <div class="stat-value">$50K+</div>
+                                    <div class="stat-label">Tổng Chuyển</div>
+                                </div>
+                                <div class="stat-item">
+                                    <div class="stat-value">2 năm</div>
+                                    <div class="stat-label">Thành Viên</div>
+                                </div>
+                                <div class="stat-item">
+                                    <div class="stat-value">Gold ⭐</div>
+                                    <div class="stat-label">Xếp Hạng</div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="profile-details">
+                            <div class="card-title"><i class="bi bi-person-badge" style="color:var(--primary)"></i>
+                                Thông Tin Tài Khoản</div>
+                            <div class="detail-item">
+                                <span class="detail-label">Họ và tên</span>
+                                <span class="detail-value">Nguyễn Minh A</span>
+                            </div>
+                            <div class="detail-item">
+                                <span class="detail-label">Email</span>
+                                <span class="detail-value">nguyenminh@example.com</span>
+                            </div>
+                            <div class="detail-item">
+                                <span class="detail-label">Số điện thoại</span>
+                                <span class="detail-value">+84 9xx xxx xxx</span>
+                            </div>
+                            <div class="detail-item">
+                                <span class="detail-label">Quốc gia</span>
+                                <span class="detail-value">🇻🇳 Việt Nam</span>
+                            </div>
+                            <div class="detail-item">
+                                <span class="detail-label">Trạng thái KYC</span>
+                                <span class="detail-value" style="color:var(--success)">✓ Đã xác minh</span>
+                            </div>
+                            <div class="detail-item">
+                                <span class="detail-label">Ngày tham gia</span>
+                                <span class="detail-value">15/02/2024</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
 
-<script>
-    /* ===================== RATES ===================== */
-    const rates = {
-        'USD':  { 'VND': 26139.62, 'EUR': 0.92,    'BRL': 5.14,    'USDT': 1 },
-        'EUR':  { 'VND': 28412.50, 'USD': 1.09,    'BRL': 5.59,    'USDT': 1.09 },
-        'BRL':  { 'VND': 5082.35,  'USD': 0.1945,  'EUR': 0.179,   'USDT': 0.1945 },
-        'USDT': { 'VND': 26139.62, 'USD': 1,       'EUR': 0.92,    'BRL': 5.14 },
-        'VND':  { 'USD': 0.0000383,'EUR': 0.0000352,'BRL': 0.000197,'USDT': 0.0000383 }
-    };
+            </div><!-- end content-area -->
+        </div><!-- end main-content -->
+    </div><!-- end app-wrapper -->
 
-    /* ===================== NAVIGATION ===================== */
-    function switchPage(page, el) {
-        document.querySelectorAll('.page').forEach(p => {
-            p.classList.remove('active');
-        });
-        const pageEl = document.getElementById(page);
-        pageEl.classList.add('active');
-        // Reset animation
-        pageEl.style.animation = 'none';
-        pageEl.offsetHeight; // reflow
-        pageEl.style.animation = '';
+    <script>
+        /* ===================== API & RATES ===================== */
+        // Tỷ giá dự phòng (dùng khi API lỗi)
+        const fallbackRates = {
+            USD: 1, VND: 26139.62, EUR: 0.9258, GBP: 0.7896,
+            JPY: 149.82, KRW: 1336.5, CNY: 7.235, AUD: 1.558,
+            CAD: 1.362, BRL: 5.14, THB: 35.15, SGD: 1.338, USDT: 1
+        };
 
-        document.querySelectorAll('.nav-item').forEach(item => item.classList.remove('active'));
-        const navItem = el ? el.closest('.nav-item') : document.querySelector(`.nav-item[onclick*="${page}"]`);
-        if (navItem) navItem.classList.add('active');
+        let liveRates = { ...fallbackRates };
+        let baseCurrency = 'USD';
+        let ratesLoaded = false;
+        let autoRefreshInterval = null;
+        let silentRefresh = false; // Khi true: auto-refresh sẽ không hiện thông báo
+        let fetchPending = false;  // Tránh gọi fetchRates đồng thời
 
-        const titles = { exchange:'Đổi Tiền', market:'Thị Trường', chat:'Hỗ Trợ', profile:'Hồ Sơ' };
-        document.getElementById('pageTitle').textContent = titles[page];
-
-        if (window.innerWidth <= 768) {
-            document.getElementById('sidebar').classList.remove('active');
+        // ---- API: exchangerate.host (free, no key) ----
+        async function fetchRates(base = 'USD', silent = false) {
+            if (fetchPending) return; // Tránh gọi đồng thời
+            fetchPending = true;
+            if (!silent) showLoadingRate();
+            try {
+                const res = await fetch(
+                    `https://api.exchangerate.host/latest?base=${base}&symbols=USD,VND,EUR,GBP,JPY,KRW,CNY,AUD,CAD,BRL,THB,SGD,USDT`,
+                    { signal: AbortSignal.timeout(6000) }
+                );
+                if (!res.ok) throw new Error('HTTP ' + res.status);
+                const data = await res.json();
+                if (data && data.rates) {
+                    liveRates = { ...data.rates, [base]: 1 };
+                    baseCurrency = base;
+                    ratesLoaded = true;
+                    updateRate();
+                    updateMarketGrid();
+                    fetchPending = false;
+                    return true;
+                }
+                throw new Error('Invalid data');
+            } catch (err) {
+                // Thử API dự phòng: frankfurter.app
+                const result = await fetchRatesFallback(base, silent);
+                fetchPending = false;
+                return result;
+            }
         }
-    }
 
-    function toggleSidebar() {
-        document.getElementById('sidebar').classList.toggle('active');
-    }
-
-    /* ===================== EXCHANGE ===================== */
-    function updateRate() {
-        const from = document.getElementById('fromCurrency').value;
-        const to   = document.getElementById('toCurrency').value;
-        const amount = parseFloat(document.getElementById('fromAmount').value) || 0;
-
-        if (from === to) {
-            document.getElementById('toAmount').value = amount.toFixed(2);
-            document.getElementById('rateText').innerHTML = `<strong>1 ${from} = 1.00 ${to}</strong>`;
-            document.getElementById('rateTime').textContent = 'Cập nhật: ' + new Date().toLocaleTimeString('vi-VN');
-            return;
+        async function fetchRatesFallback(base = 'USD', silent = false) {
+            try {
+                const symbols = 'USD,VND,EUR,GBP,JPY,KRW,CNY,AUD,CAD,BRL,THB,SGD';
+                const res = await fetch(
+                    `https://api.frankfurter.app/latest?from=${base}&to=${symbols}`,
+                    { signal: AbortSignal.timeout(6000) }
+                );
+                if (!res.ok) throw new Error('HTTP ' + res.status);
+                const data = await res.json();
+                if (data && data.rates) {
+                    liveRates = { ...data.rates, [base]: 1, USDT: data.rates['USD'] || 1 };
+                    baseCurrency = base;
+                    ratesLoaded = true;
+                    updateRate();
+                    updateMarketGrid();
+                    // Chỉ hiện thông báo khi load lần đầu (không phải auto-refresh)
+                    if (!silent) showNotification('success', '✅ Đã Kết Nối', 'Tỷ giá thực tế đã được tải!');
+                    return true;
+                }
+                throw new Error('Invalid data');
+            } catch (err) {
+                // Dùng fallback cứng
+                liveRates = { ...fallbackRates };
+                if (base !== 'USD') {
+                    const usdToBase = fallbackRates[base] || 1;
+                    Object.keys(liveRates).forEach(k => {
+                        liveRates[k] = fallbackRates[k] / usdToBase;
+                    });
+                }
+                baseCurrency = base;
+                ratesLoaded = true;
+                updateRate();
+                updateMarketGrid();
+                // Chỉ cảnh báo offline mode 1 lần (lần đầu, không phải auto-refresh)
+                if (!silent) showNotification('warning', '⚠️ Offline Mode', 'Không kết nối được API. Dùng tỷ giá tạm thời.');
+                return false;
+            }
         }
 
-        const rate = rates[from]?.[to] ?? null;
-        if (!rate) {
-            document.getElementById('rateText').textContent = 'Không hỗ trợ cặp tiền này';
-            document.getElementById('toAmount').value = '';
-            return;
-        }
-        const result = amount * rate;
-        document.getElementById('toAmount').value = result.toFixed(2);
-        document.getElementById('rateText').innerHTML = `<strong>1 ${from} = ${rate.toLocaleString('vi-VN', { maximumFractionDigits: 6 })} ${to}</strong>`;
-        document.getElementById('rateTime').textContent = 'Cập nhật: ' + new Date().toLocaleTimeString('vi-VN');
-    }
-
-    /* ===================== SWAP FIX ===================== */
-    function swapCurrencies() {
-        const fromSel = document.getElementById('fromCurrency');
-        const toSel   = document.getElementById('toCurrency');
-
-        // Swap values
-        const tmp = fromSel.value;
-        fromSel.value = toSel.value;
-        toSel.value   = tmp;
-
-        // Spin animation
-        const btn = document.getElementById('swapBtn');
-        btn.classList.add('spinning');
-        btn.addEventListener('animationend', () => btn.classList.remove('spinning'), { once: true });
-
-        updateRate();
-        showNotification('info', '🔄 Hoán Đổi', `${toSel.value} ⇌ ${fromSel.value} đã được hoán đổi`);
-    }
-
-    /* ===================== CONVERT ===================== */
-    function convertCurrency() {
-        const from       = document.getElementById('fromCurrency').value;
-        const to         = document.getElementById('toCurrency').value;
-        const fromAmount = document.getElementById('fromAmount').value;
-        const toAmount   = document.getElementById('toAmount').value;
-
-        if (!fromAmount || parseFloat(fromAmount) <= 0) {
-            showNotification('warning', '⚠️ Cảnh Báo', 'Vui lòng nhập số tiền hợp lệ!');
-            return;
+        function showLoadingRate() {
+            document.getElementById('rateText').innerHTML =
+                `<span class="rate-loading"></span> Đang tải tỷ giá...`;
         }
 
-        showNotification('success', '✅ Thành Công', `${parseFloat(fromAmount).toLocaleString('vi-VN')} ${from} = ${parseFloat(toAmount).toLocaleString('vi-VN')} ${to}`);
+        function getRate(from, to) {
+            if (from === to) return 1;
+            // Nếu base là from, lấy trực tiếp
+            if (baseCurrency === from) {
+                return liveRates[to] || null;
+            }
+            // Chuyển qua USD làm trung gian
+            const rateFromToUSD = fallbackRates[from] ? (1 / fallbackRates[from]) : null;
+            const rateUSDToTo = fallbackRates[to] || null;
+            if (rateFromToUSD && rateUSDToTo) {
+                return rateUSDToTo / fallbackRates[from];
+            }
+            return null;
+        }
 
-        const historyItem = document.createElement('div');
-        historyItem.className = 'history-item';
-        historyItem.style.animation = 'fadeIn 0.4s ease both';
-        historyItem.innerHTML = `
+        /* ===================== NAVIGATION ===================== */
+        function switchPage(page, el) {
+            document.querySelectorAll('.page').forEach(p => p.classList.remove('active'));
+            const pageEl = document.getElementById(page);
+            pageEl.classList.add('active');
+            pageEl.style.animation = 'none';
+            pageEl.offsetHeight;
+            pageEl.style.animation = '';
+
+            document.querySelectorAll('.nav-item').forEach(item => item.classList.remove('active'));
+            const navItem = el ? el.closest('.nav-item') : document.querySelector(`.nav-item[onclick*="${page}"]`);
+            if (navItem) navItem.classList.add('active');
+
+            const titles = { exchange: 'Đổi Tiền', market: 'Thị Trường', chat: 'Hỗ Trợ', profile: 'Hồ Sơ' };
+            document.getElementById('pageTitle').textContent = titles[page];
+
+            if (page === 'market' && ratesLoaded) updateMarketGrid();
+            if (window.innerWidth <= 768) document.getElementById('sidebar').classList.remove('active');
+        }
+
+        function toggleSidebar() { document.getElementById('sidebar').classList.toggle('active'); }
+
+        /* ===================== EXCHANGE ===================== */
+        function updateRate() {
+            const from = document.getElementById('fromCurrency').value;
+            const to = document.getElementById('toCurrency').value;
+            const amount = parseFloat(document.getElementById('fromAmount').value) || 0;
+
+            if (from === to) {
+                document.getElementById('toAmount').value = amount.toFixed(2);
+                document.getElementById('rateText').innerHTML = `<strong>1 ${from} = 1.00 ${to}</strong>`;
+                document.getElementById('rateTime').textContent = 'Cập nhật: ' + new Date().toLocaleTimeString('vi-VN');
+                return;
+            }
+
+            // Nếu base trùng from thì dùng live rates
+            let rate;
+            if (baseCurrency === from) {
+                rate = liveRates[to] || null;
+            } else if (baseCurrency === to) {
+                rate = liveRates[from] ? (1 / liveRates[from]) : null;
+            } else {
+                // Cross rate: from → base → to
+                const fromInBase = liveRates[from];
+                const toInBase = liveRates[to];
+                rate = (fromInBase && toInBase) ? (toInBase / fromInBase) : null;
+            }
+
+            if (!rate) {
+                // Fetch base = from để có tỷ giá chính xác (silent vì user đang gõ)
+                if (!fetchPending) fetchRates(from, true);
+                return;
+            }
+
+            const result = amount * rate;
+            document.getElementById('toAmount').value = result.toFixed(2);
+            document.getElementById('rateText').innerHTML =
+                `<strong>1 ${from} = ${rate.toLocaleString('vi-VN', { maximumFractionDigits: 6 })} ${to}</strong>`;
+            document.getElementById('rateTime').textContent =
+                (ratesLoaded ? '🟢 Live · ' : '🟡 Cache · ') + 'Cập nhật: ' + new Date().toLocaleTimeString('vi-VN');
+        }
+
+        /* ===================== SWAP ===================== */
+        function swapCurrencies() {
+            const fromSel = document.getElementById('fromCurrency');
+            const toSel = document.getElementById('toCurrency');
+            const tmp = fromSel.value;
+            fromSel.value = toSel.value;
+            toSel.value = tmp;
+
+            const btn = document.getElementById('swapBtn');
+            btn.classList.add('spinning');
+            btn.addEventListener('animationend', () => btn.classList.remove('spinning'), { once: true });
+
+            // Nếu base không sesuai, fetch lại
+            if (baseCurrency !== fromSel.value) {
+                fetchRates(fromSel.value);
+            } else {
+                updateRate();
+            }
+            showNotification('info', '🔄 Hoán Đổi', `${toSel.value} ⇌ ${fromSel.value} đã được hoán đổi`);
+        }
+
+        /* ===================== CONVERT ===================== */
+        function convertCurrency() {
+            const from = document.getElementById('fromCurrency').value;
+            const to = document.getElementById('toCurrency').value;
+            const fromAmount = document.getElementById('fromAmount').value;
+            const toAmount = document.getElementById('toAmount').value;
+
+            if (!fromAmount || parseFloat(fromAmount) <= 0) {
+                showNotification('warning', '⚠️ Cảnh Báo', 'Vui lòng nhập số tiền hợp lệ!');
+                return;
+            }
+
+            showNotification('success', '✅ Thành Công',
+                `${parseFloat(fromAmount).toLocaleString('vi-VN')} ${from} = ${parseFloat(toAmount).toLocaleString('vi-VN')} ${to}`);
+
+            const historyItem = document.createElement('div');
+            historyItem.className = 'history-item';
+            historyItem.style.animation = 'fadeIn 0.4s ease both';
+            historyItem.innerHTML = `
             <div class="history-left">
                 <p>${parseFloat(fromAmount).toLocaleString('vi-VN')} ${from} → ${to}</p>
                 <p>${new Date().toLocaleString('vi-VN')}</p>
@@ -1587,60 +2395,150 @@
                 <p>✓ Thành công</p>
             </div>
         `;
-        const historyList = document.getElementById('historyList');
-        historyList.insertBefore(historyItem, historyList.firstChild);
-    }
-
-    function refreshRates() {
-        const btn = document.querySelector('.icon-btn .bi-arrow-clockwise');
-        if (btn) {
-            btn.style.transition = 'transform 0.6s ease';
-            btn.style.transform  = 'rotate(360deg)';
-            setTimeout(() => { btn.style.transform = 'rotate(0deg)'; btn.style.transition = ''; }, 650);
+            const historyList = document.getElementById('historyList');
+            historyList.insertBefore(historyItem, historyList.firstChild);
         }
-        updateRate();
-        showNotification('info', '🔄 Làm Mới', 'Tỷ giá đã được cập nhật!');
-    }
 
-    /* ===================== CHAT ===================== */
-    function selectChat(element) {
-        document.querySelectorAll('.chat-item').forEach(item => item.classList.remove('active'));
-        element.classList.add('active');
-    }
+        /* ===================== REFRESH ===================== */
+        function refreshRates() {
+            const icon = document.getElementById('refreshIcon');
+            if (icon) {
+                icon.style.transition = 'transform 0.6s ease';
+                icon.style.transform = 'rotate(360deg)';
+                setTimeout(() => { icon.style.transform = ''; icon.style.transition = ''; }, 650);
+            }
+            const from = document.getElementById('fromCurrency').value;
+            fetchRates(from);
+            showNotification('info', '🔄 Làm Mới', 'Đang tải tỷ giá mới nhất...');
+        }
 
-    function sendMessage() {
-        const input   = document.getElementById('chatInput');
-        const message = input.value.trim();
-        if (!message) return;
+        /* ===================== MARKET PAGE ===================== */
+        const MARKET_PAIRS = [
+            { from: 'USD', to: 'VND' },
+            { from: 'EUR', to: 'VND' },
+            { from: 'GBP', to: 'VND' },
+            { from: 'JPY', to: 'VND' },
+            { from: 'KRW', to: 'VND' },
+            { from: 'CNY', to: 'VND' },
+            { from: 'AUD', to: 'VND' },
+            { from: 'THB', to: 'VND' },
+            { from: 'SGD', to: 'VND' },
+            { from: 'USD', to: 'EUR' },
+            { from: 'USD', to: 'GBP' },
+            { from: 'USD', to: 'JPY' },
+        ];
 
-        const chatMessages = document.getElementById('chatMessages');
-        const msgDiv = document.createElement('div');
-        msgDiv.className = 'message own';
-        msgDiv.innerHTML = `<div class="message-bubble own">${message}</div>`;
-        chatMessages.appendChild(msgDiv);
-        input.value = '';
-        chatMessages.scrollTop = chatMessages.scrollHeight;
+        function updateMarketGrid() {
+            const grid = document.getElementById('marketGrid');
+            if (!grid) return;
 
-        setTimeout(() => {
-            const replyDiv = document.createElement('div');
-            replyDiv.className = 'message';
-            replyDiv.innerHTML = `<div class="message-bubble other">😊 Cảm ơn bạn! Chúng tôi sẽ trả lời trong giây lát...</div>`;
-            chatMessages.appendChild(replyDiv);
+            // Tính tỷ giá cross từ liveRates (base=baseCurrency)
+            // Nếu liveRates thiếu currency (vd: frankfurter không có VND),
+            // fallback tính qua fallbackRates (tất cả quy về USD)
+            function getCross(from, to) {
+                if (from === to) return 1;
+
+                // Thử liveRates trước
+                let rate = null;
+                if (baseCurrency === from) {
+                    rate = liveRates[to] || null;
+                } else if (baseCurrency === to) {
+                    rate = liveRates[from] ? (1 / liveRates[from]) : null;
+                } else {
+                    const f = liveRates[from], t = liveRates[to];
+                    rate = (f && t) ? (t / f) : null;
+                }
+
+                // Nếu không tìm được → dùng fallbackRates (cross qua USD)
+                if (!rate) {
+                    const fUSD = fallbackRates[from], tUSD = fallbackRates[to];
+                    if (fUSD && tUSD) rate = tUSD / fUSD;
+                }
+
+                return rate;
+            }
+
+            // Random change nhỏ để UI sinh động (thực tế cần so với snapshot trước)
+            function fakeChange() {
+                const v = (Math.random() * 0.4 - 0.1).toFixed(2);
+                return parseFloat(v);
+            }
+
+            grid.innerHTML = MARKET_PAIRS.map((pair, i) => {
+                const rate = getCross(pair.from, pair.to);
+                const change = fakeChange();
+                const up = change >= 0;
+                const rateStr = rate
+                    ? rate.toLocaleString('vi-VN', { maximumFractionDigits: 4 })
+                    : '---';
+                return `
+            <div class="market-card" style="animation-delay:${i * 0.05}s">
+                <div class="market-pair">${pair.from}/${pair.to}</div>
+                <div class="market-sub">1 ${pair.from} = ? ${pair.to}</div>
+                <div class="market-rate">${rateStr}</div>
+                <span class="market-change ${up ? 'up' : 'down'}">
+                    <i class="bi bi-arrow-${up ? 'up' : 'down'}-short"></i>
+                    ${up ? '+' : ''}${change}%
+                </span>
+            </div>`;
+            }).join('');
+
+            const timeEl = document.getElementById('marketUpdateTime');
+            if (timeEl) timeEl.textContent =
+                (ratesLoaded ? '🟢 Live · ' : '🟡 Cache · ') +
+                'Cập nhật lúc ' + new Date().toLocaleTimeString('vi-VN');
+        }
+
+        /* ===================== AUTO REFRESH ===================== */
+        function setupAutoRefresh() {
+            if (autoRefreshInterval) clearInterval(autoRefreshInterval);
+            const autoOn = document.getElementById('autoRefresh')?.checked;
+            if (!autoOn) return;
+            const secs = parseInt(document.getElementById('refreshRate')?.value || '60') * 1000;
+            autoRefreshInterval = setInterval(() => {
+                const from = document.getElementById('fromCurrency').value;
+                // silent=true: auto-refresh không hiện thông báo liên tục
+                fetchRates(from, true);
+            }, secs);
+        }
+
+        /* ===================== CHAT ===================== */
+        function selectChat(element) {
+            document.querySelectorAll('.chat-item').forEach(item => item.classList.remove('active'));
+            element.classList.add('active');
+        }
+
+        function sendMessage() {
+            const input = document.getElementById('chatInput');
+            const message = input.value.trim();
+            if (!message) return;
+
+            const chatMessages = document.getElementById('chatMessages');
+            const msgDiv = document.createElement('div');
+            msgDiv.className = 'message own';
+            msgDiv.innerHTML = `<div class="message-bubble own">${message}</div>`;
+            chatMessages.appendChild(msgDiv);
+            input.value = '';
             chatMessages.scrollTop = chatMessages.scrollHeight;
-        }, 700);
-    }
 
-    /* ===================== NOTIFICATION (UPGRADED) ===================== */
-    let notifStack = 0;
+            setTimeout(() => {
+                const replyDiv = document.createElement('div');
+                replyDiv.className = 'message';
+                replyDiv.innerHTML = `<div class="message-bubble other">😊 Cảm ơn bạn! Chúng tôi sẽ trả lời trong giây lát...</div>`;
+                chatMessages.appendChild(replyDiv);
+                chatMessages.scrollTop = chatMessages.scrollHeight;
+            }, 700);
+        }
 
-    function showNotification(type = 'info', title = '', message = '') {
-        // type: 'success' | 'error' | 'warning' | 'info'
-        const icons = { success: '✅', error: '❌', warning: '⚠️', info: 'ℹ️' };
+        /* ===================== NOTIFICATION ===================== */
+        let notifStack = 0;
 
-        const notif = document.createElement('div');
-        notif.className = `notification ${type}`;
-        notif.style.top = (28 + notifStack * 100) + 'px';
-        notif.innerHTML = `
+        function showNotification(type = 'info', title = '', message = '') {
+            const icons = { success: '✅', error: '❌', warning: '⚠️', info: 'ℹ️' };
+            const notif = document.createElement('div');
+            notif.className = `notification ${type}`;
+            notif.style.top = (28 + notifStack * 106) + 'px';
+            notif.innerHTML = `
             <div class="notification-inner">
                 <div class="notification-icon">${icons[type] || 'ℹ️'}</div>
                 <div class="notification-body">
@@ -1650,101 +2548,103 @@
             </div>
             <div class="notification-progress"></div>
         `;
-        document.body.appendChild(notif);
-        notifStack++;
-
-        setTimeout(() => {
-            notif.remove();
-            notifStack = Math.max(0, notifStack - 1);
-        }, 3900);
-    }
-
-    /* ===================== SETTINGS ===================== */
-    function openSettings() {
-        document.getElementById('settingsOverlay').classList.add('open');
-        document.getElementById('settingsPanel').classList.add('open');
-    }
-
-    function closeSettings() {
-        document.getElementById('settingsPanel').classList.remove('open');
-        document.getElementById('settingsOverlay').classList.remove('open');
-    }
-
-    function applySetting(id) {
-        const checked = document.getElementById(id).checked;
-        const labels  = {
-            darkMode:    ['Chế độ tối đã bật', 'Chế độ tối đã tắt'],
-            motionBlur:  ['Motion blur đã bật', 'Motion blur đã tắt'],
-            smoothAnim:  ['Hoạt ảnh mượt đã bật', 'Hoạt ảnh mượt đã tắt'],
-            notifTx:     ['Thông báo giao dịch bật', 'Thông báo giao dịch tắt'],
-            notifRate:   ['Cảnh báo tỷ giá bật', 'Cảnh báo tỷ giá tắt'],
-            notifChat:   ['Thông báo chat bật', 'Thông báo chat tắt'],
-            notifSound:  ['Âm thanh thông báo bật', 'Âm thanh thông báo tắt'],
-            autoRefresh: ['Tự động cập nhật bật', 'Tự động cập nhật tắt'],
-            biometric:   ['Xác thực sinh trắc đã bật', 'Xác thực sinh trắc đã tắt'],
-            appLock:     ['Khóa ứng dụng đã bật', 'Khóa ứng dụng đã tắt'],
-        };
-
-        if (id === 'motionBlur') {
-            document.documentElement.style.setProperty('--blur-strength', checked ? '20px' : '0px');
-        }
-        if (id === 'smoothAnim') {
-            document.documentElement.style.setProperty('--transition-speed', checked ? '0.4s' : '0.05s');
+            document.body.appendChild(notif);
+            notifStack++;
+            setTimeout(() => { notif.remove(); notifStack = Math.max(0, notifStack - 1); }, 3900);
         }
 
-        const msg = labels[id] ? labels[id][checked ? 0 : 1] : 'Cài đặt đã thay đổi';
-        showNotification(checked ? 'success' : 'info', '⚙️ Cài Đặt', msg);
-    }
+        /* ===================== SETTINGS ===================== */
+        function openSettings() {
+            document.getElementById('settingsOverlay').classList.add('open');
+            document.getElementById('settingsPanel').classList.add('open');
+        }
 
-    function setAccentColor(primary, secondary, dotEl) {
-        document.documentElement.style.setProperty('--primary', primary);
-        document.documentElement.style.setProperty('--secondary', secondary);
-        document.querySelectorAll('.theme-dot').forEach(d => d.classList.remove('active'));
-        dotEl.classList.add('active');
-        showNotification('success', '🎨 Giao Diện', 'Màu chủ đạo đã được thay đổi!');
-    }
+        function closeSettings() {
+            document.getElementById('settingsPanel').classList.remove('open');
+            document.getElementById('settingsOverlay').classList.remove('open');
+        }
 
-    function saveSettings() {
-        const settings = {
-            darkMode:    document.getElementById('darkMode').checked,
-            motionBlur:  document.getElementById('motionBlur').checked,
-            smoothAnim:  document.getElementById('smoothAnim').checked,
-            notifTx:     document.getElementById('notifTx').checked,
-            notifRate:   document.getElementById('notifRate').checked,
-            notifChat:   document.getElementById('notifChat').checked,
-            notifSound:  document.getElementById('notifSound').checked,
-            autoRefresh: document.getElementById('autoRefresh').checked,
-            biometric:   document.getElementById('biometric').checked,
-            appLock:     document.getElementById('appLock').checked,
-            refreshRate: document.getElementById('refreshRate').value,
-            defaultCurrency: document.getElementById('defaultCurrency').value,
-        };
-        localStorage.setItem('fluxtea_settings', JSON.stringify(settings));
-        showNotification('success', '✅ Đã Lưu', 'Cài đặt đã được lưu thành công!');
-        setTimeout(closeSettings, 800);
-    }
+        function applySetting(id) {
+            const checked = document.getElementById(id).checked;
+            const labels = {
+                darkMode: ['Chế độ tối đã bật', 'Chế độ tối đã tắt'],
+                motionBlur: ['Motion blur đã bật', 'Motion blur đã tắt'],
+                smoothAnim: ['Hoạt ảnh mượt đã bật', 'Hoạt ảnh mượt đã tắt'],
+                notifTx: ['Thông báo giao dịch bật', 'Thông báo giao dịch tắt'],
+                notifRate: ['Cảnh báo tỷ giá bật', 'Cảnh báo tỷ giá tắt'],
+                notifChat: ['Thông báo chat bật', 'Thông báo chat tắt'],
+                notifSound: ['Âm thanh thông báo bật', 'Âm thanh thông báo tắt'],
+                autoRefresh: ['Tự động cập nhật bật', 'Tự động cập nhật tắt'],
+                biometric: ['Xác thực sinh trắc đã bật', 'Xác thực sinh trắc đã tắt'],
+                appLock: ['Khóa ứng dụng đã bật', 'Khóa ứng dụng đã tắt'],
+            };
+            if (id === 'motionBlur') {
+                document.documentElement.style.setProperty('--blur-strength', checked ? '28px' : '10px');
+            }
+            if (id === 'smoothAnim') {
+                document.documentElement.style.setProperty('--transition-speed', checked ? '0.35s' : '0.15s');
+            }
+            if (id === 'autoRefresh') setupAutoRefresh();
 
-    function loadSettings() {
-        const saved = localStorage.getItem('fluxtea_settings');
-        if (!saved) return;
-        try {
-            const s = JSON.parse(saved);
-            Object.keys(s).forEach(key => {
-                const el = document.getElementById(key);
-                if (el && el.type === 'checkbox') el.checked = s[key];
-                else if (el) el.value = s[key];
+            const msg = labels[id] ? labels[id][checked ? 0 : 1] : 'Cài đặt đã thay đổi';
+            showNotification(checked ? 'success' : 'info', '⚙️ Cài Đặt', msg);
+        }
+
+        function setAccentColor(primary, secondary, dotEl) {
+            document.documentElement.style.setProperty('--primary', primary);
+            document.documentElement.style.setProperty('--secondary', secondary);
+            document.querySelectorAll('.theme-dot').forEach(d => d.classList.remove('active'));
+            dotEl.classList.add('active');
+            showNotification('success', '🎨 Giao Diện', 'Màu chủ đạo đã được thay đổi!');
+        }
+
+        function saveSettings() {
+            const settings = {
+                darkMode: document.getElementById('darkMode').checked,
+                motionBlur: document.getElementById('motionBlur').checked,
+                smoothAnim: document.getElementById('smoothAnim').checked,
+                notifTx: document.getElementById('notifTx').checked,
+                notifRate: document.getElementById('notifRate').checked,
+                notifChat: document.getElementById('notifChat').checked,
+                notifSound: document.getElementById('notifSound').checked,
+                autoRefresh: document.getElementById('autoRefresh').checked,
+                biometric: document.getElementById('biometric').checked,
+                appLock: document.getElementById('appLock').checked,
+                refreshRate: document.getElementById('refreshRate').value,
+                defaultCurrency: document.getElementById('defaultCurrency').value,
+            };
+            localStorage.setItem('fluxtea_settings', JSON.stringify(settings));
+            setupAutoRefresh();
+            showNotification('success', '✅ Đã Lưu', 'Cài đặt đã được lưu thành công!');
+            setTimeout(closeSettings, 800);
+        }
+
+        function loadSettings() {
+            const saved = localStorage.getItem('fluxtea_settings');
+            if (!saved) return;
+            try {
+                const s = JSON.parse(saved);
+                Object.keys(s).forEach(key => {
+                    const el = document.getElementById(key);
+                    if (el && el.type === 'checkbox') el.checked = s[key];
+                    else if (el) el.value = s[key];
+                });
+                if (s.motionBlur === false) document.documentElement.style.setProperty('--blur-strength', '10px');
+                if (s.smoothAnim === false) document.documentElement.style.setProperty('--transition-speed', '0.15s');
+            } catch (e) { }
+        }
+
+        /* ===================== INIT ===================== */
+        document.addEventListener('DOMContentLoaded', () => {
+            loadSettings();
+            // Fetch tỷ giá lần đầu – KHÔNG silent để hiện thông báo kết nối
+            fetchRates('USD', false).then(() => {
+                setupAutoRefresh();
             });
-            if (s.motionBlur === false) document.documentElement.style.setProperty('--blur-strength', '0px');
-            if (s.smoothAnim === false) document.documentElement.style.setProperty('--transition-speed', '0.05s');
-        } catch(e) {}
-    }
-
-    /* ===================== INIT ===================== */
-    document.addEventListener('DOMContentLoaded', () => {
-        loadSettings();
-        updateRate();
-        setTimeout(() => showNotification('info', '👋 Chào Mừng', 'FluxTea v2.1.0 sẵn sàng phục vụ!'), 800);
-    });
-</script>
+            // Chào mừng 1 lần duy nhất khi load trang
+            setTimeout(() => showNotification('info', '👋 Chào Mừng', 'FluxTea v2.1.0 · Tỷ giá thực tế đang tải...'), 600);
+        });
+    </script>
 </body>
+
 </html>
