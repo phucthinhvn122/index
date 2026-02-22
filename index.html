@@ -4,8 +4,11 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>FluxTea - Premium Currency Exchange</title>
+    <title>FluxTeam - Premium Currency Exchange</title>
+    <link rel="icon" type="image/svg+xml"
+        href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 64 64'%3E%3Crect width='64' height='64' rx='14' fill='%230a0e27'/%3E%3Cdefs%3E%3ClinearGradient id='g' x1='0' y1='0' x2='1' y2='1'%3E%3Cstop offset='0%25' stop-color='%2300d9ff'/%3E%3Cstop offset='100%25' stop-color='%2300ffa3'/%3E%3C/linearGradient%3E%3C/defs%3E%3Ccircle cx='32' cy='16' r='5' fill='url(%23g)'/%3E%3Cpath d='M27 24h10a4 4 0 0 1 4 4v4H23v-4a4 4 0 0 1 4-4z' fill='url(%23g)' opacity='0.8'/%3E%3Ccircle cx='16' cy='38' r='4' fill='url(%23g)' opacity='0.6'/%3E%3Cpath d='M12 44h8a3 3 0 0 1 3 3v2H9v-2a3 3 0 0 1 3-3z' fill='url(%23g)' opacity='0.5'/%3E%3Ccircle cx='48' cy='38' r='4' fill='url(%23g)' opacity='0.6'/%3E%3Cpath d='M44 44h8a3 3 0 0 1 3 3v2H41v-2a3 3 0 0 1 3-3z' fill='url(%23g)' opacity='0.5'/%3E%3Cpath d='M24 36l-4 4m0 0l4 4m16-8l4 4m0 0l-4 4' stroke='url(%23g)' stroke-width='2' fill='none' stroke-linecap='round'/%3E%3C/svg%3E">
     <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.0/font/bootstrap-icons.css" rel="stylesheet">
+    <script src="https://accounts.google.com/gsi/client" async defer></script>
     <style>
         * {
             margin: 0;
@@ -596,7 +599,7 @@
         /* ===================== EXCHANGE PAGE ===================== */
         .exchange-grid {
             display: grid;
-            grid-template-columns: 1fr 1fr;
+            grid-template-columns: 1.6fr 1fr;
             gap: 24px;
         }
 
@@ -1647,6 +1650,8 @@
                 top: 0;
                 height: 100vh;
                 transition: left 0.35s cubic-bezier(0.34, 1.56, 0.64, 1);
+                z-index: 100;
+                box-shadow: 10px 0 30px rgba(0, 0, 0, 0.5);
             }
 
             .sidebar.active {
@@ -1667,7 +1672,39 @@
             }
 
             .content-area {
-                padding: 20px 16px;
+                padding: 16px;
+            }
+
+            .card {
+                padding: 20px;
+            }
+
+            .top-bar {
+                padding: 16px 20px;
+            }
+
+            .page-title {
+                font-size: 18px;
+            }
+        }
+
+        @media (max-width: 480px) {
+            .exchange-row {
+                flex-direction: column;
+                gap: 12px;
+            }
+
+            .swap-container {
+                margin: 4px 0;
+                transform: rotate(90deg);
+            }
+
+            .market-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .auth-card {
+                padding: 30px 20px;
             }
         }
 
@@ -1688,10 +1725,619 @@
         ::-webkit-scrollbar-thumb:hover {
             background: rgba(0, 217, 255, 0.4);
         }
+
+        /* ===== PROFILE EDIT ===== */
+        .profile-avatar-wrap {
+            position: relative;
+            display: inline-block;
+            margin-bottom: 6px;
+        }
+
+        .avatar-colors {
+            display: flex;
+            gap: 8px;
+            justify-content: center;
+            margin-top: 8px;
+            flex-wrap: wrap;
+        }
+
+        .av-color {
+            width: 22px;
+            height: 22px;
+            border-radius: 50%;
+            cursor: pointer;
+            border: 2px solid transparent;
+            transition: transform 0.2s, border-color 0.2s;
+            display: inline-block;
+        }
+
+        .av-color:hover {
+            transform: scale(1.25);
+            border-color: #fff;
+        }
+
+        .av-color.active {
+            border-color: #fff;
+            transform: scale(1.2);
+        }
+
+        .prof-btn {
+            display: inline-flex;
+            align-items: center;
+            gap: 6px;
+            padding: 6px 14px;
+            border-radius: 8px;
+            border: none;
+            cursor: pointer;
+            font-size: 12px;
+            font-weight: 600;
+            transition: all 0.2s;
+        }
+
+        .prof-btn-edit {
+            background: rgba(0, 217, 255, 0.12);
+            color: var(--primary);
+            border: 1px solid rgba(0, 217, 255, 0.3);
+        }
+
+        .prof-btn-edit:hover {
+            background: rgba(0, 217, 255, 0.25);
+        }
+
+        .prof-btn-save {
+            background: linear-gradient(135deg, var(--primary), var(--secondary));
+            color: var(--darker);
+            font-weight: 700;
+        }
+
+        .prof-btn-save:hover {
+            opacity: 0.85;
+        }
+
+        .prof-btn-cancel {
+            background: rgba(255, 51, 102, 0.12);
+            color: var(--danger);
+            border: 1px solid rgba(255, 51, 102, 0.25);
+            padding: 6px 10px;
+        }
+
+        .prof-btn-cancel:hover {
+            background: rgba(255, 51, 102, 0.25);
+        }
+
+        .prof-field {
+            margin-bottom: 12px;
+        }
+
+        .prof-label {
+            display: block;
+            font-size: 11px;
+            font-weight: 600;
+            color: var(--text-muted);
+            margin-bottom: 5px;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+        }
+
+        .prof-input {
+            width: 100%;
+            background: rgba(255, 255, 255, 0.06);
+            border: 1px solid var(--glass-border);
+            border-radius: 10px;
+            padding: 9px 14px;
+            color: var(--text);
+            font-size: 13px;
+            outline: none;
+            transition: border-color 0.2s, background 0.2s;
+            appearance: none;
+        }
+
+        .prof-input:focus {
+            border-color: var(--primary);
+            background: rgba(0, 217, 255, 0.06);
+        }
+
+        .prof-textarea {
+            resize: vertical;
+            min-height: 64px;
+            max-height: 120px;
+            font-family: inherit;
+        }
+
+
+        /* ===== AUTH SCREEN ===== */
+        #authScreen {
+            position: fixed;
+            inset: 0;
+            z-index: 9999;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            background:
+                radial-gradient(circle at 20% 20%, rgba(0, 217, 255, 0.12) 0%, transparent 50%),
+                radial-gradient(circle at 80% 80%, rgba(0, 255, 163, 0.10) 0%, transparent 50%),
+                linear-gradient(135deg, #050812 0%, #0d1530 50%, #050812 100%);
+            padding: 16px;
+        }
+
+        #authScreen::before {
+            content: '';
+            position: absolute;
+            inset: 0;
+            background: url("data:image/svg+xml,%3Csvg width='60' height='60' viewBox='0 0 60 60' xmlns='http://www.w3.org/2000/svg'%3E%3Cg fill='none' fill-rule='evenodd'%3E%3Cg fill='%2300d9ff' fill-opacity='0.03'%3E%3Cpath d='M36 34v-4h-2v4h-4v2h4v4h2v-4h4v-2h-4zm0-30V0h-2v4h-4v2h4v4h2V6h4V4h-4zM6 34v-4H4v4H0v2h4v4h2v-4h4v-2H6zM6 4V0H4v4H0v2h4v4h2V6h4V4H6z'/%3E%3C/g%3E%3C/g%3E%3C/svg%3E");
+            pointer-events: none;
+        }
+
+        .auth-card {
+            position: relative;
+            z-index: 1;
+            background: rgba(26, 31, 58, 0.85);
+            backdrop-filter: blur(32px) saturate(1.5);
+            -webkit-backdrop-filter: blur(32px) saturate(1.5);
+            border: 1px solid rgba(255, 255, 255, 0.12);
+            border-radius: 24px;
+            padding: 40px 36px;
+            width: 100%;
+            max-width: 440px;
+            box-shadow: 0 32px 80px rgba(0, 0, 0, 0.5), 0 0 0 1px rgba(0, 217, 255, 0.08);
+            animation: authSlideIn 0.5s cubic-bezier(0.34, 1.56, 0.64, 1) both;
+        }
+
+        @keyframes authSlideIn {
+            from {
+                opacity: 0;
+                transform: translateY(32px) scale(0.96);
+            }
+
+            to {
+                opacity: 1;
+                transform: translateY(0) scale(1);
+            }
+        }
+
+        .auth-logo {
+            text-align: center;
+            margin-bottom: 28px;
+        }
+
+        .auth-logo-icon {
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            width: 64px;
+            height: 64px;
+            border-radius: 18px;
+            background: linear-gradient(135deg, var(--primary), var(--secondary));
+            font-size: 28px;
+            margin-bottom: 12px;
+            box-shadow: 0 8px 32px rgba(0, 217, 255, 0.35);
+        }
+
+        .auth-remember-row {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            margin-bottom: 20px;
+        }
+
+        .auth-remember {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            cursor: pointer;
+            font-size: 13px;
+            color: var(--text-secondary);
+        }
+
+        .auth-remember input[type="checkbox"] {
+            width: 16px;
+            height: 16px;
+            accent-color: var(--primary);
+            cursor: pointer;
+            border-radius: 4px;
+        }
+
+        .auth-logo-name {
+            font-size: 26px;
+            font-weight: 800;
+            background: linear-gradient(135deg, var(--primary), var(--secondary));
+            -webkit-background-clip: text;
+            background-clip: text;
+            -webkit-text-fill-color: transparent;
+            letter-spacing: -0.5px;
+        }
+
+        .auth-logo-sub {
+            font-size: 13px;
+            color: var(--text-muted);
+            margin-top: 2px;
+        }
+
+        /* Tabs */
+        .auth-tabs {
+            display: flex;
+            gap: 4px;
+            background: rgba(255, 255, 255, 0.05);
+            border-radius: 12px;
+            padding: 4px;
+            margin-bottom: 28px;
+        }
+
+        .auth-tab {
+            flex: 1;
+            padding: 9px;
+            border: none;
+            border-radius: 9px;
+            background: transparent;
+            color: var(--text-muted);
+            font-size: 13px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.25s;
+        }
+
+        .auth-tab.active {
+            background: linear-gradient(135deg, var(--primary), #0088aa);
+            color: var(--darker);
+            box-shadow: 0 4px 16px rgba(0, 217, 255, 0.25);
+        }
+
+        /* Field */
+        .auth-field {
+            margin-bottom: 14px;
+        }
+
+        .auth-field-label {
+            font-size: 11px;
+            font-weight: 600;
+            color: var(--text-muted);
+            text-transform: uppercase;
+            letter-spacing: 0.6px;
+            margin-bottom: 6px;
+            display: block;
+        }
+
+        .auth-input-wrap {
+            position: relative;
+        }
+
+        .auth-input-wrap .auth-icon {
+            position: absolute;
+            left: 13px;
+            top: 50%;
+            transform: translateY(-50%);
+            color: var(--text-muted);
+            font-size: 15px;
+            pointer-events: none;
+        }
+
+        .auth-input {
+            width: 100%;
+            background: rgba(255, 255, 255, 0.06);
+            border: 1px solid rgba(255, 255, 255, 0.12);
+            border-radius: 11px;
+            padding: 11px 14px 11px 40px;
+            color: var(--text);
+            font-size: 14px;
+            outline: none;
+            transition: border-color 0.2s, background 0.2s;
+        }
+
+        .auth-input:focus {
+            border-color: var(--primary);
+            background: rgba(0, 217, 255, 0.06);
+        }
+
+        .auth-input::placeholder {
+            color: rgba(139, 149, 180, 0.6);
+        }
+
+        .auth-pass-toggle {
+            position: absolute;
+            right: 13px;
+            top: 50%;
+            transform: translateY(-50%);
+            cursor: pointer;
+            color: var(--text-muted);
+            font-size: 15px;
+            background: none;
+            border: none;
+            padding: 0;
+            line-height: 1;
+        }
+
+        /* Buttons */
+        .auth-btn {
+            width: 100%;
+            padding: 13px;
+            border: none;
+            border-radius: 12px;
+            font-size: 15px;
+            font-weight: 700;
+            cursor: pointer;
+            transition: all 0.25s;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 8px;
+            margin-top: 6px;
+        }
+
+        .auth-btn-primary {
+            background: linear-gradient(135deg, var(--primary), var(--secondary));
+            color: var(--darker);
+            box-shadow: 0 6px 24px rgba(0, 217, 255, 0.3);
+        }
+
+        .auth-btn-primary:hover {
+            filter: brightness(1.1);
+            transform: translateY(-1px);
+        }
+
+        .auth-btn-primary:active {
+            transform: translateY(0);
+        }
+
+        .auth-btn-google {
+            background: rgba(255, 255, 255, 0.07);
+            border: 1px solid rgba(255, 255, 255, 0.15);
+            color: var(--text);
+            margin-top: 10px;
+            font-weight: 600;
+            font-size: 13px;
+        }
+
+        .auth-btn-google:hover {
+            background: rgba(255, 255, 255, 0.13);
+        }
+
+        /* Divider */
+        .auth-divider {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            margin: 16px 0;
+            color: var(--text-muted);
+            font-size: 12px;
+        }
+
+        .auth-divider::before,
+        .auth-divider::after {
+            content: '';
+            flex: 1;
+            height: 1px;
+            background: rgba(255, 255, 255, 0.1);
+        }
+
+        /* Forgot */
+        .auth-forgot {
+            text-align: right;
+            margin-top: -6px;
+            margin-bottom: 8px;
+        }
+
+        .auth-forgot a {
+            font-size: 12px;
+            color: var(--primary);
+            text-decoration: none;
+            cursor: pointer;
+        }
+
+        .auth-forgot a:hover {
+            text-decoration: underline;
+        }
+
+        /* Error message */
+        .auth-error {
+            background: rgba(255, 51, 102, 0.12);
+            border: 1px solid rgba(255, 51, 102, 0.3);
+            border-radius: 8px;
+            padding: 9px 12px;
+            font-size: 12px;
+            color: #ff6688;
+            margin-bottom: 12px;
+            display: none;
+            animation: fadeIn 0.2s ease;
+        }
+
+        /* Terms */
+        .auth-terms {
+            font-size: 11px;
+            color: var(--text-muted);
+            text-align: center;
+            margin-top: 18px;
+            line-height: 1.6;
+        }
+
+        .auth-terms span {
+            color: var(--primary);
+            cursor: pointer;
+        }
+
+        /* Strength bar */
+        .pass-strength-bar {
+            height: 3px;
+            border-radius: 2px;
+            margin-top: 6px;
+            background: rgba(255, 255, 255, 0.08);
+            overflow: hidden;
+        }
+
+        .pass-strength-fill {
+            height: 100%;
+            border-radius: 2px;
+            width: 0%;
+            transition: width 0.3s, background 0.3s;
+        }
+
+        .pass-strength-label {
+            font-size: 10px;
+            color: var(--text-muted);
+            margin-top: 3px;
+            min-height: 13px;
+        }
     </style>
 </head>
 
 <body>
+
+    <!-- ========== AUTH SCREEN ========== -->
+    <div id="authScreen">
+        <div class="auth-card">
+            <!-- Logo -->
+            <div class="auth-logo">
+                <div class="auth-logo-icon"><svg width="40" height="40" viewBox="0 0 64 64" fill="none"
+                        xmlns="http://www.w3.org/2000/svg">
+                        <circle cx="32" cy="14" r="5" fill="white" />
+                        <path d="M27 22h10a4 4 0 0 1 4 4v4H23v-4a4 4 0 0 1 4-4z" fill="white" opacity=".9" />
+                        <circle cx="16" cy="36" r="4" fill="white" opacity=".7" />
+                        <path d="M12 42h8a3 3 0 0 1 3 3v2H9v-2a3 3 0 0 1 3-3z" fill="white" opacity=".6" />
+                        <circle cx="48" cy="36" r="4" fill="white" opacity=".7" />
+                        <path d="M44 42h8a3 3 0 0 1 3 3v2H41v-2a3 3 0 0 1 3-3z" fill="white" opacity=".6" />
+                        <path d="M24 34l-4 4m0 0l4 4m16-8l4 4m0 0l-4 4" stroke="white" stroke-width="2.5" fill="none"
+                            stroke-linecap="round" />
+                    </svg></div>
+                <div class="auth-logo-name">FluxTeam</div>
+                <div class="auth-logo-sub">Premium Currency Exchange</div>
+            </div>
+
+            <!-- Tabs -->
+            <div class="auth-tabs">
+                <button class="auth-tab active" id="tabLogin" onclick="switchAuthTab('login')">
+                    <i class="bi bi-box-arrow-in-right"></i> Đăng Nhập
+                </button>
+                <button class="auth-tab" id="tabRegister" onclick="switchAuthTab('register')">
+                    <i class="bi bi-person-plus"></i> Đăng Ký
+                </button>
+            </div>
+
+            <!-- Error box (shared) -->
+            <div class="auth-error" id="authError"></div>
+
+            <!-- ---- LOGIN FORM ---- -->
+            <div id="loginForm">
+                <div class="auth-field">
+                    <label class="auth-field-label">Email</label>
+                    <div class="auth-input-wrap">
+                        <i class="bi bi-envelope auth-icon"></i>
+                        <input id="loginEmail" class="auth-input" type="email" placeholder="example@email.com"
+                            onkeydown="if(event.key==='Enter')doLogin()">
+                    </div>
+                </div>
+                <div class="auth-field">
+                    <label class="auth-field-label">Mật khẩu</label>
+                    <div class="auth-input-wrap">
+                        <i class="bi bi-lock auth-icon"></i>
+                        <input id="loginPass" class="auth-input" type="password" placeholder="••••••••"
+                            style="padding-right:42px" onkeydown="if(event.key==='Enter')doLogin()">
+                        <button class="auth-pass-toggle" onclick="toggleAuthPass('loginPass',this)" tabindex="-1">
+                            <i class="bi bi-eye"></i>
+                        </button>
+                    </div>
+                </div>
+                <div class="auth-remember-row">
+                    <label class="auth-remember">
+                        <input type="checkbox" id="rememberMe">
+                        Ghi nhớ đăng nhập
+                    </label>
+                    <a class="auth-forgot" onclick="showForgotMsg()" style="margin-bottom:0">Quên mật khẩu?</a>
+                </div>
+                <button class="auth-btn auth-btn-primary" onclick="doLogin()">
+                    <i class="bi bi-box-arrow-in-right"></i> Đăng Nhập
+                </button>
+                <div class="auth-divider">hoặc</div>
+                <button class="auth-btn auth-btn-google" onclick="doGoogleAuth()">
+                    <svg width="18" height="18" viewBox="0 0 48 48">
+                        <path fill="#FFC107"
+                            d="M43.6 20.1H42V20H24v8h11.3C33.7 32.8 29.3 36 24 36c-6.6 0-12-5.4-12-12s5.4-12 12-12c3.1 0 5.8 1.1 7.9 3l5.7-5.7C34.1 6.4 29.3 4 24 4 12.9 4 4 12.9 4 24s8.9 20 20 20 20-8.9 20-20c0-1.3-.1-2.7-.4-3.9z" />
+                        <path fill="#FF3D00"
+                            d="M6.3 14.7l6.6 4.8C14.5 15.8 18.9 12 24 12c3.1 0 5.8 1.1 7.9 3l5.7-5.7C34.1 6.4 29.3 4 24 4 16.3 4 9.7 8.4 6.3 14.7z" />
+                        <path fill="#4CAF50"
+                            d="M24 44c5.2 0 9.9-2 13.4-5.2l-6.2-5.2C29.3 35.2 26.8 36 24 36c-5.2 0-9.7-3.3-11.2-8H6.4C9.8 36.6 16.4 44 24 44z" />
+                        <path fill="#1976D2"
+                            d="M43.6 20.1H42V20H24v8h11.3c-.7 2-2.1 3.8-3.8 5.1l6.2 5.2C37.3 35.5 44 30.5 44 24c0-1.3-.1-2.7-.4-3.9z" />
+                    </svg>
+                    Tiếp tục với Google
+                </button>
+                <!-- Offline mode button (hidden by default) -->
+                <button id="offlineLoginBtn" class="auth-btn" onclick="enterOfflineMode()" style="
+                    display:none; margin-top:10px;
+                    background:rgba(255,165,0,0.12); border:1px solid rgba(255,165,0,0.3);
+                    color:#ffa500; font-weight:600; font-size:13px;">
+                    <i class="bi bi-wifi-off"></i>
+                    Vào Chế Độ Offline
+                </button>
+                <div class="auth-terms">
+                    Chưa có tài khoản?
+                    <span onclick="switchAuthTab('register')">Đăng ký ngay</span>
+                </div>
+            </div>
+
+            <!-- ---- REGISTER FORM ---- -->
+            <div id="registerForm" style="display:none">
+                <div class="auth-field">
+                    <label class="auth-field-label">Họ và tên</label>
+                    <div class="auth-input-wrap">
+                        <i class="bi bi-person auth-icon"></i>
+                        <input id="regName" class="auth-input" type="text" placeholder="Nguyễn Văn A">
+                    </div>
+                </div>
+                <div class="auth-field">
+                    <label class="auth-field-label">Email</label>
+                    <div class="auth-input-wrap">
+                        <i class="bi bi-envelope auth-icon"></i>
+                        <input id="regEmail" class="auth-input" type="email" placeholder="example@email.com">
+                    </div>
+                </div>
+                <div class="auth-field">
+                    <label class="auth-field-label">Mật khẩu</label>
+                    <div class="auth-input-wrap">
+                        <i class="bi bi-lock auth-icon"></i>
+                        <input id="regPass" class="auth-input" type="password" placeholder="••••••••"
+                            style="padding-right:42px" oninput="checkPassStrength(this.value)">
+                        <button class="auth-pass-toggle" onclick="toggleAuthPass('regPass',this)" tabindex="-1">
+                            <i class="bi bi-eye"></i>
+                        </button>
+                    </div>
+                    <div class="pass-strength-bar">
+                        <div class="pass-strength-fill" id="strengthFill"></div>
+                    </div>
+                    <div class="pass-strength-label" id="strengthLabel"></div>
+                </div>
+                <div class="auth-field">
+                    <label class="auth-field-label">Xác nhận mật khẩu</label>
+                    <div class="auth-input-wrap">
+                        <i class="bi bi-shield-lock auth-icon"></i>
+                        <input id="regConfirm" class="auth-input" type="password" placeholder="••••••••"
+                            onkeydown="if(event.key==='Enter')doRegister()">
+                    </div>
+                </div>
+                <button class="auth-btn auth-btn-primary" onclick="doRegister()">
+                    <i class="bi bi-person-check"></i> Tạo Tài Khoản
+                </button>
+                <div class="auth-divider">hoặc</div>
+                <button class="auth-btn auth-btn-google" onclick="doGoogleAuth()">
+                    <svg width="18" height="18" viewBox="0 0 48 48">
+                        <path fill="#FFC107"
+                            d="M43.6 20.1H42V20H24v8h11.3C33.7 32.8 29.3 36 24 36c-6.6 0-12-5.4-12-12s5.4-12 12-12c3.1 0 5.8 1.1 7.9 3l5.7-5.7C34.1 6.4 29.3 4 24 4 12.9 4 4 12.9 4 24s8.9 20 20 20 20-8.9 20-20c0-1.3-.1-2.7-.4-3.9z" />
+                        <path fill="#FF3D00"
+                            d="M6.3 14.7l6.6 4.8C14.5 15.8 18.9 12 24 12c3.1 0 5.8 1.1 7.9 3l5.7-5.7C34.1 6.4 29.3 4 24 4 16.3 4 9.7 8.4 6.3 14.7z" />
+                        <path fill="#4CAF50"
+                            d="M24 44c5.2 0 9.9-2 13.4-5.2l-6.2-5.2C29.3 35.2 26.8 36 24 36c-5.2 0-9.7-3.3-11.2-8H6.4C9.8 36.6 16.4 44 24 44z" />
+                        <path fill="#1976D2"
+                            d="M43.6 20.1H42V20H24v8h11.3c-.7 2-2.1 3.8-3.8 5.1l6.2 5.2C37.3 35.5 44 30.5 44 24c0-1.3-.1-2.7-.4-3.9z" />
+                    </svg>
+                    Đăng ký với Google
+                </button>
+                <div class="auth-terms">
+                    Đã có tài khoản?
+                    <span onclick="switchAuthTab('login')">Đăng nhập</span>
+                    · Bằng cách đăng ký bạn đồng ý với
+                    <span>Điều Khoản</span> &amp; <span>Bảo Mật</span>
+                </div>
+            </div>
+        </div>
+    </div>
 
     <!-- SETTINGS OVERLAY / PANEL -->
     <div class="settings-overlay" id="settingsOverlay" onclick="closeSettings()"></div>
@@ -1883,7 +2529,7 @@
                         <div class="settings-item-icon"><i class="bi bi-info-circle"></i></div>
                         <div class="settings-item-info">
                             <div class="settings-item-name">Phiên bản</div>
-                            <div class="settings-item-desc">FluxTea v2.1.0</div>
+                            <div class="settings-item-desc">FluxTeam v2.1.0</div>
                         </div>
                     </div>
                     <span style="color:var(--text-muted);font-size:12px">Latest</span>
@@ -1900,8 +2546,28 @@
         <!-- SIDEBAR -->
         <aside class="sidebar" id="sidebar">
             <div class="logo-section">
-                <div class="logo">FluxTea</div>
-                <div class="logo-sub">Premium Exchange</div>
+                <div style="display:flex;align-items:center;gap:10px">
+                    <svg width="28" height="28" viewBox="0 0 64 64" fill="none" xmlns="http://www.w3.org/2000/svg">
+                        <defs>
+                            <linearGradient id="sg" x1="0" y1="0" x2="64" y2="64" gradientUnits="userSpaceOnUse">
+                                <stop stop-color="#00d9ff" />
+                                <stop offset="1" stop-color="#00ffa3" />
+                            </linearGradient>
+                        </defs>
+                        <circle cx="32" cy="14" r="5" fill="url(#sg)" />
+                        <path d="M27 22h10a4 4 0 0 1 4 4v4H23v-4a4 4 0 0 1 4-4z" fill="url(#sg)" opacity=".8" />
+                        <circle cx="16" cy="36" r="4" fill="url(#sg)" opacity=".6" />
+                        <path d="M12 42h8a3 3 0 0 1 3 3v2H9v-2a3 3 0 0 1 3-3z" fill="url(#sg)" opacity=".5" />
+                        <circle cx="48" cy="36" r="4" fill="url(#sg)" opacity=".6" />
+                        <path d="M44 42h8a3 3 0 0 1 3 3v2H41v-2a3 3 0 0 1 3-3z" fill="url(#sg)" opacity=".5" />
+                        <path d="M24 34l-4 4m0 0l4 4m16-8l4 4m0 0l-4 4" stroke="url(#sg)" stroke-width="2" fill="none"
+                            stroke-linecap="round" />
+                    </svg>
+                    <div>
+                        <div class="logo">FluxTeam</div>
+                        <div class="logo-sub">Premium Exchange</div>
+                    </div>
+                </div>
             </div>
             <nav class="nav-section">
                 <div class="nav-label">Menu Chính</div>
@@ -2010,9 +2676,9 @@
                                     </select>
                                 </div>
                                 <div class="exchange-card" style="flex:1.4">
-                                    <div class="exchange-card-title">Số Lượng</div>
-                                    <input type="number" id="toAmount" placeholder="0.00" readonly
-                                        style="cursor:default;opacity:0.8">
+                                    <div class="exchange-card-title">Bạn Nhận Được</div>
+                                    <input type="text" id="toAmount" placeholder="0.00" readonly style="cursor:default; font-size:18px; font-weight:700;
+                                        color:var(--primary); text-shadow:0 0 20px rgba(0,217,255,0.3);">
                                 </div>
                             </div>
                             <!-- Rate display -->
@@ -2102,7 +2768,7 @@
                             </div>
                             <div class="chat-messages" id="chatMessages">
                                 <div class="message">
-                                    <div class="message-bubble other">Xin chào! Tôi là trợ lý của FluxTea. Tôi có thể
+                                    <div class="message-bubble other">Xin chào! Tôi là trợ lý của FluxTeam. Tôi có thể
                                         giúp gì cho bạn? 😊</div>
                                 </div>
                             </div>
@@ -2121,10 +2787,30 @@
                 <!-- PROFILE PAGE -->
                 <div class="page" id="profile">
                     <div class="profile-grid">
-                        <div class="profile-card">
-                            <div class="profile-avatar">A</div>
-                            <div class="profile-name">Nguyễn Minh A</div>
-                            <div class="profile-email">nguyenminh@example.com</div>
+
+                        <!-- LEFT: Avatar card -->
+                        <div class="profile-card" id="profileCard">
+                            <div class="profile-avatar-wrap">
+                                <div class="profile-avatar" id="profileAvatar">A</div>
+                                <!-- Avatar color picker (edit mode only) -->
+                                <div class="avatar-colors" id="avatarColors" style="display:none">
+                                    <span class="av-color" style="background:linear-gradient(135deg,#00d4aa,#00b4d8)"
+                                        onclick="setAvatarColor(this,'linear-gradient(135deg,#00d4aa,#00b4d8)')"></span>
+                                    <span class="av-color" style="background:linear-gradient(135deg,#7c3aed,#db2777)"
+                                        onclick="setAvatarColor(this,'linear-gradient(135deg,#7c3aed,#db2777)')"></span>
+                                    <span class="av-color" style="background:linear-gradient(135deg,#f59e0b,#ef4444)"
+                                        onclick="setAvatarColor(this,'linear-gradient(135deg,#f59e0b,#ef4444)')"></span>
+                                    <span class="av-color" style="background:linear-gradient(135deg,#10b981,#3b82f6)"
+                                        onclick="setAvatarColor(this,'linear-gradient(135deg,#10b981,#3b82f6)')"></span>
+                                    <span class="av-color" style="background:linear-gradient(135deg,#f472b6,#818cf8)"
+                                        onclick="setAvatarColor(this,'linear-gradient(135deg,#f472b6,#818cf8)')"></span>
+                                </div>
+                            </div>
+                            <div class="profile-name" id="profileNameDisplay">Nguyễn Minh A</div>
+                            <div class="profile-email" id="profileEmailDisplay">nguyenminh@example.com</div>
+                            <div class="profile-bio-display" id="profileBioDisplay"
+                                style="font-size:12px;color:var(--text-muted);margin-top:4px;text-align:center;padding:0 12px;min-height:16px">
+                            </div>
                             <div class="profile-stats">
                                 <div class="stat-item">
                                     <div class="stat-value">1,243</div>
@@ -2144,33 +2830,126 @@
                                 </div>
                             </div>
                         </div>
-                        <div class="profile-details">
-                            <div class="card-title"><i class="bi bi-person-badge" style="color:var(--primary)"></i>
-                                Thông Tin Tài Khoản</div>
-                            <div class="detail-item">
-                                <span class="detail-label">Họ và tên</span>
-                                <span class="detail-value">Nguyễn Minh A</span>
+
+                        <!-- RIGHT: Info / Edit panel -->
+                        <div class="profile-details" id="profileDetails">
+
+                            <div class="card-title"
+                                style="display:flex;align-items:center;justify-content:space-between">
+                                <span><i class="bi bi-person-badge" style="color:var(--primary)"></i> Thông Tin Tài
+                                    Khoản</span>
+                                <div style="display:flex;gap:8px">
+                                    <button id="editProfileBtn" class="prof-btn prof-btn-edit"
+                                        onclick="toggleProfileEdit(true)">
+                                        <i class="bi bi-pencil-square"></i> Chỉnh Sửa
+                                    </button>
+                                    <button id="saveProfileBtn" class="prof-btn prof-btn-save" onclick="saveProfile()"
+                                        style="display:none">
+                                        <i class="bi bi-check2-circle"></i> Lưu
+                                    </button>
+                                    <button id="cancelProfileBtn" class="prof-btn prof-btn-cancel"
+                                        onclick="toggleProfileEdit(false)" style="display:none">
+                                        <i class="bi bi-x-circle"></i>
+                                    </button>
+                                </div>
                             </div>
-                            <div class="detail-item">
-                                <span class="detail-label">Email</span>
-                                <span class="detail-value">nguyenminh@example.com</span>
+
+                            <!-- VIEW MODE -->
+                            <div id="profileViewMode">
+                                <div class="detail-item">
+                                    <span class="detail-label">Họ và tên</span>
+                                    <span class="detail-value" id="vName">Nguyễn Minh A</span>
+                                </div>
+                                <div class="detail-item">
+                                    <span class="detail-label">Email</span>
+                                    <span class="detail-value" id="vEmail">nguyenminh@example.com</span>
+                                </div>
+                                <div class="detail-item">
+                                    <span class="detail-label">Số điện thoại</span>
+                                    <span class="detail-value" id="vPhone">+84 9xx xxx xxx</span>
+                                </div>
+                                <div class="detail-item">
+                                    <span class="detail-label">Quốc gia</span>
+                                    <span class="detail-value" id="vCountry">🇻🇳 Việt Nam</span>
+                                </div>
+                                <div class="detail-item">
+                                    <span class="detail-label">Bio</span>
+                                    <span class="detail-value" id="vBio"
+                                        style="color:var(--text-muted);font-style:italic">Chưa có tiểu sử</span>
+                                </div>
+                                <div class="detail-item">
+                                    <span class="detail-label">Trạng thái KYC</span>
+                                    <span class="detail-value" style="color:var(--success)">✓ Đã xác minh</span>
+                                </div>
+                                <div class="detail-item">
+                                    <span class="detail-label">Ngày tham gia</span>
+                                    <span class="detail-value">15/02/2024</span>
+                                </div>
                             </div>
-                            <div class="detail-item">
-                                <span class="detail-label">Số điện thoại</span>
-                                <span class="detail-value">+84 9xx xxx xxx</span>
+
+                            <!-- EDIT MODE -->
+                            <div id="profileEditMode" style="display:none">
+                                <div class="prof-field">
+                                    <label class="prof-label"><i class="bi bi-person"></i> Họ và tên</label>
+                                    <input id="eName" class="prof-input" type="text" placeholder="Nhập họ và tên...">
+                                </div>
+                                <div class="prof-field">
+                                    <label class="prof-label"><i class="bi bi-envelope"></i> Email</label>
+                                    <input id="eEmail" class="prof-input" type="email" placeholder="Nhập email...">
+                                </div>
+                                <div class="prof-field">
+                                    <label class="prof-label"><i class="bi bi-phone"></i> Số điện thoại</label>
+                                    <input id="ePhone" class="prof-input" type="tel" placeholder="+84 ...">
+                                </div>
+                                <div class="prof-field">
+                                    <label class="prof-label"><i class="bi bi-globe"></i> Quốc gia</label>
+                                    <select id="eCountry" class="prof-input">
+                                        <option value="🇻🇳 Việt Nam">🇻🇳 Việt Nam</option>
+                                        <option value="🇺🇸 Hoa Kỳ">🇺🇸 Hoa Kỳ</option>
+                                        <option value="🇯🇵 Nhật Bản">🇯🇵 Nhật Bản</option>
+                                        <option value="🇰🇷 Hàn Quốc">🇰🇷 Hàn Quốc</option>
+                                        <option value="🇬🇧 Anh">🇬🇧 Anh</option>
+                                        <option value="🇩🇪 Đức">🇩🇪 Đức</option>
+                                        <option value="🇫🇷 Pháp">🇫🇷 Pháp</option>
+                                        <option value="🇸🇬 Singapore">🇸🇬 Singapore</option>
+                                        <option value="🇦🇺 Úc">🇦🇺 Úc</option>
+                                        <option value="🇨🇳 Trung Quốc">🇨🇳 Trung Quốc</option>
+                                        <option value="🇹🇭 Thái Lan">🇹🇭 Thái Lan</option>
+                                    </select>
+                                </div>
+                                <div class="prof-field">
+                                    <label class="prof-label"><i class="bi bi-chat-quote"></i> Bio <span
+                                            style="color:var(--text-muted);font-size:11px">(tối đa 100 ký
+                                            tự)</span></label>
+                                    <textarea id="eBio" class="prof-input prof-textarea" maxlength="100"
+                                        placeholder="Giới thiệu ngắn về bạn..."></textarea>
+                                </div>
+
+                                <!-- Change password section -->
+                                <div style="margin-top:16px;padding-top:14px;border-top:1px solid var(--border)">
+                                    <div
+                                        style="font-size:13px;font-weight:600;color:var(--text-muted);margin-bottom:10px;display:flex;align-items:center;gap:6px">
+                                        <i class="bi bi-lock"></i> Đổi Mật Khẩu <span
+                                            style="font-size:11px;font-weight:400">(bỏ trống nếu không đổi)</span>
+                                    </div>
+                                    <div class="prof-field">
+                                        <label class="prof-label">Mật khẩu mới</label>
+                                        <div style="position:relative">
+                                            <input id="eNewPass" class="prof-input" type="password"
+                                                placeholder="••••••••" style="padding-right:38px">
+                                            <i class="bi bi-eye" id="passToggleIcon"
+                                                style="position:absolute;right:12px;top:50%;transform:translateY(-50%);cursor:pointer;color:var(--text-muted)"
+                                                onclick="togglePassVisibility()"></i>
+                                        </div>
+                                    </div>
+                                    <div class="prof-field">
+                                        <label class="prof-label">Xác nhận mật khẩu</label>
+                                        <input id="eConfirmPass" class="prof-input" type="password"
+                                            placeholder="••••••••">
+                                    </div>
+                                </div>
                             </div>
-                            <div class="detail-item">
-                                <span class="detail-label">Quốc gia</span>
-                                <span class="detail-value">🇻🇳 Việt Nam</span>
-                            </div>
-                            <div class="detail-item">
-                                <span class="detail-label">Trạng thái KYC</span>
-                                <span class="detail-value" style="color:var(--success)">✓ Đã xác minh</span>
-                            </div>
-                            <div class="detail-item">
-                                <span class="detail-label">Ngày tham gia</span>
-                                <span class="detail-value">15/02/2024</span>
-                            </div>
+
                         </div>
                     </div>
                 </div>
@@ -2178,6 +2957,43 @@
             </div><!-- end content-area -->
         </div><!-- end main-content -->
     </div><!-- end app-wrapper -->
+
+    <!-- Offline Banner -->
+    <div id="offlineBanner" style="
+        display:none; position:fixed; top:0; left:0; right:0; z-index:99999;
+        background:linear-gradient(135deg,#ff3366,#ff6b35); color:#fff;
+        text-align:center; padding:10px 20px; font-size:14px; font-weight:600;
+        box-shadow:0 4px 24px rgba(255,51,102,0.4); letter-spacing:0.5px;
+        animation:slideDown 0.4s ease both;">
+        <i class="bi bi-wifi-off" style="margin-right:8px"></i>
+        Đang Offline — Hiển thị dữ liệu đã lưu
+        <span id="offlineTime" style="margin-left:12px;opacity:0.8;font-weight:400"></span>
+    </div>
+    <style>
+        @keyframes slideDown {
+            from {
+                transform: translateY(-100%);
+            }
+
+            to {
+                transform: translateY(0);
+            }
+        }
+
+        @keyframes slideUp {
+            from {
+                transform: translateY(0);
+            }
+
+            to {
+                transform: translateY(-100%);
+            }
+        }
+
+        #offlineBanner.hiding {
+            animation: slideUp 0.4s ease both;
+        }
+    </style>
 
     <script>
         /* ===================== API & RATES ===================== */
@@ -2195,30 +3011,33 @@
         let silentRefresh = false; // Khi true: auto-refresh sẽ không hiện thông báo
         let fetchPending = false;  // Tránh gọi fetchRates đồng thời
 
-        // ---- API: exchangerate.host (free, no key) ----
+        // ---- API: open.er-api.com (free, no key, hỗ trợ VND) ----
         async function fetchRates(base = 'USD', silent = false) {
             if (fetchPending) return; // Tránh gọi đồng thời
             fetchPending = true;
             if (!silent) showLoadingRate();
             try {
                 const res = await fetch(
-                    `https://api.exchangerate.host/latest?base=${base}&symbols=USD,VND,EUR,GBP,JPY,KRW,CNY,AUD,CAD,BRL,THB,SGD,USDT`,
-                    { signal: AbortSignal.timeout(6000) }
+                    `https://open.er-api.com/v6/latest/${base}`,
+                    { signal: AbortSignal.timeout(8000) }
                 );
                 if (!res.ok) throw new Error('HTTP ' + res.status);
                 const data = await res.json();
                 if (data && data.rates) {
                     liveRates = { ...data.rates, [base]: 1 };
+                    // USDT ≈ USD
+                    if (!liveRates.USDT) liveRates.USDT = liveRates.USD || 1;
                     baseCurrency = base;
                     ratesLoaded = true;
                     updateRate();
                     updateMarketGrid();
+                    if (!silent) showNotification('success', '✅ Đã Kết Nối', 'Tỷ giá thực tế đã được tải!');
                     fetchPending = false;
                     return true;
                 }
                 throw new Error('Invalid data');
             } catch (err) {
-                // Thử API dự phòng: frankfurter.app
+                // Thử API dự phòng: frankfurter.app (không có VND → bù bằng fallback)
                 const result = await fetchRatesFallback(base, silent);
                 fetchPending = false;
                 return result;
@@ -2227,21 +3046,32 @@
 
         async function fetchRatesFallback(base = 'USD', silent = false) {
             try {
-                const symbols = 'USD,VND,EUR,GBP,JPY,KRW,CNY,AUD,CAD,BRL,THB,SGD';
+                // frankfurter không có VND/USDT → lấy các cặp có thể rồi bổ sung fallback
+                const symbols = 'USD,EUR,GBP,JPY,KRW,CNY,AUD,CAD,BRL,THB,SGD';
                 const res = await fetch(
                     `https://api.frankfurter.app/latest?from=${base}&to=${symbols}`,
-                    { signal: AbortSignal.timeout(6000) }
+                    { signal: AbortSignal.timeout(8000) }
                 );
                 if (!res.ok) throw new Error('HTTP ' + res.status);
                 const data = await res.json();
                 if (data && data.rates) {
-                    liveRates = { ...data.rates, [base]: 1, USDT: data.rates['USD'] || 1 };
+                    // Tính VND qua cross: VND/base = (VND/USD) / (base/USD)
+                    const baseInUSD = data.rates['USD'] || (base === 'USD' ? 1 : null);
+                    let vndRate = null;
+                    if (baseInUSD) {
+                        vndRate = (fallbackRates['VND'] / fallbackRates['USD']) * baseInUSD;
+                    }
+                    liveRates = {
+                        ...data.rates,
+                        [base]: 1,
+                        USDT: data.rates['USD'] || (base === 'USD' ? 1 : null),
+                        VND: vndRate || (fallbackRates['VND'] / (fallbackRates[base] || 1))
+                    };
                     baseCurrency = base;
                     ratesLoaded = true;
                     updateRate();
                     updateMarketGrid();
-                    // Chỉ hiện thông báo khi load lần đầu (không phải auto-refresh)
-                    if (!silent) showNotification('success', '✅ Đã Kết Nối', 'Tỷ giá thực tế đã được tải!');
+                    if (!silent) showNotification('success', '✅ Đã Kết Nối', 'Tỷ giá thực tế đã được tải (nguồn dự phòng)!');
                     return true;
                 }
                 throw new Error('Invalid data');
@@ -2258,15 +3088,21 @@
                 ratesLoaded = true;
                 updateRate();
                 updateMarketGrid();
-                // Chỉ cảnh báo offline mode 1 lần (lần đầu, không phải auto-refresh)
                 if (!silent) showNotification('warning', '⚠️ Offline Mode', 'Không kết nối được API. Dùng tỷ giá tạm thời.');
                 return false;
             }
         }
 
         function showLoadingRate() {
-            document.getElementById('rateText').innerHTML =
+            const rateText = document.getElementById('rateText');
+            if (rateText) rateText.innerHTML =
                 `<span class="rate-loading"></span> Đang tải tỷ giá...`;
+            // Auto clear spinner after 10s to prevent infinite spin
+            setTimeout(() => {
+                if (rateText && rateText.innerHTML.includes('rate-loading')) {
+                    rateText.innerHTML = '⚠️ Không tải được. Dùng tỷ giá cũ.';
+                }
+            }, 10000);
         }
 
         function getRate(from, to) {
@@ -2310,36 +3146,60 @@
         function updateRate() {
             const from = document.getElementById('fromCurrency').value;
             const to = document.getElementById('toCurrency').value;
-            const amount = parseFloat(document.getElementById('fromAmount').value) || 0;
+            const fromEl = document.getElementById('fromAmount');
+            const amount = parseFloat(fromEl.value) || 0;
+            const toEl = document.getElementById('toAmount');
 
             if (from === to) {
-                document.getElementById('toAmount').value = amount.toFixed(2);
+                toEl.value = amount.toLocaleString('vi-VN', { minimumFractionDigits: 2, maximumFractionDigits: 2 }) + ' ' + to;
                 document.getElementById('rateText').innerHTML = `<strong>1 ${from} = 1.00 ${to}</strong>`;
                 document.getElementById('rateTime').textContent = 'Cập nhật: ' + new Date().toLocaleTimeString('vi-VN');
                 return;
             }
 
-            // Nếu base trùng from thì dùng live rates
-            let rate;
-            if (baseCurrency === from) {
-                rate = liveRates[to] || null;
-            } else if (baseCurrency === to) {
-                rate = liveRates[from] ? (1 / liveRates[from]) : null;
-            } else {
-                // Cross rate: from → base → to
-                const fromInBase = liveRates[from];
-                const toInBase = liveRates[to];
-                rate = (fromInBase && toInBase) ? (toInBase / fromInBase) : null;
+            // Tìm rate từ nhiều nguồn
+            let rate = null;
+
+            // 1. Thử liveRates trực tiếp
+            if (baseCurrency === from && liveRates[to]) {
+                rate = liveRates[to];
+            } else if (baseCurrency === to && liveRates[from]) {
+                rate = 1 / liveRates[from];
+            } else if (liveRates[from] && liveRates[to]) {
+                rate = liveRates[to] / liveRates[from];
             }
 
+            // 2. Fallback: dùng fallbackRates (quy về USD)
             if (!rate) {
-                // Fetch base = from để có tỷ giá chính xác (silent vì user đang gõ)
+                const fUSD = fallbackRates[from];
+                const tUSD = fallbackRates[to];
+                if (fUSD && tUSD) {
+                    rate = tUSD / fUSD;
+                }
+            }
+
+            // 3. Vẫn không có → fetch
+            if (!rate) {
                 if (!fetchPending) fetchRates(from, true);
+                toEl.value = 'Đang tải...';
                 return;
             }
 
             const result = amount * rate;
-            document.getElementById('toAmount').value = result.toFixed(2);
+            // Thay vì dùng toLocaleString có thể gây lỗi undefined, dùng tay nếu cần, nhưng toLocaleString thường ok
+            // Lỗi là do toEl.value trc đây set "0,00 VND" => amount = NaN nếu read từ toAmount. Nhưng amount read từ fromAmount nên ok.
+
+            // Format an toàn
+            try {
+                const formatted = result.toLocaleString('vi-VN', {
+                    minimumFractionDigits: 2,
+                    maximumFractionDigits: result > 1000 ? 0 : 2
+                });
+                toEl.value = formatted + ' ' + to;
+            } catch (e) {
+                toEl.value = result.toFixed(2) + ' ' + to; // Fallback an toàn
+            }
+
             document.getElementById('rateText').innerHTML =
                 `<strong>1 ${from} = ${rate.toLocaleString('vi-VN', { maximumFractionDigits: 6 })} ${to}</strong>`;
             document.getElementById('rateTime').textContent =
@@ -2635,14 +3495,546 @@
         }
 
         /* ===================== INIT ===================== */
-        document.addEventListener('DOMContentLoaded', () => {
-            loadSettings();
-            // Fetch tỷ giá lần đầu – KHÔNG silent để hiện thông báo kết nối
-            fetchRates('USD', false).then(() => {
-                setupAutoRefresh();
+        // App được khởi động bởi enterApp() sau khi đăng nhập thành công.
+        // DOMContentLoaded chỉ cần giữ authScreen hiển thị, không cần init thêm.
+
+        /* ===================== PROFILE EDIT ===================== */
+        let profileData = {
+            name: 'Nguyễn Minh A',
+            email: 'nguyenminh@example.com',
+            phone: '+84 9xx xxx xxx',
+            country: '🇻🇳 Việt Nam',
+            bio: '',
+            avatarColor: 'linear-gradient(135deg,#00d4aa,#00b4d8)'
+        };
+
+        function loadProfile() {
+            const saved = localStorage.getItem('fluxtea_profile');
+            if (saved) {
+                try { profileData = { ...profileData, ...JSON.parse(saved) }; } catch (e) { }
+            }
+            applyProfileToView();
+        }
+
+        function applyProfileToView() {
+            const d = profileData;
+            // Left card
+            const av = document.getElementById('profileAvatar');
+            if (av) {
+                av.textContent = d.name.trim().charAt(0).toUpperCase() || 'A';
+                av.style.background = d.avatarColor;
+            }
+            const setT = (id, val) => { const el = document.getElementById(id); if (el) el.textContent = val; };
+            setT('profileNameDisplay', d.name);
+            setT('profileEmailDisplay', d.email);
+            const bioDisp = document.getElementById('profileBioDisplay');
+            if (bioDisp) bioDisp.textContent = d.bio || '';
+            // Right panel view mode
+            setT('vName', d.name);
+            setT('vEmail', d.email);
+            setT('vPhone', d.phone);
+            setT('vCountry', d.country);
+            const vBio = document.getElementById('vBio');
+            if (vBio) {
+                vBio.textContent = d.bio || 'Chưa có tiểu sử';
+                vBio.style.fontStyle = d.bio ? 'normal' : 'italic';
+                vBio.style.color = d.bio ? 'var(--text)' : 'var(--text-muted)';
+            }
+            // Highlight active avatar color dot
+            document.querySelectorAll('.av-color').forEach(dot => {
+                dot.classList.toggle('active', dot.getAttribute('onclick')?.includes(d.avatarColor));
             });
-            // Chào mừng 1 lần duy nhất khi load trang
-            setTimeout(() => showNotification('info', '👋 Chào Mừng', 'FluxTea v2.1.0 · Tỷ giá thực tế đang tải...'), 600);
+        }
+
+        function toggleProfileEdit(on) {
+            document.getElementById('profileViewMode').style.display = on ? 'none' : '';
+            document.getElementById('profileEditMode').style.display = on ? '' : 'none';
+            document.getElementById('editProfileBtn').style.display = on ? 'none' : '';
+            document.getElementById('saveProfileBtn').style.display = on ? '' : 'none';
+            document.getElementById('cancelProfileBtn').style.display = on ? '' : 'none';
+            document.getElementById('avatarColors').style.display = on ? 'flex' : 'none';
+
+            if (on) {
+                // Populate edit fields from current data
+                const d = profileData;
+                document.getElementById('eName').value = d.name;
+                document.getElementById('eEmail').value = d.email;
+                document.getElementById('ePhone').value = d.phone;
+                document.getElementById('eCountry').value = d.country;
+                document.getElementById('eBio').value = d.bio || '';
+                document.getElementById('eNewPass').value = '';
+                document.getElementById('eConfirmPass').value = '';
+            }
+        }
+
+        function saveProfile() {
+            const name = document.getElementById('eName').value.trim();
+            const email = document.getElementById('eEmail').value.trim();
+            const phone = document.getElementById('ePhone').value.trim();
+            const country = document.getElementById('eCountry').value;
+            const bio = document.getElementById('eBio').value.trim();
+            const newPass = document.getElementById('eNewPass').value;
+            const confirmPass = document.getElementById('eConfirmPass').value;
+
+            if (!name) { showNotification('warning', '⚠️ Thiếu thông tin', 'Vui lòng nhập họ và tên!'); return; }
+            if (email && !/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)) {
+                showNotification('warning', '⚠️ Email không hợp lệ', 'Vui lòng kiểm tra lại email!'); return;
+            }
+            if (newPass && newPass !== confirmPass) {
+                showNotification('error', '❌ Mật Khẩu', 'Mật khẩu xác nhận không khớp!'); return;
+            }
+            if (newPass && newPass.length < 6) {
+                showNotification('warning', '⚠️ Mật Khẩu', 'Mật khẩu phải có ít nhất 6 ký tự!'); return;
+            }
+
+            profileData = { ...profileData, name, email, phone, country, bio };
+            localStorage.setItem('fluxtea_profile', JSON.stringify(profileData));
+
+            applyProfileToView();
+            toggleProfileEdit(false);
+            showNotification('success', '✅ Đã Lưu', 'Hồ sơ của bạn đã được cập nhật!');
+        }
+
+        function setAvatarColor(el, gradient) {
+            profileData.avatarColor = gradient;
+            const av = document.getElementById('profileAvatar');
+            if (av) av.style.background = gradient;
+            document.querySelectorAll('.av-color').forEach(d => d.classList.remove('active'));
+            el.classList.add('active');
+        }
+
+        function togglePassVisibility() {
+            const input = document.getElementById('eNewPass');
+            const icon = document.getElementById('passToggleIcon');
+            if (!input) return;
+            const isPass = input.type === 'password';
+            input.type = isPass ? 'text' : 'password';
+            icon.className = isPass ? 'bi bi-eye-slash' : 'bi bi-eye';
+            icon.style.cssText = 'position:absolute;right:12px;top:50%;transform:translateY(-50%);cursor:pointer;color:var(--text-muted)';
+        }
+        /* ===================== AUTH ===================== */
+
+        // ── API config ────────────────────────────────────────────────────────
+        const API_BASE = 'http://localhost:3000/api';
+        let isOffline = false;
+
+        function setOfflineStatus(offline) {
+            isOffline = offline;
+            const banner = document.getElementById('offlineBanner');
+            if (!banner) return;
+            if (offline) {
+                banner.style.display = 'block';
+                banner.classList.remove('hiding');
+                const lastSaved = localStorage.getItem('fluxteam_cache_time');
+                const timeEl = document.getElementById('offlineTime');
+                if (timeEl && lastSaved) {
+                    timeEl.textContent = '(Lưu lúc ' + new Date(parseInt(lastSaved)).toLocaleString('vi-VN') + ')';
+                }
+            } else {
+                banner.classList.add('hiding');
+                setTimeout(() => { banner.style.display = 'none'; }, 400);
+            }
+        }
+
+        // Cache key for localStorage
+        function cacheKey(path) { return 'fluxteam_api_' + path.replace(/[^a-zA-Z0-9]/g, '_'); }
+
+        function cacheResponse(path, data) {
+            try {
+                localStorage.setItem(cacheKey(path), JSON.stringify(data));
+                localStorage.setItem('fluxteam_cache_time', Date.now().toString());
+            } catch (e) { /* localStorage full */ }
+        }
+
+        function getCachedResponse(path) {
+            try {
+                const cached = localStorage.getItem(cacheKey(path));
+                return cached ? JSON.parse(cached) : null;
+            } catch (e) { return null; }
+        }
+
+        /**
+         * Wrapper around fetch(): prefixes API_BASE, auto-sets Content-Type
+         * and Authorization header, returns { ok, status, data }.
+         * Now with offline caching: caches GET responses, serves cache when offline.
+         */
+        async function apiFetch(path, options = {}) {
+            const token = localStorage.getItem('fluxteam_jwt');
+            const headers = { 'Content-Type': 'application/json', ...(options.headers || {}) };
+            if (token) headers['Authorization'] = 'Bearer ' + token;
+            const method = (options.method || 'GET').toUpperCase();
+            try {
+                const res = await fetch(API_BASE + path, { ...options, headers });
+                const data = await res.json().catch(() => ({}));
+                // Cache successful GET responses
+                if (res.ok && method === 'GET') {
+                    cacheResponse(path, data);
+                }
+                // Also cache login/register response (profile data)
+                if (res.ok && (path.includes('/auth/login') || path.includes('/auth/register') || path.includes('/auth/google'))) {
+                    cacheResponse('/user/profile', { name: data.user?.name, email: data.user?.email });
+                }
+                if (isOffline) setOfflineStatus(false);
+                return { ok: res.ok, status: res.status, data };
+            } catch (err) {
+                console.warn('[apiFetch] Network error:', err);
+                setOfflineStatus(true);
+                // Serve cached data for GET requests
+                if (method === 'GET') {
+                    const cached = getCachedResponse(path);
+                    if (cached) {
+                        console.log('[Offline] Serving cached:', path);
+                        return { ok: true, status: 200, data: cached, fromCache: true };
+                    }
+                }
+                return { ok: false, status: 0, data: { error: 'Không kết nối được server. Đang dùng chế độ offline.' } };
+            }
+        }
+
+        // ── Tab switcher ──────────────────────────────────────────────────────
+        function switchAuthTab(tab) {
+            const isLogin = tab === 'login';
+            document.getElementById('loginForm').style.display = isLogin ? '' : 'none';
+            document.getElementById('registerForm').style.display = isLogin ? 'none' : '';
+            document.getElementById('tabLogin').classList.toggle('active', isLogin);
+            document.getElementById('tabRegister').classList.toggle('active', !isLogin);
+            document.getElementById('authError').style.display = 'none';
+        }
+
+        function showAuthError(msg) {
+            const el = document.getElementById('authError');
+            el.textContent = '⚠️ ' + msg;
+            el.style.display = 'block';
+            el.style.animation = 'none';
+            el.offsetHeight;
+            el.style.animation = '';
+        }
+
+        function enterOfflineMode() {
+            const cached = getCachedResponse('/user/profile');
+            if (cached) {
+                profileData = {
+                    ...profileData,
+                    name: cached.name || 'User',
+                    email: cached.email || '',
+                    phone: cached.phone || profileData.phone,
+                    country: cached.country || profileData.country,
+                    bio: cached.bio || '',
+                    avatarColor: cached.avatar_color || profileData.avatarColor,
+                };
+            }
+            setOfflineStatus(true);
+            enterApp();
+            showNotification('warning', '📡 Chế Độ Offline', 'Đang hiển thị dữ liệu đã lưu. Một số tính năng bị giới hạn.');
+        }
+
+        function showOfflineButton() {
+            const cachedProfile = getCachedResponse('/user/profile');
+            const btn = document.getElementById('offlineLoginBtn');
+            if (btn) {
+                btn.style.display = 'flex';
+                const name = cachedProfile ? (cachedProfile.name || 'User') : 'Guest';
+                btn.innerHTML = '<i class="bi bi-wifi-off"></i> Vào Chế Độ Offline (' + name + ')';
+                // Hiện thêm thông báo lỗi
+                showAuthError('Server không khả dụng. Bạn có thể vào chế độ Offline.');
+            }
+        }
+
+        function doLogin() {
+            const email = document.getElementById('loginEmail').value.trim();
+            const pass = document.getElementById('loginPass').value;
+            const remember = document.getElementById('rememberMe')?.checked;
+            if (!email || !pass) { showAuthError('Vui lòng nhập đầy đủ thông tin!'); return; }
+            if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)) { showAuthError('Email không hợp lệ!'); return; }
+
+            const btn = document.querySelector('#loginForm .auth-btn-primary');
+            if (btn) { btn.disabled = true; btn.innerHTML = '<i class="bi bi-arrow-repeat" style="animation:spin 1s linear infinite"></i> Đang xử lý...'; }
+
+            apiFetch('/auth/login', {
+                method: 'POST',
+                body: JSON.stringify({ email, password: pass })
+            }).then(({ ok, data }) => {
+                if (btn) { btn.disabled = false; btn.innerHTML = '<i class="bi bi-box-arrow-in-right"></i> Đăng Nhập'; }
+                if (!ok) { showAuthError(data.error || 'Đăng nhập thất bại!'); return; }
+                localStorage.setItem('fluxteam_jwt', data.token);
+                // Ghi nhớ đăng nhập
+                if (remember) {
+                    localStorage.setItem('fluxteam_remember', 'true');
+                    localStorage.setItem('fluxteam_email', email);
+                } else {
+                    localStorage.removeItem('fluxteam_remember');
+                    localStorage.removeItem('fluxteam_email');
+                }
+                profileData = { ...profileData, name: data.user.name, email: data.user.email };
+                enterApp();
+            });
+        }
+
+        function doRegister() {
+            const name = document.getElementById('regName').value.trim();
+            const email = document.getElementById('regEmail').value.trim();
+            const pass = document.getElementById('regPass').value;
+            const confirm = document.getElementById('regConfirm').value;
+
+            if (!name) { showAuthError('Vui lòng nhập họ và tên!'); return; }
+            if (!email || !/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)) { showAuthError('Email không hợp lệ!'); return; }
+            if (pass.length < 6) { showAuthError('Mật khẩu phải tối thiểu 6 ký tự!'); return; }
+            if (pass !== confirm) { showAuthError('Mật khẩu xác nhận không khớp!'); return; }
+
+            const btn = document.querySelector('#registerForm .auth-btn-primary');
+            if (btn) { btn.disabled = true; btn.innerHTML = '<i class="bi bi-arrow-repeat" style="animation:spin 1s linear infinite"></i> Đang tạo...'; }
+
+            apiFetch('/auth/register', {
+                method: 'POST',
+                body: JSON.stringify({ name, email, password: pass })
+            }).then(({ ok, data }) => {
+                if (btn) { btn.disabled = false; btn.innerHTML = '<i class="bi bi-person-check"></i> Tạo Tài Khoản'; }
+                if (!ok) { showAuthError(data.error || 'Đăng ký thất bại!'); return; }
+                localStorage.setItem('fluxteam_jwt', data.token);
+                profileData = { ...profileData, name: data.user.name, email: data.user.email };
+                enterApp();
+                showNotification('success', '🎉 Chào Mừng!', `Tài khoản ${name} đã được tạo thành công!`);
+            });
+        }
+
+        // ── Google OAuth config ───────────────────────────────────────────
+        const GOOGLE_CLIENT_ID = 'YOUR_GOOGLE_CLIENT_ID_HERE'; // ← Thay bằng Client ID thật
+
+        function doGoogleAuth() {
+            if (GOOGLE_CLIENT_ID === 'YOUR_GOOGLE_CLIENT_ID_HERE') {
+                showNotification('warning', '⚠️ Google OAuth', 'Chưa cấu hình Google Client ID! Xem hướng dẫn trong README.');
+                return;
+            }
+            try {
+                google.accounts.id.initialize({
+                    client_id: GOOGLE_CLIENT_ID,
+                    callback: handleGoogleResponse
+                });
+                google.accounts.id.prompt(); // Hiện popup chọn tài khoản Google
+            } catch (err) {
+                console.error('Google GSI error:', err);
+                showNotification('error', '❌ Google Auth', 'Không thể khởi tạo Google Sign-In.');
+            }
+        }
+
+        async function handleGoogleResponse(response) {
+            const btn = document.querySelector('.auth-btn-google');
+            if (btn) { btn.disabled = true; btn.innerHTML = '<i class="bi bi-arrow-repeat" style="animation:spin 1s linear infinite"></i> Đang xác thực...'; }
+
+            const { ok, data } = await apiFetch('/auth/google', {
+                method: 'POST',
+                body: JSON.stringify({ credential: response.credential })
+            });
+
+            if (btn) {
+                btn.disabled = false;
+                btn.innerHTML = '<svg width="18" height="18" viewBox="0 0 48 48"><path fill="#FFC107" d="M43.6 20.1H42V20H24v8h11.3C33.7 32.8 29.3 36 24 36c-6.6 0-12-5.4-12-12s5.4-12 12-12c3.1 0 5.8 1.1 7.9 3l5.7-5.7C34.1 6.4 29.3 4 24 4 12.9 4 4 12.9 4 24s8.9 20 20 20 20-8.9 20-20c0-1.3-.1-2.7-.4-3.9z"/><path fill="#FF3D00" d="M6.3 14.7l6.6 4.8C14.5 15.8 18.9 12 24 12c3.1 0 5.8 1.1 7.9 3l5.7-5.7C34.1 6.4 29.3 4 24 4 16.3 4 9.7 8.4 6.3 14.7z"/><path fill="#4CAF50" d="M24 44c5.2 0 9.9-2 13.4-5.2l-6.2-5.2C29.3 35.2 26.8 36 24 36c-5.2 0-9.7-3.3-11.2-8H6.4C9.8 36.6 16.4 44 24 44z"/><path fill="#1976D2" d="M43.6 20.1H42V20H24v8h11.3c-.7 2-2.1 3.8-3.8 5.1l6.2 5.2C37.3 35.5 44 30.5 44 24c0-1.3-.1-2.7-.4-3.9z"/></svg> Tiếp tục với Google';
+            }
+
+            if (!ok) {
+                showAuthError(data.error || 'Đăng nhập Google thất bại!');
+                return;
+            }
+
+            localStorage.setItem('fluxteam_jwt', data.token);
+            profileData = { ...profileData, name: data.user.name, email: data.user.email };
+            enterApp();
+            showNotification('success', '✅ Google Auth', `Chào mừng ${data.user.name}!`);
+        }
+
+        function enterApp() {
+            const authEl = document.getElementById('authScreen');
+            authEl.style.transition = 'opacity 0.4s ease, transform 0.4s ease';
+            authEl.style.opacity = '0';
+            authEl.style.transform = 'scale(1.04)';
+            setTimeout(() => { authEl.style.display = 'none'; }, 420);
+
+            loadSettings();
+
+            // Load real profile from API (if JWT available)
+            apiFetch('/user/profile').then(({ ok, data }) => {
+                if (ok && data) {
+                    profileData = {
+                        ...profileData,
+                        name: data.name || profileData.name,
+                        email: data.email || profileData.email,
+                        phone: data.phone || profileData.phone,
+                        country: data.country || profileData.country,
+                        bio: data.bio || '',
+                        avatarColor: data.avatar_color || profileData.avatarColor,
+                    };
+                    // Update stats on profile card
+                    if (data.stats) {
+                        const vals = document.querySelectorAll('.stat-value');
+                        if (vals[0]) vals[0].textContent = data.stats.total_transactions.toLocaleString('vi-VN');
+                    }
+                }
+                applyProfileToView();
+            });
+
+            fetchRates('USD', false).then(() => setupAutoRefresh());
+            setTimeout(() => showNotification('info', '👋 Chào Mừng', `Xin chào, ${profileData.name}!`), 600);
+
+            // Load transaction history from API
+            apiFetch('/transactions?limit=10').then(({ ok, data }) => {
+                if (!ok || !data.data) return;
+                const list = document.getElementById('historyList');
+                if (!list || !data.data.length) return;
+                list.innerHTML = '';
+                data.data.forEach(tx => {
+                    const div = document.createElement('div');
+                    div.className = 'history-item';
+                    div.innerHTML = `
+                        <div class="history-left">
+                            <p>${parseFloat(tx.from_amount).toLocaleString('vi-VN')} ${tx.from_currency} → ${tx.to_currency}</p>
+                            <p>${new Date(tx.created_at).toLocaleString('vi-VN')}</p>
+                        </div>
+                        <div class="history-right">
+                            <p>${parseFloat(tx.to_amount).toLocaleString('vi-VN')} ${tx.to_currency}</p>
+                            <p>✓ Thành công</p>
+                        </div>`;
+                    list.insertBefore(div, list.firstChild);
+                });
+            });
+
+            // Inject logout button
+            if (!document.getElementById('logoutBtn')) {
+                const topActions = document.querySelector('.top-actions');
+                if (topActions) {
+                    const btn = document.createElement('button');
+                    btn.className = 'icon-btn';
+                    btn.id = 'logoutBtn';
+                    btn.title = 'Đăng xuất';
+                    btn.innerHTML = '<i class="bi bi-box-arrow-right"></i>';
+                    btn.onclick = doLogout;
+                    topActions.appendChild(btn);
+                }
+            }
+        }
+
+        function doLogout() {
+            if (!confirm('Bạn có chắc muốn đăng xuất?')) return;
+            // Xóa JWT token
+            localStorage.removeItem('fluxteam_jwt');
+            const authEl = document.getElementById('authScreen');
+            authEl.style.display = 'flex';
+            authEl.style.opacity = '0';
+            authEl.style.transform = 'scale(0.96)';
+            authEl.style.transition = 'opacity 0.4s ease, transform 0.4s ease';
+            requestAnimationFrame(() => requestAnimationFrame(() => {
+                authEl.style.opacity = '1';
+                authEl.style.transform = 'scale(1)';
+            }));
+            document.getElementById('loginEmail').value = '';
+            document.getElementById('loginPass').value = '';
+            document.getElementById('authError').style.display = 'none';
+            switchAuthTab('login');
+        }
+
+        function checkPassStrength(val) {
+            const fill = document.getElementById('strengthFill');
+            const label = document.getElementById('strengthLabel');
+            if (!fill) return;
+            let score = 0;
+            if (val.length >= 6) score++;
+            if (val.length >= 10) score++;
+            if (/[A-Z]/.test(val)) score++;
+            if (/[0-9]/.test(val)) score++;
+            if (/[^A-Za-z0-9]/.test(val)) score++;
+            const levels = [
+                { w: '0%', bg: 'transparent', txt: '' },
+                { w: '25%', bg: '#ff3366', txt: '🔴 Rất yếu' },
+                { w: '50%', bg: '#ffa500', txt: '🟠 Yếu' },
+                { w: '70%', bg: '#f0d000', txt: '🟡 Trung bình' },
+                { w: '88%', bg: '#00d4aa', txt: '🟢 Mạnh' },
+                { w: '100%', bg: '#00ffa3', txt: '💪 Rất mạnh' },
+            ];
+            const lv = levels[Math.min(score, 5)];
+            fill.style.width = val ? lv.w : '0%';
+            fill.style.background = lv.bg;
+            label.textContent = val ? lv.txt : '';
+        }
+
+        function toggleAuthPass(inputId, btn) {
+            const input = document.getElementById(inputId);
+            if (!input) return;
+            const isPass = input.type === 'password';
+            input.type = isPass ? 'text' : 'password';
+            btn.innerHTML = `<i class="bi bi-eye${isPass ? '-slash' : ''}"></i>`;
+        }
+
+        function showForgotMsg() {
+            showAuthError('Tính năng đặt lại mật khẩu sẽ sớm có! Hãy liên hệ support@fluxteam.app');
+            document.getElementById('authError').style.color = '#ffa500';
+            document.getElementById('authError').style.borderColor = 'rgba(255,165,0,0.3)';
+            document.getElementById('authError').style.background = 'rgba(255,165,0,0.1)';
+        }
+
+        // ── Auto-login & Remember Me ──────────────────────────────────────
+        window.addEventListener('DOMContentLoaded', () => {
+            const savedEmail = localStorage.getItem('fluxteam_email');
+            const remember = localStorage.getItem('fluxteam_remember');
+            const token = localStorage.getItem('fluxteam_jwt');
+
+            // Pre-fill email nếu đã ghi nhớ
+            if (savedEmail && remember) {
+                const emailInput = document.getElementById('loginEmail');
+                if (emailInput) emailInput.value = savedEmail;
+                const checkbox = document.getElementById('rememberMe');
+                if (checkbox) checkbox.checked = true;
+            }
+
+            // Auto-login nếu có token + remember, hoặc hiện nút offline nếu server không khả dụng
+            if (token) {
+                apiFetch('/user/profile').then(({ ok, data, fromCache }) => {
+                    if (ok && data) {
+                        if (fromCache && !remember) {
+                            // Server offline + không có remember → hiện nút Offline
+                            showOfflineButton();
+                            return;
+                        }
+                        profileData = {
+                            ...profileData,
+                            name: data.name || 'User',
+                            email: data.email || '',
+                        };
+                        enterApp();
+                        if (fromCache) {
+                            showNotification('warning', '📡 Chế Độ Offline', 'Server không khả dụng. Đang hiển thị dữ liệu đã lưu.');
+                        }
+                    } else {
+                        // Server online nhưng token hết hạn → hiện login
+                        showOfflineButton();
+                    }
+                });
+            } else {
+                // Không có token → kiểm tra xem có cache không, nếu server offline thì hiện nút
+                fetch(API_BASE).catch(() => {
+                    showOfflineButton();
+                });
+            }
+        });
+
+        // ── Online/Offline detection ─────────────────────────────────────
+        window.addEventListener('online', () => {
+            setOfflineStatus(false);
+            showNotification('success', '🌐 Đã Kết Nối', 'Server đã hoạt động trở lại!');
+            // Re-fetch data khi online lại
+            const token = localStorage.getItem('fluxteam_jwt');
+            if (token) {
+                apiFetch('/user/profile').then(({ ok, data }) => {
+                    if (ok && data) {
+                        profileData = { ...profileData, name: data.name, email: data.email };
+                        applyProfileToView();
+                    }
+                });
+                const from = document.getElementById('fromCurrency')?.value || 'USD';
+                fetchRates(from, true);
+            }
+        });
+        window.addEventListener('offline', () => {
+            setOfflineStatus(true);
+            showNotification('warning', '📡 Mất Kết Nối', 'Đang chuyển sang chế độ offline.');
         });
     </script>
 </body>
